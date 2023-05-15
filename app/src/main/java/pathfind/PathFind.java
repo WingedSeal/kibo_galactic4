@@ -2,6 +2,7 @@ package pathfind;
 
 import android.graphics.Point;
 import org.apache.commons.lang.ArrayUtils;
+import pathfind.zone.Zone;
 
 public class PathFind {
     /**
@@ -23,7 +24,9 @@ public class PathFind {
                     case POINT_1:
                         return new Node[] {};
                     case POINT_2:
-                        return new Node[] {};
+                        return new Node[] {
+                                new Node(Zone.keepIn1.yMax)
+                        };
                     case POINT_3:
                         return new Node[] {};
                     case POINT_4:
