@@ -1,7 +1,7 @@
 # kibo_galactic4
 
 ## Team members
-1. 
+1. Nattawin Yamprasert (Leader)
 2. Cheewanont Chuleekorn
-3.
-4.
+3. Dechathron Dasri
+4. Kasidit Sarnrak
