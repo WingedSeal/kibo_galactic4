@@ -1,4 +1,4 @@
-package pathfind;
+package jp.jaxa.iss.kibo.pathfind;
 
 enum POI_Id {
     START, GOAL,

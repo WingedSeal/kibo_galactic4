@@ -1,4 +1,4 @@
-package pathfind;
+package jp.jaxa.iss.kibo.pathfind;
 
 
 /**

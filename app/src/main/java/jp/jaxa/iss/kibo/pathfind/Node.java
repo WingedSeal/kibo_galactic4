@@ -1,4 +1,4 @@
-package pathfind;
+package jp.jaxa.iss.kibo.pathfind;
 
 import gov.nasa.arc.astrobee.types.Point;
 

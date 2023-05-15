@@ -1,4 +1,4 @@
-package pathfind.zone;
+package jp.jaxa.iss.kibo.pathfind.zone;
 
 public class Zone {
 

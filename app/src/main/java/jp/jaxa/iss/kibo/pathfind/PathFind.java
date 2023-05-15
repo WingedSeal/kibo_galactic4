@@ -1,8 +1,8 @@
-package pathfind;
+package jp.jaxa.iss.kibo.pathfind;
 
 import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
-import pathfind.zone.Zone;
+import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 
 public class PathFind {
 
