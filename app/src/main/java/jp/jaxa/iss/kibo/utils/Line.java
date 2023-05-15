@@ -17,7 +17,7 @@ public class Line {
      * @param z z value of interested point
      * @return x value that causes optimized path if x is null, y value if y is null, z value if z is null
      */
-    private static double findOptimizedPosition(Point point1, Point point2, @Nullable Double x, @Nullable Double y, @Nullable Double z) {
+    public static double findOptimizedPosition(Point point1, Point point2, @Nullable Double x, @Nullable Double y, @Nullable Double z) {
         return 0;
     }
 }

@@ -1,15 +1,28 @@
 package pathfind;
 
-import android.graphics.Point;
+import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
 import pathfind.zone.Zone;
 
 public class PathFind {
+
+    private static Node findNodeX(double y, double z, PathFindNode start, PathFindNode end) {
+        return new Node(Line.findOptimizedPosition(start, end, null, y, z), y, z);
+    }
+
+    private static Node findNodeY(double x, double z, PathFindNode start, PathFindNode end) {
+        return new Node(x, Line.findOptimizedPosition(start, end, x, null, z), z);
+    }
+
+    private static Node findNodeZ(double x, double y, PathFindNode start, PathFindNode end) {
+        return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
+    }
+
     /**
      * Find Nodes(ending Node not included) in between 2 PathFindNode Astrobee needs to move through to reach the end PathFindNode
      *
      * @param start Current position of Astrobee
-     * @param end PathFindNode Astrobee want to go to
+     * @param end   PathFindNode Astrobee want to go to
      * @return Nodes needed to travel
      */
     public static Node[] getPathNodes(PathFindNode start, PathFindNode end) {
@@ -20,23 +33,25 @@ public class PathFind {
             case START:
                 switch (end.id) {
                     case GOAL:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_1:
-                        return new Node[] {};
+                        return new Node[]{
+                                findNodeZ(Zone.keepOut1.xMin, Zone.keepIn1.yMin, start, end)
+                        };
                     case POINT_2:
-                        return new Node[] {
-                                new Node(Zone.keepIn1.yMax)
+                        return new Node[]{
+                                findNodeZ(Zone.keepIn1.xMax, Zone.keepIn1.yMax, start, end)
                         };
                     case POINT_3:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_4:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_5:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case GOAL:
@@ -46,19 +61,19 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_1:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_2:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_3:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_4:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_5:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_1:
@@ -69,17 +84,17 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_2:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_3:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_4:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_5:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_2:
@@ -91,15 +106,15 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_3:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_4:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_5:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_3:
@@ -112,13 +127,13 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_4:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_5:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_4:
@@ -132,11 +147,11 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_5:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_5:
@@ -151,9 +166,9 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_6:
-                        return new Node[] {};
+                        return new Node[]{};
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_6:
@@ -169,7 +184,7 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_7:
-                        return new Node[] {};
+                        return new Node[]{};
                 }
                 break;
             case POINT_7:
