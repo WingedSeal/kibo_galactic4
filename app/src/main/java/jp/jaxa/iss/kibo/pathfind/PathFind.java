@@ -1,8 +1,10 @@
 package jp.jaxa.iss.kibo.pathfind;
 
+import gov.nasa.arc.astrobee.types.Quaternion;
+import jp.jaxa.iss.kibo.pathfind.zone.Zone;
+import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
-import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 
 public class PathFind {
 
@@ -18,14 +20,35 @@ public class PathFind {
         return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
     }
 
+    static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation) {
+        pathFindMoveTo(api, from, to, orientation, false);
+    }
+
+
+    /**
+     * Move to the PathFindNode using approximated the shortest path
+     *
+     * @param api                KiboRpcApi to call moveTo
+     * @param from               current position of Astrobee
+     * @param to                 position to move to
+     * @param orientation        orientation parameter of api.moveTo
+     * @param printRobotPosition whether to print position
+     */
+    public static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation, boolean printRobotPosition) {
+        for (Node node : getPathNodes(from, to)) {
+            api.moveTo(node, orientation, printRobotPosition);
+        }
+        api.moveTo(to, orientation, printRobotPosition);
+    }
+
     /**
      * Find Nodes(ending Node not included) in between 2 PathFindNode Astrobee needs to move through to reach the end PathFindNode
      *
-     * @param start Current position of Astrobee
+     * @param start current position of Astrobee
      * @param end   PathFindNode Astrobee want to go to
-     * @return Nodes needed to travel
+     * @return nodes needed to travel
      */
-    public static Node[] getPathNodes(PathFindNode start, PathFindNode end) {
+    private static Node[] getPathNodes(PathFindNode start, PathFindNode end) {
         if (start.id == end.id) {
             throw new IllegalArgumentException("Start POI is the same as end POI, cannot path find");
         }
@@ -36,7 +59,8 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_1:
                         return new Node[]{
-                                findNodeZ(Zone.keepOut1.xMin, Zone.keepIn1.yMin, start, end)
+                                findNodeZ(Zone.keepOut1.xMin, Zone.keepIn1.yMin, start, end),
+                                findNodeZ(Zone.keepOut1.xMax, Zone.keepIn1.yMin, start, end),
                         };
                     case POINT_2:
                         return new Node[]{
