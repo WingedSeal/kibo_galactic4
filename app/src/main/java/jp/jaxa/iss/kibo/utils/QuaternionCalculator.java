@@ -30,11 +30,10 @@ public class QuaternionCalculator {
         //norm of vector from pivot of astrobee to laser pos
         double normLaser = Math.sqrt(Math.pow(0.1302, 2) + Math.pow(0.0572, 2) + Math.pow(0.1111, 2));
 
-        //vector of laser to desire pos <extraX,0,0>
-        double extraX = Math.sqrt(Math.pow(normVec1, 2) + Math.pow(normLaser, 2) - 2 * normLaser * normVec1 * Math.cos(Math.acos(0.1302d / normLaser) / 2));
+        double extraX = (-2*normLaser*Math.cos(Math.acos(0.1302d/normLaser)) + Math.sqrt(Math.pow(2*normLaser*Math.cos(Math.acos(0.1302d/normLaser)),2)-4*(Math.pow(normLaser,2) - Math.pow(normVec1,2))))/2;
 
-        //vector between pivot of astrobee to target pos
-        double x2 = 0.1302d + normVec1 - normLaser;
+        //vector between pivot of astrobee to final laser pos
+        double x2 = 0.1302d + extraX;
         double y2 = 0.0572d;
         double z2 = -0.1111d;
 
@@ -57,8 +56,11 @@ public class QuaternionCalculator {
         double j = -(x2 * z1 - x1 * z2);
         double k = x2 * y1 - x1 * y2;
 
+        //norm of Axis
         double normAxis = Math.sqrt(Math.pow(i,2) + Math.pow(j,2) + Math.pow(k,2));
 
+
+        //unit vector of Axis
         i /= normAxis;
         j /= normAxis;
         k /= normAxis;

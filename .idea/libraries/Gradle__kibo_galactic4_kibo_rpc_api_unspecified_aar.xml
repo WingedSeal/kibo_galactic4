@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: kibo_galactic4:kibo_rpc_api:unspecified@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/09dcda86e4b8cb752199f4832f228e5d68d50c24/output/jars/libs/ros-1.0-SNAPSHOT.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/09dcda86e4b8cb752199f4832f228e5d68d50c24/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/09dcda86e4b8cb752199f4832f228e5d68d50c24/output/jars/libs/api-1.0-SNAPSHOT.jar!/" />
-      <root url="jar://$USER_HOME$/.android/build-cache/09dcda86e4b8cb752199f4832f228e5d68d50c24/output/jars/libs/ff_msgs-0.0.0.jar!/" />
-      <root url="jar://$USER_HOME$/.android/build-cache/09dcda86e4b8cb752199f4832f228e5d68d50c24/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9/output/jars/libs/ros-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9/output/jars/libs/ff_msgs-0.0.0.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9/output/jars/libs/api-1.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

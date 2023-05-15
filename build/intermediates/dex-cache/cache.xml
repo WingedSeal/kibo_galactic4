@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Admin\.android\build-cache\040deebb29d4c771296c34201c2d09932bbcd426\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="1da33e32ab8494d557dfb2f3c3f8e29fdc5d98b7">
+        <dex dex="C:\Users\Admin\Desktop\git\kibo_galactic4\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_19c3cd12ac27acf1849cdfee6a56fe1101a237b1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Admin\.android\build-cache\5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9\output\jars\libs\api-1.0-SNAPSHOT.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="ec59f63912f2f18472efb6ba481bf5a5a2434967">
+        <dex dex="C:\Users\Admin\Desktop\git\kibo_galactic4\app\build\intermediates\transforms\dex\debug\folders\1000\10\api-1.0-SNAPSHOT_d8d4f9f4201d9fe20f98314044d1b5174576c41e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Admin\.android\build-cache\5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9\output\jars\libs\ff_msgs-0.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8b18789ddcfdb9d349ff4aa96f47fe52566de834">
+        <dex dex="C:\Users\Admin\Desktop\git\kibo_galactic4\app\build\intermediates\transforms\dex\debug\folders\1000\10\ff_msgs-0.0.0_54a278148015181a212316406a97904de6d75aa2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Admin\.android\build-cache\5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9\output\jars\libs\ros-1.0-SNAPSHOT.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="85635b05aa384ae8eb01bd1832938b3b424f027b">
+        <dex dex="C:\Users\Admin\Desktop\git\kibo_galactic4\app\build\intermediates\transforms\dex\debug\folders\1000\10\ros-1.0-SNAPSHOT_268e7fb7e49d9fe6919298c869f1c4179d87c444\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Admin\.android\build-cache\5cf6fd8fa1aa3698b7a91dd3ec0e5a89040255f9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b72e1f5e6eae95099d9811e2ec5a3079904afd83">
+        <dex dex="C:\Users\Admin\Desktop\git\kibo_galactic4\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7e92a25985d1df931c8686f253a30ab83aac73b0\classes.dex" />
+    </item>
+
+</items>
