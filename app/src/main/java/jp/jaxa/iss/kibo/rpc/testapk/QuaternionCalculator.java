@@ -1,5 +1,5 @@
 //เดะแก้ comment ครับ
-package jp.jaxa.iss.kibo.rpc.sampleapk; //depend on package you use
+package jp.jaxa.iss.kibo.rpc.testapk; //depend on package you use
 import gov.nasa.arc.astrobee.types.Point;
 import gov.nasa.arc.astrobee.types.Quaternion;
 public class QuaternionCalculator{
