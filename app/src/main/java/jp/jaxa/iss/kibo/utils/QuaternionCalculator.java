@@ -4,13 +4,6 @@ import gov.nasa.arc.astrobee.types.Point;
 import gov.nasa.arc.astrobee.types.Quaternion;
 
 public class QuaternionCalculator {
-    Point target1 = new Point(11.2625d, -10.58d, 5.3625d);
-    Point target2 = new Point(10.513384d, -9.085172d, 3.76203d);
-    Point target3 = new Point(10.6031d, -7.71007d, 3.76093);
-    Point target4 = new Point(9.866984d, -6.673972d, 5.09531);
-    Point target5 = new Point(11.102d, -8.0304d, 5.9076);
-    Point target6 = new Point(12.023d, -8.989d, 4.8305);
-
     /**
      * Calculate and return Quaternion of Astrobee
      * to the target from any position
@@ -24,7 +17,7 @@ public class QuaternionCalculator {
      * @param target position of the target
      * @return quaternion of astrobee that laser point to target
      */
-    public Quaternion calculateQuaternion(Point pos, Point target) {
+    static public Quaternion calculateQuaternion(Point pos, Point target) {
         //vector between point pos to target
         double x1 = target.getX() - pos.getX();
         double y1 = target.getY() - pos.getY();
