@@ -3,6 +3,14 @@ package pathfind;
 import org.apache.commons.lang.ArrayUtils;
 
 public class PathFind {
+
+    /**
+     * Find Nodes(ending Node not included) in between 2 PathFindNode Astrobee needs to move through to reach the end PathFindNode
+     *
+     * @param start Current position of Astrobee
+     * @param end PathFindNode Astrobee want to go to
+     * @return Nodes needed to travel
+     */
     public static Node[] getPathNodes(PathFindNode start, PathFindNode end) {
         if (start.id == end.id) {
             throw new IllegalArgumentException("Start POI is the same as end POI, cannot path find");

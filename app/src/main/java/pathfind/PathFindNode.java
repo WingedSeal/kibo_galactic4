@@ -1,5 +1,9 @@
 package pathfind;
 
+
+/**
+ * A special Point of interest that support pathfinding
+ */
 public class PathFindNode extends PointOfInterest {
     public PathFindNode(double x, double y, double z, POI_Id id) {
         super(x, y, z, id);
