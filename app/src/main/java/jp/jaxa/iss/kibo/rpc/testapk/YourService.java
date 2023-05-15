@@ -1,5 +1,9 @@
 package jp.jaxa.iss.kibo.rpc.testapk;
 
+import gov.nasa.arc.astrobee.types.Quaternion;
+import jp.jaxa.iss.kibo.pathfind.PathFind;
+import jp.jaxa.iss.kibo.pathfind.PathFindNode;
+import jp.jaxa.iss.kibo.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
 /**
@@ -9,7 +13,7 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1(){
-        // write your plan 1 here
+        PathFind.pathFindMoveTo(api, PathFindNode.START, TargetPoint.getTargetPoint(1), new Quaternion(0,0,0, 1));
     }
 
     @Override

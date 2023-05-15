@@ -20,7 +20,7 @@ public class PathFind {
         return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
     }
 
-    static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation) {
+    public static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation) {
         pathFindMoveTo(api, from, to, orientation, false);
     }
 
