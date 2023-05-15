@@ -7,11 +7,12 @@ public class QuaternionCalculator {
     /**
      * Calculate and return Quaternion of Astrobee
      * to the target from any position
-     * <p>
-     * w = cos(Θ/2)
-     * x = i * sin(Θ/2)
-     * y = j * sin(Θ/2)
-     * z = k * sin(Θ/2)
+     * <pre>
+     * {@code w = cos(Θ/2)}
+     * {@code x = i * sin(Θ/2)}
+     * {@code y = j * sin(Θ/2)}
+     * {@code z = k * sin(Θ/2)}
+     * </pre>
      *
      * @param pos    position of the Astrobee (pivot at center point)
      * @param target position of the target
@@ -24,29 +25,29 @@ public class QuaternionCalculator {
         double z1 = target.getZ() - pos.getZ();
 
         //norm of <x1,y1,z1>
-        double normvec1 = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2) + Math.pow(z1, 2));
+        double normVec1 = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2) + Math.pow(z1, 2));
 
         //norm of vector from pivot of astrobee to laser pos
-        double normlaser = Math.sqrt(Math.pow(0.1302d, 2) + Math.pow(0.0572d, 2) + Math.pow(0.1111d, 2));
+        double normLaser = Math.sqrt(Math.pow(0.1302, 2) + Math.pow(0.0572, 2) + Math.pow(0.1111, 2));
 
-        //vector of laser to desire pos <extrax,0,0>
-        double extrax = Math.sqrt(Math.pow(normvec1, 2) + Math.pow(normlaser, 2) - 2 * normlaser * normvec1 * Math.cos(Math.acos(0.1302d / normlaser) / 2));
+        //vector of laser to desire pos <extraX,0,0>
+        double extraX = Math.sqrt(Math.pow(normVec1, 2) + Math.pow(normLaser, 2) - 2 * normLaser * normVec1 * Math.cos(Math.acos(0.1302d / normLaser) / 2));
 
-        //vector between pivot of astrobee to targer pos
-        double x2 = 0.1302d + extrax;
+        //vector between pivot of astrobee to target pos
+        double x2 = 0.1302d + extraX;
         double y2 = 0.0572d;
         double z2 = -0.1111d;
 
         //norm of <x2,y2,z2>
-        double normvec2 = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2) + Math.pow(z2, 2));
+        double normVec2 = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2) + Math.pow(z2, 2));
 
         //make 2 vector a unit vector
-        x1 /= normvec1;
-        y1 /= normvec1;
-        z1 /= normvec1;
-        x2 /= normvec2;
-        y2 /= normvec2;
-        z2 /= normvec2;
+        x1 /= normVec1;
+        y1 /= normVec1;
+        z1 /= normVec1;
+        x2 /= normVec2;
+        y2 /= normVec2;
+        z2 /= normVec2;
 
         //find Θ from dot product
         double theta = Math.acos(x1 * x2 + y1 * y2 + z1 * z2);
