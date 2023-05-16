@@ -21,6 +21,14 @@ public class PathFind {
         return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
     }
 
+    /**
+     * Move to the PathFindNode using approximated the shortest path
+     *
+     * @param api                KiboRpcApi to call moveTo
+     * @param from               current position of Astrobee
+     * @param to                 position to move to
+     * @param orientation        orientation parameter of api.moveTo
+     */
     public static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation) {
         pathFindMoveTo(api, from, to, orientation, false);
     }
