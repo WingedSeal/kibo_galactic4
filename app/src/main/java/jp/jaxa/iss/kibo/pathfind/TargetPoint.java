@@ -16,6 +16,6 @@ public class TargetPoint extends PathFindNode {
     };
 
     public static TargetPoint getTargetPoint(int pointNumber) {
-        return TARGET_POINTS[pointNumber];
+        return TARGET_POINTS[pointNumber - 1];
     }
 }
