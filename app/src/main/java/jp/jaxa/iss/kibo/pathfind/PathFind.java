@@ -65,7 +65,7 @@ public class PathFind {
             case START:
                 switch (end.id) {
                     case GOAL:
-                        return new Node[]{};
+                        return new Node[]{}; // TODO:
                     case POINT_1:
                         return new Node[]{
                                 findNodeZ(Zone.keepOut1.xMin, Zone.keepIn1.yMin, start, end),

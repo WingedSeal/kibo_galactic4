@@ -14,10 +14,14 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1(){
-        api.startMission();
-        PathFind.pathFindMoveTo(api, PathFindNode.START, TargetPoint.getTargetPoint(1), new Quaternion(0,0,0, 1));
-        api.notifyGoingToGoal();
-        api.reportMissionCompletion("asdd");
+        Astrobee astrobee = new Astrobee(api);
+        astrobee.startMission();
+        try {
+            astrobee.moveTo(TargetPoint.getTargetPoint(1));
+        } catch (Exception error) {
+            astrobee.__forceEndMission(error.getMessage());
+        }
+        astrobee.__forceEndMission("NOT ERROR");
     }
 
     @Override
