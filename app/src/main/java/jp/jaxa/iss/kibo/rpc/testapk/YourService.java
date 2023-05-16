@@ -16,12 +16,7 @@ import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1(){
-        api.startMission();
-        api.moveTo(TargetPoint.getTargetPoint(2), QuaternionCalculator.calculateQuaternion(TargetPoint.getTargetPoint(2), Target.getTarget(2)),false);
-        //PathFind.pathFindMoveTo(api, PathFindNode.START, TargetPoint.getTargetPoint(1), new Quaternion(0,0,0, 1));
-
-        api.notifyGoingToGoal();
-        api.reportMissionCompletion("aasdf");
+        PathFind.pathFindMoveTo(api, PathFindNode.START, TargetPoint.getTargetPoint(1), new Quaternion(0,0,0, 1));
     }
 
     @Override
