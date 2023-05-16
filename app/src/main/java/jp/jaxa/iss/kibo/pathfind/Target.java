@@ -27,7 +27,7 @@ public class Target extends PointOfInterest {
     };
 
     public static Target getTarget(int targetNumber) {
-        return TARGETS[targetNumber];
+        return TARGETS[targetNumber - 1];
     }
 
 }
