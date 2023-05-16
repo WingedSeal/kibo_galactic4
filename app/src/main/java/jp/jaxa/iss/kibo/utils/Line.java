@@ -24,6 +24,9 @@ public class Line {
          * y(t) = b*t + point1.y
          * z(t) = c*t + point1.z
          */
+        Logger.__log("point1.x = " + point1.getX() + ",point1.y = " + point1.getY() + ", point1.z = " + point1.getZ());
+        Logger.__log("point2.x = " + point2.getX() + ",point2.y = " + point2.getY() + ", point2.z = " + point1.getZ());
+        Logger.__log("x = " + x + ", y = " + y + ", z = " + z);
         final double a = point2.getX() - point1.getX();
         final double b = point2.getY() - point1.getY();
         final double c = point2.getZ() - point1.getZ();
