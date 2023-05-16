@@ -1,6 +1,7 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import gov.nasa.arc.astrobee.types.Quaternion;
+import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.PathFind;
 import jp.jaxa.iss.kibo.pathfind.PathFindNode;
 import jp.jaxa.iss.kibo.pathfind.TargetPoint;
@@ -19,9 +20,10 @@ public class YourService extends KiboRpcService {
         try {
             astrobee.moveTo(TargetPoint.getTargetPoint(1));
         } catch (Exception error) {
-            astrobee.__forceEndMission(error.getMessage());
+            Logger.log(error.getMessage());
+            astrobee.__forceEndMission();
         }
-        astrobee.__forceEndMission("NOT ERROR");
+        astrobee.__forceEndMission();
     }
 
     @Override

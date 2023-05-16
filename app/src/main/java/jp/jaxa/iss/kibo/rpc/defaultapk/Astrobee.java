@@ -1,6 +1,7 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import gov.nasa.arc.astrobee.types.Quaternion;
+import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.PathFind;
 import jp.jaxa.iss.kibo.pathfind.PathFindNode;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
@@ -20,9 +21,9 @@ public class Astrobee {
         api.startMission();
     }
 
-    public void  __forceEndMission(String text) {
+    public void  __forceEndMission() {
         api.notifyGoingToGoal();
-        api.reportMissionCompletion(text);
+        api.reportMissionCompletion(Logger.logMessage);
     }
     public void endMission() {
         api.notifyGoingToGoal();
