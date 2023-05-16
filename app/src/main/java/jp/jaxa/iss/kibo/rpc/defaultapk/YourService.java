@@ -1,12 +1,10 @@
-package jp.jaxa.iss.kibo.rpc.testapk;
+package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.pathfind.PathFind;
 import jp.jaxa.iss.kibo.pathfind.PathFindNode;
-import jp.jaxa.iss.kibo.pathfind.Target;
 import jp.jaxa.iss.kibo.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
-import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 
 
 /**
@@ -16,7 +14,10 @@ import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1(){
+        api.startMission();
         PathFind.pathFindMoveTo(api, PathFindNode.START, TargetPoint.getTargetPoint(1), new Quaternion(0,0,0, 1));
+        api.notifyGoingToGoal();
+        api.reportMissionCompletion("asdd");
     }
 
     @Override
