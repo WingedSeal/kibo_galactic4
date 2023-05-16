@@ -9,14 +9,15 @@ import java.util.HashMap;
 
 public class QRReader {
 
-    private static final HashMap<String, String> MESSAGES = new HashMap<String, String>() {{
-        put("JEM", "STAY_AT_JEM");
-        put("COLUMBUS", "GO_TO_COLUMBUS");
-        put("RACK1", "CHECK_RACK_1");
-        put("ASTROBEE", "I_AM_HERE");
-        put("INTBALL", "LOOKING_FORWARD_TO_SEE_YOU");
-        put("BLANK", "NO_PROBLEM");
-    }};
+    private static final HashMap<String, String> MESSAGES = new HashMap<String, String>();
+    static {
+        MESSAGES.put("COLUMBUS", "GO_TO_COLUMBUS");
+        MESSAGES.put("JEM", "STAY_AT_JEM");
+        MESSAGES.put("RACK1", "CHECK_RACK_1");
+        MESSAGES.put("ASTROBEE", "I_AM_HERE");
+        MESSAGES.put("INTBALL", "LOOKING_FORWARD_TO_SEE_YOU");
+        MESSAGES.put("BLANK", "NO_PROBLEM");
+    }
 
     /**
      * Read the QRCode from NavCam type bitmap, returns null if fails
