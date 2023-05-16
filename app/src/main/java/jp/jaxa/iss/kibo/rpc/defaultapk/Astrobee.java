@@ -42,4 +42,9 @@ public class Astrobee {
         PathFind.pathFindMoveTo(api, currentPathFindNode, node, orientation);
         currentPathFindNode = node;
     }
+    public void shootLaser(int target){
+        api.laserControl(true);
+        api.takeTargetSnapshot(target);
+    }
+
 }
