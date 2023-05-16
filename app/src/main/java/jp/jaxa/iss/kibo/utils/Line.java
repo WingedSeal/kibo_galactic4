@@ -29,24 +29,24 @@ public class Line {
         final double c = point2.getZ() - point1.getZ();
         Logger.__log("a = " + a + ", b = " + b + ", c = " + c);
         if (x == null && y != null && z != null) {
-            final double t_y = y - point1.getY() / b;
-            final double t_z = z - point1.getZ() / c;
+            final double t_y = (y - point1.getY()) / b;
+            final double t_z = (z - point1.getZ()) / c;
             final double x_t_y = a * t_y + point1.getX(); // x(t_y)
             final double x_t_z = a * t_z + point1.getX(); // x(t_z)
             Logger.__log("X_NULL: x_t_y = " + x_t_y + ", x_t_z = " + x_t_z);
             return (x_t_y + x_t_z) / 2;
         }
         else if (x != null && y == null && z != null) {
-            final double t_x = x - point1.getX() / a;
-            final double t_z = z - point1.getZ() / c;
+            final double t_x = (x - point1.getX()) / a;
+            final double t_z = (z - point1.getZ()) / c;
             final double y_t_x = b * t_x + point1.getY(); // y(t_x)
             final double y_t_z = b * t_z + point1.getY(); // y(t_z)
             Logger.__log("Y_NULL: y_t_x = " + y_t_z + ", y_t_x = " + y_t_z);
             return (y_t_x + y_t_z) / 2;
         }
         else if (x != null && y != null && z == null) {
-            final double t_x = x - point1.getX() / a;
-            final double t_y = y - point1.getY() / b;
+            final double t_x = (x - point1.getX()) / a;
+            final double t_y = (y - point1.getY()) / b;
             final double z_t_x = c * t_x + point1.getZ(); // z(t_x)
             final double z_t_y = c * t_y + point1.getZ(); // z(t_x)
             Logger.__log("Z_NULL: z_t_x = " + z_t_x + ", z_t_y = " + z_t_y);
