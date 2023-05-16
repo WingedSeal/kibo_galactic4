@@ -14,6 +14,8 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 
 public class QRReader {
 
+    private static final HashMap<>
+
     /**
      * Read the QRcode from NavCam type bitmap
      *

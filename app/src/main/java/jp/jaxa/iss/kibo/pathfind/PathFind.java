@@ -5,18 +5,19 @@ import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.NotImplementedException;
 
 public class PathFind {
 
-    private static Node findNodeX(double y, double z, PathFindNode start, PathFindNode end) {
+    private static Node findNodeX(double y, double z, Node start, Node end) {
         return new Node(Line.findOptimizedPosition(start, end, null, y, z), y, z);
     }
 
-    private static Node findNodeY(double x, double z, PathFindNode start, PathFindNode end) {
+    private static Node findNodeY(double x, double z, Node start, Node end) {
         return new Node(x, Line.findOptimizedPosition(start, end, x, null, z), z);
     }
 
-    private static Node findNodeZ(double x, double y, PathFindNode start, PathFindNode end) {
+    private static Node findNodeZ(double x, double y, Node start, Node end) {
         return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
     }
 
@@ -64,18 +65,24 @@ public class PathFind {
                         };
                     case POINT_2:
                         return new Node[]{
-                                findNodeZ(Zone.keepIn1.xMax, Zone.keepIn1.yMax, start, end)
+                                findNodeZ(Zone.keepIn2.xMin, Zone.keepIn1.yMax, start, end)
                         };
                     case POINT_3:
-                        return new Node[]{};
                     case POINT_4:
-                        return new Node[]{};
-                    case POINT_5:
-                        return new Node[]{};
-                    case POINT_6:
-                        return new Node[]{};
+                    case POINT_5: // Point 5 is unsure of keep out 4
+                        Node buttomNode = findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end);
+                        return new Node[]{
+                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, buttomNode),
+                                buttomNode,
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, buttomNode, end)
+                        };
+                    case POINT_6: // unsure of keep out 2
+                        return new Node[]{
+                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end)
+                        };
                     case POINT_7:
-                        return new Node[]{};
+                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
+
                 }
                 break;
             case GOAL:
@@ -85,19 +92,25 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_1:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end)
+                        };
                     case POINT_2:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end),
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end),
+                                findNodeY(Zone.keepOut2.xMin, Zone.keepOut2.zMax, start, end)
+                        };
                     case POINT_3:
-                        return new Node[]{};
                     case POINT_4:
-                        return new Node[]{};
-                    case POINT_5:
+                    case POINT_5: // Point 5 is unsure of keep out 4
                         return new Node[]{};
                     case POINT_6:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end)
+                        };
                     case POINT_7:
-                        return new Node[]{};
+                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
                 }
                 break;
             case POINT_1:
@@ -107,18 +120,20 @@ public class PathFind {
                         Node[] nodes = getPathNodes(end, start);
                         ArrayUtils.reverse(nodes);
                         return nodes;
-                    case POINT_2:
-                        return new Node[]{};
+                    case POINT_2: // unsure of keep out 2
+                        return new Node[]{
+                                findNodeX(Zone.keepOut1.yMax, Zone.keepOut1.zMax, start, end)
+                        };
                     case POINT_3:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end)
+                        };
                     case POINT_4:
-                        return new Node[]{};
                     case POINT_5:
-                        return new Node[]{};
                     case POINT_6:
                         return new Node[]{};
                     case POINT_7:
-                        return new Node[]{};
+                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
                 }
                 break;
             case POINT_2:
@@ -130,15 +145,25 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_3:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end),
+                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end)
+                        };
                     case POINT_4:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end)
+                        };
                     case POINT_5:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeY(Zone.keepOut2.xMin, Zone.keepOut2.zMax, start, end)
+                        };
                     case POINT_6:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeZ(Zone.keepOut2.xMin, Zone.keepOut2.yMin, start, end),
+                                findNodeZ(Zone.keepOut2.xMax, Zone.keepOut2.yMin, start, end)
+                        };
                     case POINT_7:
-                        return new Node[]{};
+                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
                 }
                 break;
             case POINT_3:
@@ -150,12 +175,18 @@ public class PathFind {
                         Node[] nodes = getPathNodes(end, start);
                         ArrayUtils.reverse(nodes);
                         return nodes;
-                    case POINT_4:
+                    case POINT_4: // unsure of keep out 4
                         return new Node[]{};
                     case POINT_5:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end),
+                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMax, start, end),
+                        };
                     case POINT_6:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut4.zMax, start, end),
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
+                        };
                     case POINT_7:
                         return new Node[]{};
                 }
