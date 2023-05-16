@@ -8,6 +8,7 @@ android {
         applicationId "jp.jaxa.iss.kibo.rpc.defaultapk" +
                 ""
         minSdkVersion 24
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
