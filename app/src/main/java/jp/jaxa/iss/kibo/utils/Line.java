@@ -1,7 +1,6 @@
 package jp.jaxa.iss.kibo.utils;
 
 import gov.nasa.arc.astrobee.types.Point;
-import jp.jaxa.iss.kibo.logger.Logger;
 
 import javax.annotation.Nullable;
 
@@ -38,7 +37,7 @@ public class Line {
                 return x_t_y;
             if (0 <= t_z && t_z <= 1)
                 return x_t_z;
-            throw new IllegalArgumentException("Unable to find x");
+            return (point1.getX() + point2.getX()) / 2;
         } else if (x != null && y == null && z != null) {
             final double t_x = (x - point1.getX()) / a;
             final double t_z = (z - point1.getZ()) / c;
@@ -50,7 +49,7 @@ public class Line {
                 return y_t_x;
             if (0 <= t_z && t_z <= 1)
                 return y_t_z;
-            throw new IllegalArgumentException("Unable to find y");
+            return (point1.getX() + point2.getX()) / 2;
 
         } else if (x != null && y != null && z == null) {
             final double t_x = (x - point1.getX()) / a;
@@ -63,7 +62,7 @@ public class Line {
                 return z_t_x;
             if (0 <= t_y && t_y <= 1)
                 return z_t_y;
-            throw new IllegalArgumentException("Unable to find z");
+            return (point1.getX() + point2.getX()) / 2;
 
         }
         throw new IllegalArgumentException("Only one of x y z has to be null");
