@@ -1,6 +1,8 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import jp.jaxa.iss.kibo.logger.Logger;
+import jp.jaxa.iss.kibo.pathfind.PathFindNode;
+import jp.jaxa.iss.kibo.pathfind.PointOfInterest;
 import jp.jaxa.iss.kibo.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
@@ -17,8 +19,9 @@ public class YourService extends KiboRpcService {
         Astrobee astrobee = new Astrobee(api);
         try {
             astrobee.startMission();
-            astrobee.moveTo(TargetPoint.getTargetPoint(1));
-            astrobee.__forceEndMission();
+            astrobee.moveTo(TargetPoint.getTargetPoint(4));
+            astrobee.shootLaser();
+            astrobee.endMission();
         } catch (Exception e) {
             Logger.__log(e.getMessage());
             Logger.__log(Arrays.toString(e.getStackTrace()));
