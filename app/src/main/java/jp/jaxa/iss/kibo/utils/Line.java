@@ -37,23 +37,44 @@ public class Line {
             final double x_t_y = a * t_y + point1.getX(); // x(t_y)
             final double x_t_z = a * t_z + point1.getX(); // x(t_z)
             Logger.__log("X_NULL: x_t_y = " + x_t_y + ", x_t_z = " + x_t_z);
-            return (x_t_y + x_t_z) / 2;
-        }
-        else if (x != null && y == null && z != null) {
+            if (0 <= t_y && t_y <= 1 && 0 <= t_z && t_z <= 1)
+                return (x_t_y + x_t_z) / 2;
+            if (0 <= t_y && t_y <= 1)
+                return x_t_y;
+            if (0 <= t_z && t_z <= 1)
+                return x_t_z;
+            Logger.__log("Unable to find x");
+            throw new IllegalArgumentException("Unable to find x");
+        } else if (x != null && y == null && z != null) {
             final double t_x = (x - point1.getX()) / a;
             final double t_z = (z - point1.getZ()) / c;
             final double y_t_x = b * t_x + point1.getY(); // y(t_x)
             final double y_t_z = b * t_z + point1.getY(); // y(t_z)
             Logger.__log("Y_NULL: y_t_x = " + y_t_z + ", y_t_x = " + y_t_z);
-            return (y_t_x + y_t_z) / 2;
-        }
-        else if (x != null && y != null && z == null) {
+            if (0 <= t_x && t_x <= 1 && 0 <= t_z && t_z <= 1)
+                return (y_t_x + y_t_z) / 2;
+            if (0 <= t_x && t_x <= 1)
+                return y_t_x;
+            if (0 <= t_z && t_z <= 1)
+                return y_t_z;
+            Logger.__log("Unable to find y");
+            throw new IllegalArgumentException("Unable to find y");
+
+        } else if (x != null && y != null && z == null) {
             final double t_x = (x - point1.getX()) / a;
             final double t_y = (y - point1.getY()) / b;
             final double z_t_x = c * t_x + point1.getZ(); // z(t_x)
             final double z_t_y = c * t_y + point1.getZ(); // z(t_x)
             Logger.__log("Z_NULL: z_t_x = " + z_t_x + ", z_t_y = " + z_t_y);
-            return (z_t_x + z_t_y) / 2;
+            if (0 <= t_x && t_x <= 1 && 0 <= t_y && t_y <= 1)
+                return (z_t_x + z_t_y) / 2;
+            if (0 <= t_x && t_x <= 1)
+                return z_t_x;
+            if (0 <= t_y && t_y <= 1)
+                return z_t_y;
+            Logger.__log("Unable to find z");
+            throw new IllegalArgumentException("Unable to find z");
+
         }
         throw new IllegalArgumentException("Only one of x y z has to be null");
     }
