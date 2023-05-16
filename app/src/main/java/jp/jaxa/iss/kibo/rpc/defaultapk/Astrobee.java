@@ -2,10 +2,9 @@ package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.logger.Logger;
-import jp.jaxa.iss.kibo.pathfind.PathFind;
-import jp.jaxa.iss.kibo.pathfind.PathFindNode;
-import jp.jaxa.iss.kibo.pathfind.TargetPoint;
+import jp.jaxa.iss.kibo.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
+import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 
 public class Astrobee {
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
@@ -37,7 +36,18 @@ public class Astrobee {
     }
 
     public void moveTo(PathFindNode node) {
-        moveTo(node, EMPTY_QUATERNION);
+        if (!(node instanceof TargetPoint)) {
+            moveTo(node, EMPTY_QUATERNION);
+            return;
+        }
+        TargetPoint pointNode = (TargetPoint) node;
+        Quaternion orientation;
+        if (pointNode.getPointNumber() <= 6) {
+            orientation = QuaternionCalculator.calculateQuaternion(node, Target.getTarget(pointNode.getPointNumber()));
+        } else {
+            orientation = QuaternionCalculator.calculateQuaternion(node, PointOfInterest.QR_CODE);
+        }
+        moveTo(node, orientation);
     }
 
     public void moveTo(PathFindNode node, Quaternion orientation) {
