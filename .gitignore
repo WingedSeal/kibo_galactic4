@@ -18,3 +18,4 @@ out/
 local.properties
 
 *.iml
+.idea/*
