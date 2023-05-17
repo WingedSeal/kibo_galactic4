@@ -7,6 +7,9 @@ public class QuaternionCalculator {
     /**
      * Calculate and return Quaternion of Astrobee
      * to the target from any position
+     *
+     * https://math.stackexchange.com/questions/4520571/how-to-get-a-rotation-quaternion-from-two-vectors
+     *
      * <pre>
      * {@code w = cos(Θ/2)}
      * {@code x = i * sin(Θ/2)}
@@ -69,5 +72,79 @@ public class QuaternionCalculator {
 
         //return quaternion
         return new Quaternion((float) (i * Math.sin(theta / 2)), (float) (j * Math.sin(theta / 2)), (float) (k * Math.sin(theta / 2)), (float) Math.cos(theta / 2));
+    }
+
+    /**
+     * Calculate between two Quaternion order not necessary
+     *
+     *
+     * https://www.thepulsar.be/article/quaternion-based-rotations/
+     *
+     *
+     * @param one   Quaternion one
+     * @param two   Quaternion two
+     * @return      angle in radian between 2 quaternion
+     */
+
+    static public double calculateRadianBetweenQuaternion (Quaternion one, Quaternion two){
+        double[] normalVector = new double[] {1,0,0}; //(v)
+
+        //find half theta from normal vector to that orientation
+        double halfThetaOne = Math.acos(one.getW());
+        double halfThetaTwo = Math.acos(two.getW());
+
+        //find axis of rotation of two quaternion
+        double[] axisOne = new double[]{(one.getX()/Math.sin(halfThetaOne)),(one.getY()/Math.sin(halfThetaOne)),(one.getZ()/Math.sin(halfThetaOne))};
+        double[] axisTwo = new double[]{(two.getX()/Math.sin(halfThetaTwo)),(two.getY()/Math.sin(halfThetaTwo)),(two.getZ()/Math.sin(halfThetaTwo))};
+
+        //v x n
+        double[] normalCrossAxisOne = new double[] {
+                0,
+                -axisOne[2],
+                axisOne[1]
+        };
+        double[] normalCrossAxisTwo = new double[] {
+                0,
+                -axisTwo[2],
+                axisTwo[1]
+        };
+
+        //n x v
+        double[] axisOneCrossNormal = new double[] {
+                0,
+                axisOne[2],
+                -axisOne[1]
+        };
+        double[] axisTwoCrossNormal = new double[] {
+                0,
+                axisTwo[2],
+                -axisTwo[1]
+        };
+
+        //v . n
+        double normalDotAxisOne = axisOne[0];
+        double normalDotAxisTwo = axisTwo[0];
+
+        //find both vector of quaternion
+        double i1 =Math.pow(Math.cos(halfThetaOne),2) - (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[0])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[0])-(Math.pow(Math.sin(halfThetaOne),2) * (normalVector[0]-2*normalDotAxisOne*axisOne[0]));
+        double j1 =-(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[1])) + (Math.sin(halfThetaOne)*Math.cos(halfThetaOne) * axisOneCrossNormal[1])-(Math.pow(Math.sin(halfThetaOne),2) * (normalVector[1]- 2 * normalDotAxisOne * axisOne[1]));
+        double k1 =-(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[2])) + (Math.sin(halfThetaOne)*Math.cos(halfThetaOne) * axisOneCrossNormal[2])-(Math.pow(Math.sin(halfThetaOne),2) * (normalVector[2]- 2 * normalDotAxisOne * axisOne[2]));
+        double i2 =Math.pow(Math.cos(halfThetaTwo),2) - (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[0])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[0])-(Math.pow(Math.sin(halfThetaTwo),2) * (normalVector[0]-2*normalDotAxisTwo*axisTwo[0]));
+        double j2 =-(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[1])) + (Math.sin(halfThetaTwo)*Math.cos(halfThetaTwo) * axisTwoCrossNormal[1])-(Math.pow(Math.sin(halfThetaTwo),2) * (normalVector[1]- 2 * normalDotAxisTwo * axisTwo[1]));
+        double k2 =-(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[2])) + (Math.sin(halfThetaTwo)*Math.cos(halfThetaTwo) * axisTwoCrossNormal[2])-(Math.pow(Math.sin(halfThetaTwo),2) * (normalVector[2]- 2 * normalDotAxisTwo * axisTwo[2]));
+
+        //norm of vectors from Quaternion one and two
+        double normVec1 = Math.sqrt(Math.pow(i1,2) + Math.pow(j1,2) + Math.pow(k1,2));
+        double normVec2 = Math.sqrt(Math.pow(i2,2) + Math.pow(j2,2) + Math.pow(k2,2));
+
+        //dot product between 2 vector
+        double dotProductVec1Vec2 = i1 * i2 + j1 * j2 + k1 * k2;
+        if(two.getW() ==1){
+            return Math.acos(i1/normVec1);
+        }
+        else if(one.getW() == 1){
+            return Math.acos(i2/normVec2);
+        }
+        return Math.acos(dotProductVec1Vec2/(normVec1*normVec2));
     }
 }
