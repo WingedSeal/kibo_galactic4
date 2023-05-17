@@ -89,7 +89,7 @@ public class Astrobee {
      * check whether moving to the specified node allows Astrobee to reach goal in time
      * 
      */
-    public boolean isNodeInTime(Node nextNode) {
+    public boolean isNodeInTime(PathFindNode nextNode) {
         double totalTimeSec = 0;
         for (double distance: PathFind.estimatePathDistances(currentPathFindNode, nextNode)) {
             totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
@@ -97,6 +97,6 @@ public class Astrobee {
         for (double distance: PathFind.estimatePathDistances(nextNode, PathFindNode.GOAL)) {
             totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
         }
-        return api.getTimeRemaining()[0] - totalTimeSec * 1000 < TIME_THRESHOLD;
+        return api.getTimeRemaining().get(0) - totalTimeSec * 1000 < TIME_THRESHOLD;
     }
 }
