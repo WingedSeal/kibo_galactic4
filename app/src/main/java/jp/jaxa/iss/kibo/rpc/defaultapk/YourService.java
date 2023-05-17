@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 public class YourService extends KiboRpcService {
-    @Override
+//    @Override
     protected void runPlan1_backup() {
         Astrobee astrobee = new Astrobee(api);
         try {
@@ -46,7 +46,7 @@ public class YourService extends KiboRpcService {
 
                 for (int target: api.getActiveTargets()) {
                     currNode = TargetPoint.getTargetPoint(target);
-                    currDistance = PathFind.getPathDistance(astrobee.currentPathFindNode, currNode);
+                    currDistance = PathFind.estimateTotalDistance(astrobee.currentPathFindNode, currNode);
                     if (minDistance > currDistance && astrobee.isNodeInTime(currNode)) {
                         minDistance = currDistance;
                         nextNode = currNode;
@@ -54,7 +54,7 @@ public class YourService extends KiboRpcService {
                 }
                 
                 if (astrobee.scannedQrText == null) {
-                    currDistance = PathFind.getPathDistance(astrobee.currentPathFindNode, QRNode);
+                    currDistance = PathFind.estimateTotalDistance(astrobee.currentPathFindNode, QRNode);
                     if (minDistance > currDistance && astrobee.isNodeInTime(QRNode)) {
                         minDistance = currDistance;
                         nextNode = QRNode;
@@ -82,7 +82,7 @@ public class YourService extends KiboRpcService {
                 else {
                     Logger.__log("EXITING...");
                 }
-            } while (api.getTimeRemaining()[0] > 30000);
+            } while (api.getTimeRemaining().get(0) > 30000);
 
             astrobee.endMission();
 
