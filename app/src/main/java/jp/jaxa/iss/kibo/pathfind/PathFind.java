@@ -52,7 +52,7 @@ public class PathFind {
         api.moveTo(to, orientation, printRobotPosition);
     }
 
-    public static double estimateTotalDistance(KiboRpcApi api, PathFindNode from, PathFindNode to) {
+    public static double estimateTotalDistance(PathFindNode from, PathFindNode to) {
         Node[] nodes = getPathNodes(from, to);
         if (nodes.length == 0) {
             return distanceBetweenPoints(from, to);
