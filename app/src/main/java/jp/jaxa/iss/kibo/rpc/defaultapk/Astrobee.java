@@ -1,6 +1,5 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
-import gov.nasa.arc.astrobee.types.Point;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.*;
@@ -72,9 +71,15 @@ public class Astrobee {
         api.takeTargetSnapshot(pointNode.getPointNumber());
     }
 
-    public boolean attemptScanQR() {
+    public boolean attemptScanQRNav() {
         moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         scannedQrText = QRReader.readQR(api);
+        return scannedQrText != null;
+    }
+
+    public boolean attemptScanQRDock() {
+        moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+        scannedQrText = QRReader.readQR(api, QRReader.CameraMode.DOCK);
         return scannedQrText != null;
     }
 
