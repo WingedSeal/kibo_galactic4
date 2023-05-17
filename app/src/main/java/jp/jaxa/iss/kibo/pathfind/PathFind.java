@@ -66,6 +66,21 @@ public class PathFind {
         return totalDistance;
     }
 
+    public static double[] estimatePathDistances(PathFindNode from, PathFindNode to) {
+        Node[] nodes = getPathNodes(from, to);
+        if (nodes.length == 0) {
+            return new double[]{distanceBetweenPoints(from, to)};
+        }
+
+        double[] pathDistances = new double[nodes.length + 1];
+        pathDistances[0] = distanceBetweenPoints(from, nodes[0]);
+        for (int i = 1; i < nodes.length; ++i) {
+            pathDistances[i] = distanceBetweenPoints(nodes[i - 1], nodes[i]);
+        }
+        pathDistances[nodes.length] = distanceBetweenPoints(nodes[nodes.length - 1], to);
+        return pathDistances;
+    }
+
     /**
      * Find Nodes(ending Node not included) in between 2 PathFindNode Astrobee needs to move through to reach the end PathFindNode
      *
