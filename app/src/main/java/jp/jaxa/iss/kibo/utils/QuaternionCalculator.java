@@ -75,16 +75,11 @@ public class QuaternionCalculator {
     }
 
     /**
-     *
-<<<<<<< HEAD
      * Calculate between two Quaternion order not necessary
      *
      *
      * https://www.thepulsar.be/article/quaternion-based-rotations/
      *
-=======
-     * Calculate angle between two Quaternion order not necessary
->>>>>>> c6ac18e00f54f7d9c3cb18fc9a1f3a3a02c3f528
      *
      * @param one   Quaternion one
      * @param two   Quaternion two
