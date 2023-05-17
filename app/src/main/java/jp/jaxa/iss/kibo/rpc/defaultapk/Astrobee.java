@@ -99,6 +99,6 @@ public class Astrobee {
         for (double distance: PathFind.estimatePathDistances(nextNode, PathFindNode.GOAL)) {
             totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
         }
-        return api.getTimeRemaining().get(0) - totalTimeSec * 1000 < TIME_THRESHOLD;
+        return api.getTimeRemaining().get(0) - totalTimeSec * 1000 > TIME_THRESHOLD;
     }
 }
