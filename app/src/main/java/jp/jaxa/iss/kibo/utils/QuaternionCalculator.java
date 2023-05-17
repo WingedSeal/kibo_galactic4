@@ -73,11 +73,11 @@ public class QuaternionCalculator {
 
     /**
      *
-     * Calculate between two Quaternion order not necessary
+     * Calculate angle between two Quaternion order not necessary
      *
      * @param one   Quaternion one
      * @param two   Quaternion two
-     * @return      theta in radian between two quaternion type double
+     * @return      angle in radian between 2 quaternion
      */
     static public double calculateRadianBetweenQuaternion(Quaternion one, Quaternion two){
         double halfThetaOne = Math.acos(one.getW());
@@ -127,7 +127,5 @@ public class QuaternionCalculator {
         double dotProductVec1Vec2 = i1 * i2 + j1 * j2 + k1 * k2;
 
         return Math.acos(dotProductVec1Vec2/(normVec1*normVec2));
-
-
     }
 }
