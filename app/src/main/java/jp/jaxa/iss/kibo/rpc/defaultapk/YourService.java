@@ -35,7 +35,7 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1() {
         Astrobee astrobee = new Astrobee(api);
-        PathFindNode QRNode = TargetPoint.getTargetPoint(7);
+        // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
             astrobee.startMission();
             do {
@@ -53,13 +53,13 @@ public class YourService extends KiboRpcService {
                     }
                 }
                 
-                if (astrobee.scannedQrText == null) {
-                    currDistance = PathFind.estimateTotalDistance(astrobee.currentPathFindNode, QRNode);
-                    if (minDistance > currDistance && astrobee.isNodeInTime(QRNode)) {
-                        minDistance = currDistance;
-                        nextNode = QRNode;
-                    }
-                }
+                // if (astrobee.scannedQrText == null) {
+                //     currDistance = PathFind.estimateTotalDistance(astrobee.currentPathFindNode, QRNode);
+                //     if (minDistance > currDistance && astrobee.isNodeInTime(QRNode)) {
+                //         minDistance = currDistance;
+                //         nextNode = QRNode;
+                //     }
+                // }
 
                 if (nextNode != null) {
                     if (nextNode instanceof TargetPoint) {
@@ -71,11 +71,11 @@ public class YourService extends KiboRpcService {
                         }
                         if (nextTargetPoint.getPointNumber() == 5) {
                             Logger.__log("Attempting QR Dock scan...");
-                            astrobee.attemptScanQRDock();
+                            astrobee.attemptScanQRDock(true);
                         }
                         else if (nextTargetPoint.getPointNumber() == 7) {
                             Logger.__log("Attempting QR Nav scan...");
-                            astrobee.attemptScanQRNav();
+                            astrobee.attemptScanQRNav(true);
                         }
                     }
                 }
