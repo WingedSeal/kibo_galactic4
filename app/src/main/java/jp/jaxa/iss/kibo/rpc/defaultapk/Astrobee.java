@@ -72,14 +72,16 @@ public class Astrobee {
         api.takeTargetSnapshot(pointNode.getPointNumber());
     }
 
-    public boolean attemptScanQRNav() {
-        moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+    public boolean attemptScanQRNav(boolean isRotate) {
+        if (isRotate)
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         scannedQrText = QRReader.readQR(api);
         return scannedQrText != null;
     }
 
-    public boolean attemptScanQRDock() {
-        moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+    public boolean attemptScanQRDock(boolean isRotate) {
+        if (isRotate)
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
         scannedQrText = QRReader.readQR(api, QRReader.CameraMode.DOCK);
         return scannedQrText != null;
     }
