@@ -6,6 +6,15 @@ import javax.annotation.Nullable;
 
 public class Line {
 
+    public static double distanceBetweenPoints(Point point1, Point point2) {
+        return Math.sqrt(
+                Math.pow(point1.getX() - point2.getX(), 2) +
+                        Math.pow(point1.getY() - point2.getY(), 2)
+                        +
+                        Math.pow(point1.getY() - point2.getY(), 2)
+        );
+    }
+
     /**
      * Find the last axis's value that causes approximately optimized path between 2 points.
      * One of 3 axis must be null, and it'll dictate the missing axis value the function needs to calculate.
