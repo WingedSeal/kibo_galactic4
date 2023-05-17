@@ -93,13 +93,18 @@ public class PathFind {
                                 findNodeZ(Zone.keepIn2.xMin, Zone.keepIn1.yMax, start, end)
                         };
                     case POINT_3:
-                    case POINT_4:
-                    case POINT_5: // Point 5 is unsure of keep out 4
-                        Node buttomNode = findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end);
+                        Node bottomNode = findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end);
                         return new Node[]{
-                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, buttomNode),
-                                buttomNode,
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, buttomNode, end)
+                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end),
+                                bottomNode,
+                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, bottomNode, end)
+                        };
+                    case POINT_4:
+                    case POINT_5:
+                        Node edgeNode = findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end);
+                        return new Node[]{
+                                edgeNode,
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, edgeNode, end)
                         };
                     case POINT_6: // unsure of keep out 2
                         return new Node[]{
