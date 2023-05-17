@@ -54,6 +54,10 @@ public class Astrobee {
         moveTo(node, orientation);
     }
 
+    public void moveToPoint(int pointNumber) {
+        moveTo(TargetPoint.getTargetPoint(pointNumber));
+    }
+
     public void moveTo(PathFindNode node, Quaternion orientation) {
         PathFind.pathFindMoveTo(api, currentPathFindNode, node, orientation);
         currentPathFindNode = node;
