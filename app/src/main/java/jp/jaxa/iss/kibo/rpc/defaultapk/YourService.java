@@ -19,7 +19,13 @@ public class YourService extends KiboRpcService {
         Astrobee astrobee = new Astrobee(api);
         try {
             astrobee.startMission();
+            astrobee.moveTo(TargetPoint.getTargetPoint(1));
+            astrobee.shootLaser();
+            astrobee.moveTo(TargetPoint.getTargetPoint(2));
+            astrobee.shootLaser();
             astrobee.moveTo(TargetPoint.getTargetPoint(4));
+            astrobee.shootLaser();
+            astrobee.moveTo(TargetPoint.getTargetPoint(3));
             astrobee.shootLaser();
             astrobee.endMission();
         } catch (Exception e) {

@@ -10,6 +10,6 @@ public class PathFindNode extends PointOfInterest {
 
     }
 
-    public static final PathFindNode START = new PathFindNode(9.815, -9.806, 4.293, POI_Id.START);
+    public static final PathFindNode START = new PathFindNode(10.263, -9.76, 4.323, POI_Id.START);
     public static final PathFindNode GOAL = new PathFindNode(11.2746, -6.7607, 4.9654, POI_Id.GOAL);
 }

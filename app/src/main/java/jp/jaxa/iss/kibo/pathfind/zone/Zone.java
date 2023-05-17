@@ -6,7 +6,7 @@ public class Zone {
     /**
      * Minimum distance on each axis that Astrobee should keep between zone's walls
      */
-    private static final double THRESHOLD = 0.05;
+    private static final double THRESHOLD = 0.2;
 
     public ZoneType zoneType;
     public double xMin;

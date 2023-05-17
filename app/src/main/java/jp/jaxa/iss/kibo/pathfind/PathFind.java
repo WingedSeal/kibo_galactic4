@@ -77,6 +77,9 @@ public class PathFind {
                         };
                     case POINT_3:
                     case POINT_4:
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end)
+                        };
                     case POINT_5: // Point 5 is unsure of keep out 4
                         Node buttomNode = findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end);
                         return new Node[]{
