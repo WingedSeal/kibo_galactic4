@@ -5,7 +5,6 @@ import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import static jp.jaxa.iss.kibo.utils.Line.distanceBetweenPoints;
 
@@ -81,8 +80,6 @@ public class PathFind {
         switch (start.id) {
             case START:
                 switch (end.id) {
-                    case GOAL:
-                        return new Node[]{}; // TODO:
                     case POINT_1:
                         return new Node[]{
                                 findNodeZ(Zone.keepOut1.xMin, Zone.keepIn1.yMin, start, end),
@@ -110,17 +107,12 @@ public class PathFind {
                         return new Node[]{
                                 findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end)
                         };
-                    case POINT_7:
-                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
-
                 }
                 break;
             case GOAL:
                 switch (end.id) {
                     case START:
-                        Node[] nodes = getPathNodes(end, start);
-                        ArrayUtils.reverse(nodes);
-                        return nodes;
+                        break;
                     case POINT_1:
                         return new Node[]{
                                 findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end)
@@ -139,8 +131,6 @@ public class PathFind {
                         return new Node[]{
                                 findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end)
                         };
-                    case POINT_7:
-                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
                 }
                 break;
             case POINT_1:
@@ -162,8 +152,6 @@ public class PathFind {
                     case POINT_5:
                     case POINT_6:
                         return new Node[]{};
-                    case POINT_7:
-                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
                 }
                 break;
             case POINT_2:
@@ -192,8 +180,6 @@ public class PathFind {
                                 findNodeZ(Zone.keepOut2.xMin, Zone.keepOut2.yMin, start, end),
                                 findNodeZ(Zone.keepOut2.xMax, Zone.keepOut2.yMin, start, end)
                         };
-                    case POINT_7:
-                        throw new NotImplementedException("I haven't implemented QR"); // FIXME: Actually implement QR
                 }
                 break;
             case POINT_3:
@@ -206,7 +192,9 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_4:
-                        return new Node[]{}; // FIXME: HIT KEEP OUT 4
+                        return new Node[]{
+                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMax, start, end)
+                        };
                     case POINT_5:
                         return new Node[]{
                                 findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end),
@@ -217,8 +205,6 @@ public class PathFind {
                                 findNodeX(Zone.keepOut3.yMax, Zone.keepOut4.zMax, start, end),
                                 findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
                         };
-                    case POINT_7:
-                        return new Node[]{};
                 }
                 break;
             case POINT_4:
@@ -234,9 +220,9 @@ public class PathFind {
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
-                        return new Node[]{};
-                    case POINT_7:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
+                        };
                 }
                 break;
             case POINT_5:
@@ -251,28 +237,12 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_6:
-                        return new Node[]{};
-                    case POINT_7:
-                        return new Node[]{};
+                        return new Node[]{
+                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
+                        };
                 }
                 break;
             case POINT_6:
-                switch (end.id) {
-                    case START:
-                    case GOAL:
-                    case POINT_1:
-                    case POINT_2:
-                    case POINT_3:
-                    case POINT_4:
-                    case POINT_5:
-                        Node[] nodes = getPathNodes(end, start);
-                        ArrayUtils.reverse(nodes);
-                        return nodes;
-                    case POINT_7:
-                        return new Node[]{};
-                }
-                break;
-            case POINT_7:
                 Node[] nodes = getPathNodes(end, start);
                 ArrayUtils.reverse(nodes);
                 return nodes;
