@@ -79,7 +79,7 @@ public class QuaternionCalculator {
      * @param two   Quaternion two
      * @return      theta in radian between two quaternion type double
      */
-    static double calculateThetaBetweenQuaternion (Quaternion one, Quaternion two){
+    static public double calculateRadianBetweenQuaternion(Quaternion one, Quaternion two){
         double halfThetaOne = Math.acos(one.getW());
         double halfThetaTwo = Math.acos(two.getW());
 

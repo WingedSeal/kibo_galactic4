@@ -7,6 +7,8 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.QRReader;
 import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 
+import static jp.jaxa.iss.kibo.utils.QuaternionCalculator.calculateRadianBetweenQuaternion;
+
 public class Astrobee {
     public static final double ASTROBEE_ACCELERATION = 0.001979193446334;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
@@ -72,6 +74,12 @@ public class Astrobee {
         api.takeTargetSnapshot(pointNode.getPointNumber());
     }
 
+    /**
+     * Attempt to scan QR using nav camera
+     *
+     * @param isRotate whether to automatically rotate Astrobee
+     * @return whether the scan was successful
+     */
     public boolean attemptScanQRNav(boolean isRotate) {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
@@ -79,11 +87,35 @@ public class Astrobee {
         return scannedQrText != null;
     }
 
+
+    /**
+     * Attempt to scan QR using dock camera
+     *
+     * @param isRotate whether to automatically rotate Astrobee
+     * @return whether the scan was successful
+     */
     public boolean attemptScanQRDock(boolean isRotate) {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
         scannedQrText = QRReader.readQR(api, QRReader.CameraMode.DOCK);
         return scannedQrText != null;
+    }
+
+
+    /**
+     * Attempt to scan QR while automatically rotating Astrobee using the closest camera.
+     *
+     * @return whether the scan was successful
+     */
+    public boolean attemptScanQR() {
+        Quaternion currentOrientation = api.getRobotKinematics().getOrientation();
+        double navCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
+                QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+        double dockCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
+                QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+        if (dockCamRadian < navCamRadian)
+            return attemptScanQRDock(true);
+        return attemptScanQRNav(true);
     }
 
 }
