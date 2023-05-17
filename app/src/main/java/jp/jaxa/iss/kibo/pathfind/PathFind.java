@@ -112,12 +112,13 @@ public class PathFind {
                                 findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, bottomNode, end)
                         };
                     case POINT_4:
-                    case POINT_5:
                         Node edgeNode = findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end);
                         return new Node[]{
                                 edgeNode,
                                 findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, edgeNode, end)
                         };
+                    case POINT_5:
+                        return new Node[]{};
                     case POINT_6: // unsure of keep out 2
                         return new Node[]{
                                 findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end)
