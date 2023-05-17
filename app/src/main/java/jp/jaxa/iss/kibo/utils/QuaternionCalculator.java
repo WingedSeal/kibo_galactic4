@@ -73,7 +73,7 @@ public class QuaternionCalculator {
 
     /**
      *
-     * Calculate between two Quaternion order not neccessary
+     * Calculate between two Quaternion order not necessary
      *
      * @param one   Quaternion one
      * @param two   Quaternion two
