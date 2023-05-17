@@ -7,6 +7,8 @@ import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.NotImplementedException;
 
+import static jp.jaxa.iss.kibo.utils.Line.distanceBetweenPoints;
+
 public class PathFind {
 
     private static Node findNodeX(double y, double z, Node start, Node end) {
@@ -24,10 +26,10 @@ public class PathFind {
     /**
      * Move to the PathFindNode using approximated the shortest path
      *
-     * @param api                KiboRpcApi to call moveTo
-     * @param from               current position of Astrobee
-     * @param to                 position to move to
-     * @param orientation        orientation parameter of api.moveTo
+     * @param api         KiboRpcApi to call moveTo
+     * @param from        current position of Astrobee
+     * @param to          position to move to
+     * @param orientation orientation parameter of api.moveTo
      */
     public static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation) {
         pathFindMoveTo(api, from, to, orientation, false);
@@ -50,6 +52,21 @@ public class PathFind {
         api.moveTo(to, orientation, printRobotPosition);
     }
 
+    public static double estimateTotalDistance(KiboRpcApi api, PathFindNode from, PathFindNode to) {
+        Node[] nodes = getPathNodes(from, to);
+        if (nodes.length == 0) {
+            return distanceBetweenPoints(from, to);
+        }
+
+        double totalDistance = 0;
+        totalDistance += distanceBetweenPoints(from, nodes[0]);
+        for (int i = 1; i < nodes.length; ++i) {
+            totalDistance += distanceBetweenPoints(nodes[i - 1], nodes[i]);
+        }
+        totalDistance += distanceBetweenPoints(nodes[nodes.length - 1], to);
+        return totalDistance;
+    }
+
     /**
      * Find Nodes(ending Node not included) in between 2 PathFindNode Astrobee needs to move through to reach the end PathFindNode
      *
@@ -59,7 +76,7 @@ public class PathFind {
      */
     private static Node[] getPathNodes(PathFindNode start, PathFindNode end) {
         if (start.id == end.id) {
-            throw new IllegalArgumentException("Start POI is the same as end POI, cannot path find");
+            return new Node[]{};
         }
         switch (start.id) {
             case START:
@@ -183,8 +200,8 @@ public class PathFind {
                         Node[] nodes = getPathNodes(end, start);
                         ArrayUtils.reverse(nodes);
                         return nodes;
-                    case POINT_4: // unsure of keep out 4
-                        return new Node[]{};
+                    case POINT_4:
+                        return new Node[]{}; // FIXME: HIT KEEP OUT 4
                     case POINT_5:
                         return new Node[]{
                                 findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end),
