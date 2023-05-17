@@ -59,7 +59,7 @@ public class PathFind {
      */
     private static Node[] getPathNodes(PathFindNode start, PathFindNode end) {
         if (start.id == end.id) {
-            throw new IllegalArgumentException("Start POI is the same as end POI, cannot path find");
+            return new Node[] {};
         }
         switch (start.id) {
             case START:
@@ -186,8 +186,8 @@ public class PathFind {
                         Node[] nodes = getPathNodes(end, start);
                         ArrayUtils.reverse(nodes);
                         return nodes;
-                    case POINT_4: // unsure of keep out 4
-                        return new Node[]{};
+                    case POINT_4:
+                        return new Node[]{}; // FIXME: HIT KEEP OUT 4
                     case POINT_5:
                         return new Node[]{
                                 findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end),
