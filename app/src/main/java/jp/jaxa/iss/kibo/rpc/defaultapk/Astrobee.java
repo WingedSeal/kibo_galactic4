@@ -10,6 +10,7 @@ import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 public class Astrobee {
     public static final double ASTROBEE_ACCELERATION = 0.001979193446334;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
+    public static final long TIME_THRESHOLD = 30000;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     String scannedQrText = null;
     PathFindNode currentPathFindNode = PathFindNode.START;
@@ -86,4 +87,18 @@ public class Astrobee {
         return scannedQrText != null;
     }
 
+    /**
+     * check whether moving to the specified node allows Astrobee to reach goal in time
+     * 
+     */
+    public boolean isNodeInTime(PathFindNode nextNode) {
+        double totalTimeSec = 0;
+        for (double distance: PathFind.estimatePathDistances(currentPathFindNode, nextNode)) {
+            totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
+        }
+        for (double distance: PathFind.estimatePathDistances(nextNode, PathFindNode.GOAL)) {
+            totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
+        }
+        return api.getTimeRemaining().get(0) - totalTimeSec * 1000 < TIME_THRESHOLD;
+    }
 }
