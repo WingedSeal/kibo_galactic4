@@ -10,7 +10,6 @@ public class QuaternionCalculator {
      *
      * https://math.stackexchange.com/questions/4520571/how-to-get-a-rotation-quaternion-from-two-vectors
      *
-     * S
      * <pre>
      * {@code w = cos(Θ/2)}
      * {@code x = i * sin(Θ/2)}
@@ -77,17 +76,22 @@ public class QuaternionCalculator {
 
     /**
      *
+<<<<<<< HEAD
      * Calculate between two Quaternion order not necessary
      *
      *
      * https://www.thepulsar.be/article/quaternion-based-rotations/
      *
+=======
+     * Calculate angle between two Quaternion order not necessary
+>>>>>>> c6ac18e00f54f7d9c3cb18fc9a1f3a3a02c3f528
      *
      * @param one   Quaternion one
      * @param two   Quaternion two
-     * @return      theta in radian between two quaternion type double
+     * @return      angle in radian between 2 quaternion
      */
-    static double calculateThetaBetweenQuaternion (Quaternion one, Quaternion two){
+
+    static public double calculateRadianBetweenQuaternion (Quaternion one, Quaternion two){
         double[] normalVector = new double[] {1,0,0}; //(v)
 
         //find half theta from normal vector to that orientation
@@ -147,7 +151,5 @@ public class QuaternionCalculator {
             return Math.acos(i2/normVec2);
         }
         return Math.acos(dotProductVec1Vec2/(normVec1*normVec2));
-
-
     }
 }
