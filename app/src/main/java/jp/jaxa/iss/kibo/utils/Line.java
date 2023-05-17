@@ -11,7 +11,7 @@ public class Line {
                 Math.pow(point1.getX() - point2.getX(), 2) +
                         Math.pow(point1.getY() - point2.getY(), 2)
                         +
-                        Math.pow(point1.getY() - point2.getY(), 2)
+                        Math.pow(point1.getZ() - point2.getZ(), 2)
         );
     }
 
