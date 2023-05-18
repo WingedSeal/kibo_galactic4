@@ -66,6 +66,14 @@ public class Astrobee {
 
 
     /**
+     * @return whether the QR code was already scanned
+     */
+    public boolean isQrScanned() {
+        return scannedQrText != null;
+    }
+
+
+    /**
      * Shoot laser in the direction Astrobee is facing
      *
      * @throws IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)

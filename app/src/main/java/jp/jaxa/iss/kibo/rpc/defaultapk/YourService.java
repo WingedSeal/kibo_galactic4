@@ -1,5 +1,7 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
+import android.graphics.Point;
+
 import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.OptimalPath;
 import jp.jaxa.iss.kibo.pathfind.PathFindNode;
@@ -20,8 +22,11 @@ public class YourService extends KiboRpcService {
         Astrobee astrobee = new Astrobee(api);
         try {
             astrobee.startMission();
-            astrobee.moveTo(TargetPoint.getTargetPoint(4));
+
+            astrobee.moveToPoint(5);
             astrobee.shootLaser();
+            astrobee.attemptScanQRDock(false);
+
             astrobee.endMission();
         } catch (Exception e) {
             Logger.__log("CRITICAL ERROR");
@@ -60,7 +65,7 @@ public class YourService extends KiboRpcService {
                         astrobee.shootLaser();
                     }
                     if (nextTargetPoint.getPointNumber() == 5) {
-                        if (astrobee.attemptScanQRDock(true)) qrScanned = true;
+                        if (astrobee.attemptScanQRDock(false)) qrScanned = true;
                     }
                     else if (nextTargetPoint.getPointNumber() == 7) {
                         if (astrobee.attemptScanQRNav(true)) qrScanned = true;
