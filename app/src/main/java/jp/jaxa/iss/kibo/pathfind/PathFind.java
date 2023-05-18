@@ -240,9 +240,7 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_6:
-                        return new Node[]{
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
-                        };
+                        return new Node[]{};
                 }
                 break;
             case POINT_6:
