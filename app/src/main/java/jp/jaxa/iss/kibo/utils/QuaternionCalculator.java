@@ -8,8 +8,8 @@ public class QuaternionCalculator {
     /**
      * Calculate and return Quaternion of Astrobee
      * to the target from any position
-     *
-     * https://math.stackexchange.com/questions/4520571/how-to-get-a-rotation-quaternion-from-two-vectors
+     * <p>
+     * <a href="https://math.stackexchange.com/questions/4520571/how-to-get-a-rotation-quaternion-from-two-vectors">...</a>
      *
      * <pre>
      * {@code w = cos(Θ/2)}
