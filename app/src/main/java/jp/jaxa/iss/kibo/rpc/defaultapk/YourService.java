@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 public class YourService extends KiboRpcService {
     private static final long MINIMUM_MILLISECONDS_TO_END_MISSION = 20000;
+
     protected void runPlan1_backup() {
         Astrobee astrobee = new Astrobee(api);
         try {
@@ -20,7 +21,7 @@ public class YourService extends KiboRpcService {
 
             astrobee.moveToPoint(5);
             astrobee.shootLaser();
-            astrobee.attemptScanQRDock(false);
+            astrobee.attemptScanQRDock(false, 5);
 
             astrobee.endMission();
         } catch (Exception e) {
@@ -52,9 +53,9 @@ public class YourService extends KiboRpcService {
                         astrobee.shootLaser();
                     }
                     if (nextTargetPoint.getPointNumber() == 5) {
-                        astrobee.attemptScanQRDock(false);
+                        astrobee.attemptScanQRDock(false, 5);
                     } else if (nextTargetPoint.getPointNumber() == 7) {
-                        astrobee.attemptScanQRNav(true);
+                        astrobee.attemptScanQRNav(true, 3);
                     }
                 }
                 if (isGoingToGoal) break;
