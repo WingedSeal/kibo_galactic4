@@ -1,15 +1,14 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import jp.jaxa.iss.kibo.logger.Logger;
-import jp.jaxa.iss.kibo.pathfind.PathFind;
+import jp.jaxa.iss.kibo.pathfind.OptimalPath;
 import jp.jaxa.iss.kibo.pathfind.PathFindNode;
 import jp.jaxa.iss.kibo.pathfind.Target;
 import jp.jaxa.iss.kibo.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 
 /**
  * Class meant to handle commands from the Ground Data System and execute them in Astrobee
@@ -35,54 +34,41 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1() {
         Astrobee astrobee = new Astrobee(api);
+        boolean considerGoal = false;
+        boolean toGoal = false;
+        boolean qrScanned = false;
         // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
             astrobee.startMission();
             do {
-                PathFindNode nextNode = null;
-                double minDistance = 99;
-                double currDistance;
-                PathFindNode currNode;
-
-                for (int target: api.getActiveTargets()) {
-                    currNode = TargetPoint.getTargetPoint(target);
-                    currDistance = PathFind.estimateTotalDistance(astrobee.currentPathFindNode, currNode);
-                    if (minDistance > currDistance && astrobee.isNodeInTime(currNode)) {
-                        minDistance = currDistance;
-                        nextNode = currNode;
-                    }
+                List<Integer> activeTargetsList = api.getActiveTargets();
+                PathFindNode[] activeTargets = new PathFindNode[activeTargetsList.size()];
+                if (api.getTimeRemaining().get(1) < 120000) {
+                    considerGoal=true;
                 }
                 
-                // if (astrobee.scannedQrText == null) {
-                //     currDistance = PathFind.estimateTotalDistance(astrobee.currentPathFindNode, QRNode);
-                //     if (minDistance > currDistance && astrobee.isNodeInTime(QRNode)) {
-                //         minDistance = currDistance;
-                //         nextNode = QRNode;
-                //     }
-                // }
-
-                if (nextNode != null) {
-                    if (nextNode instanceof TargetPoint) {
-                        astrobee.moveTo(nextNode);
-                        TargetPoint nextTargetPoint = (TargetPoint)nextNode;
-                        Logger.__log("Moving to point " + nextTargetPoint.getPointNumber());
-                        if (nextTargetPoint.getPointNumber() <= 6) {
-                            astrobee.shootLaser();
-                        }
-                        if (nextTargetPoint.getPointNumber() == 5) {
-                            Logger.__log("Attempting QR Dock scan...");
-                            astrobee.attemptScanQRDock(true);
-                        }
-                        else if (nextTargetPoint.getPointNumber() == 7) {
-                            Logger.__log("Attempting QR Nav scan...");
-                            astrobee.attemptScanQRNav(true);
-                        }
+                for (int i=0; i<activeTargetsList.size(); i++) {
+                    activeTargets[i] = TargetPoint.getTargetPoint(activeTargetsList.get(i));
+                }
+                PathFindNode[] pathNodes = new OptimalPath(api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activeTargets, considerGoal).getPath();
+                if (pathNodes == null) break;
+                else if (pathNodes.length != activeTargets.length) toGoal = true;
+                for (PathFindNode nextNode: pathNodes) {
+                    astrobee.moveTo(nextNode);
+                    TargetPoint nextTargetPoint = (TargetPoint)nextNode;
+                    if (nextTargetPoint.getPointNumber() <= 6) {
+                        astrobee.shootLaser();
+                    }
+                    if (nextTargetPoint.getPointNumber() == 5) {
+                        if (astrobee.attemptScanQRDock(true)) qrScanned = true;
+                    }
+                    else if (nextTargetPoint.getPointNumber() == 7) {
+                        if (astrobee.attemptScanQRNav(true)) qrScanned = true;
                     }
                 }
-                else {
-                    Logger.__log("EXITING...");
-                }
-            } while (api.getTimeRemaining().get(0) > 30000);
+                if (toGoal) break;
+               
+            } while (api.getTimeRemaining().get(1) > 20000);
 
             astrobee.endMission();
 
