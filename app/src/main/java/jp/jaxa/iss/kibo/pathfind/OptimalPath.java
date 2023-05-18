@@ -43,16 +43,16 @@ public class OptimalPath {
     private double getPathTime(PathFindNode currNode, PathFindNode[] midNodes) {
         double totalTimeSec = 0;
         for (double distance: PathFind.estimatePathDistances(currNode, midNodes[0])) {
-            totalTimeSec += Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
+            totalTimeSec += 2*Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
         }
         for (int i=1; i<midNodes.length; i++) {
             for (double distance: PathFind.estimatePathDistances(midNodes[i-1], midNodes[i])) {
-                totalTimeSec += Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
+                totalTimeSec += 2*Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
             }
         }
         if (considerGoal) {
             for (double distance: PathFind.estimatePathDistances(midNodes[midNodes.length-1], PathFindNode.GOAL)) {
-                totalTimeSec += Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
+                totalTimeSec += 2*Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
             }
         }
         return totalTimeSec*1000;
