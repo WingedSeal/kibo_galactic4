@@ -22,8 +22,6 @@ public class ARReader {
      * @param api KiboRpcApi
      * @return int[] as the TargetsID according to the rulebook
      */
-
-
     public static int[] readAR(KiboRpcApi api){
         Mat IDs = new Mat();
         List<Mat> Corners = new ArrayList<>();
