@@ -6,12 +6,12 @@ public class OptimalPath {
     private static final int THRESHOLD = 30000;
     private double minTime = 1e7;
     private TargetPoint[] optimalPoints = null;
-    private final TargetPoint currentPoint;
+    private final PathFindNode currentNode;
     private final long timeRemaining;
     private final boolean shouldConsiderGoal;
 
-    public OptimalPath(long timeRemaining, TargetPoint currentPoint, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
-        this.currentPoint = currentPoint;
+    public OptimalPath(long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
+        this.currentNode = currentNode;
         this.timeRemaining = timeRemaining;
         this.shouldConsiderGoal = shouldConsiderGoal;
         findOptimalPath(new TargetPoint[activeTargets.length], 0, activeTargets);
@@ -33,7 +33,7 @@ public class OptimalPath {
      */
     private void findOptimalPath(TargetPoint[] nodes, int pos, TargetPoint[] originalNodes) {
         if (pos == nodes.length) {
-            double timeUsed = getPathTime(currentPoint, nodes);
+            double timeUsed = getPathTime(nodes);
             if (timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
                 setOptimalPoints(nodes);
                 minTime = timeUsed;
@@ -48,14 +48,13 @@ public class OptimalPath {
     
     /**
      * calculate the time spent on walking along the nodes 
-     * 
-     * @param currNode the current node of Astrobee as given in the constructors
+     *
      * @param midNodes an array of `PathFindNode` object to walk pass and calculate time
      * @return estimated total time in milliseconds
      */
-    private double getPathTime(TargetPoint currNode, TargetPoint[] midNodes) {
+    private double getPathTime(TargetPoint[] midNodes) {
         double totalTimeSec = 0;
-        for (double distance : PathFind.estimatePathDistances(currNode, midNodes[0])) {
+        for (double distance : PathFind.estimatePathDistances(currentNode, midNodes[0])) {
             totalTimeSec += 2 * Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
         }
         for (int i = 1; i < midNodes.length; i++) {
