@@ -7,6 +7,8 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.QRReader;
 import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 
+import java.util.List;
+
 import static jp.jaxa.iss.kibo.utils.QuaternionCalculator.calculateRadianBetweenQuaternion;
 
 public class Astrobee {
@@ -144,5 +146,14 @@ public class Astrobee {
             totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
         }
         return api.getTimeRemaining().get(0) - totalTimeSec * 1000 > TIME_THRESHOLD;
+    }
+
+    public TargetPoint[] getActivePoints() {
+        List<Integer> activeTargetsNumbers = api.getActiveTargets();
+        TargetPoint[] activePoints = new TargetPoint[activeTargetsNumbers.size()];
+        for (int i = 0; i < activeTargetsNumbers.size(); i++) {
+            activePoints[i] = TargetPoint.getTargetPoint(activeTargetsNumbers.get(i));
+        }
+        return activePoints;
     }
 }
