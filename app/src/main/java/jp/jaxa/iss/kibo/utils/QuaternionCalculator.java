@@ -4,6 +4,7 @@ import gov.nasa.arc.astrobee.types.Point;
 import gov.nasa.arc.astrobee.types.Quaternion;
 
 public class QuaternionCalculator {
+    public static double extraX;
     /**
      * Calculate and return Quaternion of Astrobee
      * to the target from any position
@@ -35,7 +36,7 @@ public class QuaternionCalculator {
 
         // value of vector of laser shoot form <xi,0j,0k>
         double _cos = Math.cos(Math.acos(0.1302d / normLaser));
-        double extraX = (-2 * normLaser * _cos + Math.sqrt(Math.pow(2 * normLaser * _cos, 2) - 4 * (Math.pow(normLaser, 2) - Math.pow(normVec1, 2)))) / 2;
+        extraX = calculateDistanceBetweenLaserToPoint(normLaser,normVec1,_cos);
 
         //vector between pivot of Astrobee to final laser pos
         double x2 = 0.1302d + extraX;
@@ -72,6 +73,22 @@ public class QuaternionCalculator {
 
         //return quaternion
         return new Quaternion((float) (i * Math.sin(theta / 2)), (float) (j * Math.sin(theta / 2)), (float) (k * Math.sin(theta / 2)), (float) Math.cos(theta / 2));
+    }
+
+
+    /**
+     *
+     * Calculate x distance from laser position to desire position from <xi,0,0>
+     *
+     * R3^2 = R1^2 + R2^2 + 2R1R2cos(theta)
+     *
+     * @param normR1    norm of vector R1 (normLaser)
+     * @param normR3    norm of vector R3 (normVector1)
+     * @param cos       cos of theta between vector R1 and R2
+     * @return          value of x type double
+     */
+        static public double calculateDistanceBetweenLaserToPoint(double normR1, double normR3, double cos){
+        return (-2 * normR1 * cos + Math.sqrt(Math.pow(2 * normR1 * cos, 2) - 4 * (Math.pow(normR1, 2) - Math.pow(normR3, 2)))) / 2;
     }
 
     /**

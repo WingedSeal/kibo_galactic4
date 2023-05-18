@@ -97,8 +97,7 @@ public class PathFind {
                 switch (end.id) {
                     case POINT_1:
                         return new Node[]{
-                                findNodeZ(Zone.keepOut1.xMin, Zone.keepIn1.yMin, start, end),
-                                findNodeZ(Zone.keepOut1.xMax, Zone.keepIn1.yMin, start, end),
+                                findNodeZ((Zone.keepOut1.xMin + Zone.keepOut1.xMax)/2, Zone.keepIn1.yMin, start, end),
                         };
                     case POINT_2:
                         return new Node[]{
@@ -107,7 +106,7 @@ public class PathFind {
                     case POINT_3:
                         Node bottomNode = findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end);
                         return new Node[]{
-                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end),
+                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, bottomNode),
                                 bottomNode,
                                 findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, bottomNode, end)
                         };
@@ -130,14 +129,10 @@ public class PathFind {
                     case START:
                         break;
                     case POINT_1:
-                        return new Node[]{
-                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end)
-                        };
+                        return new Node[]{};
                     case POINT_2:
-                        return new Node[]{
-                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end),
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end),
-                                findNodeY(Zone.keepOut2.xMin, Zone.keepOut2.zMax, start, end)
+                    return new Node[]{
+                                findNodeY(Zone.keepOut4.xMin, Zone.keepOut3.zMax, start, end)
                         };
                     case POINT_3:
                     case POINT_4:
@@ -157,9 +152,7 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_2: // unsure of keep out 2
-                        return new Node[]{
-                                findNodeX(Zone.keepOut1.yMax, Zone.keepOut1.zMax, start, end)
-                        };
+                        return new Node[]{};
                     case POINT_3:
                         return new Node[]{
                                 findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end)
@@ -180,21 +173,17 @@ public class PathFind {
                         return nodes;
                     case POINT_3:
                         return new Node[]{
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end),
-                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end)
+                                findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)
                         };
                     case POINT_4:
                         return new Node[]{
                                 findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end)
                         };
                     case POINT_5:
-                        return new Node[]{
-                                findNodeY(Zone.keepOut2.xMin, Zone.keepOut2.zMax, start, end)
-                        };
+                        return new Node[]{};
                     case POINT_6:
                         return new Node[]{
-                                findNodeZ(Zone.keepOut2.xMin, Zone.keepOut2.yMin, start, end),
-                                findNodeZ(Zone.keepOut2.xMax, Zone.keepOut2.yMin, start, end)
+                                findNodeZ((Zone.keepOut2.xMin + Zone.keepOut2.xMax)/2, Zone.keepOut2.yMin, start, end)
                         };
                 }
                 break;
@@ -213,13 +202,11 @@ public class PathFind {
                         };
                     case POINT_5:
                         return new Node[]{
-                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMin, start, end),
-                                findNodeX(Zone.keepOut4.yMin, Zone.keepOut4.zMax, start, end),
+                                findNodeX(Zone.keepOut4.yMin, (Zone.keepOut4.zMin + Zone.keepOut4.zMax) / 2, start, end)
                         };
                     case POINT_6:
                         return new Node[]{
-                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut4.zMax, start, end),
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
+                                findNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut4.zMax, start, end)
                         };
                 }
                 break;
@@ -253,9 +240,7 @@ public class PathFind {
                         ArrayUtils.reverse(nodes);
                         return nodes;
                     case POINT_6:
-                        return new Node[]{
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
-                        };
+                        return new Node[]{};
                 }
                 break;
             case POINT_6:
