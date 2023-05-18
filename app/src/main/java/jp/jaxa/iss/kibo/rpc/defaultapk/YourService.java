@@ -7,7 +7,6 @@ import jp.jaxa.iss.kibo.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Class meant to handle commands from the Ground Data System and execute them in Astrobee
@@ -42,11 +41,11 @@ public class YourService extends KiboRpcService {
         try {
             astrobee.startMission();
             do {
-                    shouldConsiderGoal = true;
-                }
-                PathFindNode[] pathNodes = new OptimalPath(api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activeTargets, shouldConsiderGoal).getPath();
+                shouldConsiderGoal = true;
+                TargetPoint[] activePoints = astrobee.getActivePoints();
+                PathFindNode[] pathNodes = new OptimalPath(api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
                 if (pathNodes == null) break;
-                else if (pathNodes.length != activeTargets.length) isGoingToGoal = true;
+                else if (pathNodes.length != activePoints.length) isGoingToGoal = true;
                 for (PathFindNode nextNode : pathNodes) {
                     astrobee.moveTo(nextNode);
                     TargetPoint nextTargetPoint = (TargetPoint) nextNode;
