@@ -20,7 +20,7 @@ public class ARReader {
      *
      *
      * @param api KiboRpcApi
-     * @return int[] as the idTarget according to the rulebook
+     * @return int[] as the TargetsID according to the rulebook
      */
 
 
