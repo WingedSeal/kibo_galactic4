@@ -100,9 +100,7 @@ public class PathFind {
                                 findNodeZ((Zone.keepOut1.xMin + Zone.keepOut1.xMax)/2, Zone.keepIn1.yMin, start, end),
                         };
                     case POINT_2:
-                        return new Node[]{
-                                findNodeZ(Zone.keepIn2.xMin, Zone.keepIn1.yMax, start, end)
-                        };
+                        return new Node[]{};
                     case POINT_3:
                         Node bottomNode = findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end);
                         return new Node[]{
@@ -118,10 +116,8 @@ public class PathFind {
                         };
                     case POINT_5:
                         return new Node[]{};
-                    case POINT_6: // unsure of keep out 2
-                        return new Node[]{
-                                findNodeZ(Zone.keepIn2.xMax, Zone.keepIn1.yMax, start, end)
-                        };
+                    case POINT_6: // remove node (KOZ not violated)
+                        return new Node[]{};
                 }
                 break;
             case GOAL:

@@ -24,11 +24,19 @@ public class OptimalPath {
         return optimalNodes;
     }
 
+    /**
+     * a recursive function to find optimal node order using brute force algorithm
+     * 
+     * @param nodes         an array of `PathFindNode` to return to in optimal order
+     * @param pos           position on array to assign `PathFindNode` object
+     * @param originalNodes an original array of `PathFindNode` choices
+     */
     private void findOptimalPath(PathFindNode[] nodes, int pos, PathFindNode[] originalNodes) {
         if (pos == nodes.length) {
             double timeUsed = getPathTime(currNode, nodes);
             if (timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
                 setOptimalNodes(nodes);
+                minTime = timeUsed;
             }
         } else {
             for (int i = 0; i < originalNodes.length; i++) {
@@ -37,7 +45,14 @@ public class OptimalPath {
             }
         }
     }
-
+    
+    /**
+     * calculate the time spent on walking along the nodes 
+     * 
+     * @param currNode the current node of Astrobee as given in the constructors
+     * @param midNodes an array of `PathFindNode` object to walk pass and calculate time
+     * @return estimated total time in milliseconds
+     */
     private double getPathTime(PathFindNode currNode, PathFindNode[] midNodes) {
         double totalTimeSec = 0;
         for (double distance : PathFind.estimatePathDistances(currNode, midNodes[0])) {
@@ -56,6 +71,9 @@ public class OptimalPath {
         return totalTimeSec * 1000;
     }
 
+    /**
+     * copy optimal nodes to the object properties
+     */
     private void setOptimalNodes(PathFindNode[] nodes) {
         this.optimalNodes = new PathFindNode[nodes.length];
         System.arraycopy(nodes, 0, this.optimalNodes, 0, nodes.length);
