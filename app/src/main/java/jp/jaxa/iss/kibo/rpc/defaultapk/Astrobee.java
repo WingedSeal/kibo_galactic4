@@ -135,19 +135,24 @@ public class Astrobee {
 
     /**
      * check whether moving to the specified node allows Astrobee to reach goal in time
-     * 
      */
     public boolean isNodeInTime(PathFindNode nextNode) {
         double totalTimeSec = 0;
-        for (double distance: PathFind.estimatePathDistances(currentPathFindNode, nextNode)) {
+        for (double distance : PathFind.estimatePathDistances(currentPathFindNode, nextNode)) {
             totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
         }
-        for (double distance: PathFind.estimatePathDistances(nextNode, PathFindNode.GOAL)) {
+        for (double distance : PathFind.estimatePathDistances(nextNode, PathFindNode.GOAL)) {
             totalTimeSec += Math.sqrt(distance / ASTROBEE_ACCELERATION);
         }
         return api.getTimeRemaining().get(0) - totalTimeSec * 1000 > TIME_THRESHOLD;
     }
 
+
+    /**
+     * Get current points of active targets from api
+     *
+     * @return active points
+     */
     public TargetPoint[] getActivePoints() {
         List<Integer> activeTargetsNumbers = api.getActiveTargets();
         TargetPoint[] activePoints = new TargetPoint[activeTargetsNumbers.size()];
