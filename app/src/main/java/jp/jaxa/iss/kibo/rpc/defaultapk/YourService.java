@@ -2,7 +2,6 @@ package jp.jaxa.iss.kibo.rpc.defaultapk;
 
 import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.OptimalPath;
-import jp.jaxa.iss.kibo.pathfind.PathFindNode;
 import jp.jaxa.iss.kibo.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
@@ -13,7 +12,7 @@ import java.util.Arrays;
  */
 
 public class YourService extends KiboRpcService {
-    //    @Override
+    private static final long MINIMUM_MILLISECONDS_TO_END_MISSION = 20000;
     protected void runPlan1_backup() {
         Astrobee astrobee = new Astrobee(api);
         try {
@@ -60,7 +59,7 @@ public class YourService extends KiboRpcService {
                 }
                 if (isGoingToGoal) break;
 
-            } while (api.getTimeRemaining().get(1) > 20000);
+            } while (api.getTimeRemaining().get(1) > MINIMUM_MILLISECONDS_TO_END_MISSION);
 
             astrobee.endMission();
 
