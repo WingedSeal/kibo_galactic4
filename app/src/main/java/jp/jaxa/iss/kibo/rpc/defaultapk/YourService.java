@@ -65,7 +65,7 @@ public class YourService extends KiboRpcService {
                         astrobee.shootLaser();
                     }
                     if (nextTargetPoint.getPointNumber() == 5) {
-                        if (astrobee.attemptScanQRDock(true)) qrScanned = true;
+                        if (astrobee.attemptScanQRDock(false)) qrScanned = true;
                     }
                     else if (nextTargetPoint.getPointNumber() == 7) {
                         if (astrobee.attemptScanQRNav(true)) qrScanned = true;
