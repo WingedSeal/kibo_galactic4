@@ -44,7 +44,7 @@ public class YourService extends KiboRpcService {
                 shouldConsiderGoal = true;
                 TargetPoint[] activePoints = astrobee.getActivePoints();
                 TargetPoint[] pathNodes = new OptimalPath(
-                        api.getTimeRemaining().get(1), (TargetPoint) astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
+                        api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
                 if (pathNodes == null) break;
                 else if (pathNodes.length != activePoints.length) isGoingToGoal = true;
                 for (TargetPoint nextTargetPoint : pathNodes) {
