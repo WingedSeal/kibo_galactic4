@@ -5,23 +5,23 @@ import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
 public class OptimalPath {
     private static final int THRESHOLD = 30000;
     private double minTime = 1e7;
-    private PathFindNode[] optimalNodes = null;
-    private PathFindNode currNode;
-    private long timeRemaining;
-    private boolean shouldConsiderGoal;
+    private TargetPoint[] optimalPoints = null;
+    private final TargetPoint currentPoint;
+    private final long timeRemaining;
+    private final boolean shouldConsiderGoal;
 
-    public OptimalPath(long timeRemaining, PathFindNode currNode, PathFindNode[] activeTargets, boolean shouldConsiderGoal) {
-        this.currNode = currNode;
+    public OptimalPath(long timeRemaining, TargetPoint currentPoint, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
+        this.currentPoint = currentPoint;
         this.timeRemaining = timeRemaining;
         this.shouldConsiderGoal = shouldConsiderGoal;
-        findOptimalPath(new PathFindNode[activeTargets.length], 0, activeTargets);
-        if (optimalNodes == null && activeTargets.length == 2) {
-            findOptimalPath(new PathFindNode[1], 0, activeTargets);
+        findOptimalPath(new TargetPoint[activeTargets.length], 0, activeTargets);
+        if (optimalPoints == null && activeTargets.length == 2) {
+            findOptimalPath(new TargetPoint[1], 0, activeTargets);
         }
     }
 
-    public PathFindNode[] getPath() {
-        return optimalNodes;
+    public TargetPoint[] getPath() {
+        return optimalPoints;
     }
 
     /**
@@ -31,16 +31,16 @@ public class OptimalPath {
      * @param pos           position on array to assign `PathFindNode` object
      * @param originalNodes an original array of `PathFindNode` choices
      */
-    private void findOptimalPath(PathFindNode[] nodes, int pos, PathFindNode[] originalNodes) {
+    private void findOptimalPath(TargetPoint[] nodes, int pos, TargetPoint[] originalNodes) {
         if (pos == nodes.length) {
-            double timeUsed = getPathTime(currNode, nodes);
+            double timeUsed = getPathTime(currentPoint, nodes);
             if (timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
-                setOptimalNodes(nodes);
+                setOptimalPoints(nodes);
                 minTime = timeUsed;
             }
         } else {
-            for (int i = 0; i < originalNodes.length; i++) {
-                nodes[pos] = originalNodes[i];
+            for (TargetPoint originalNode : originalNodes) {
+                nodes[pos] = originalNode;
                 findOptimalPath(nodes, pos + 1, originalNodes);
             }
         }
@@ -53,7 +53,7 @@ public class OptimalPath {
      * @param midNodes an array of `PathFindNode` object to walk pass and calculate time
      * @return estimated total time in milliseconds
      */
-    private double getPathTime(PathFindNode currNode, PathFindNode[] midNodes) {
+    private double getPathTime(TargetPoint currNode, TargetPoint[] midNodes) {
         double totalTimeSec = 0;
         for (double distance : PathFind.estimatePathDistances(currNode, midNodes[0])) {
             totalTimeSec += 2 * Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION);
@@ -74,8 +74,8 @@ public class OptimalPath {
     /**
      * copy optimal nodes to the object properties
      */
-    private void setOptimalNodes(PathFindNode[] nodes) {
-        this.optimalNodes = new PathFindNode[nodes.length];
-        System.arraycopy(nodes, 0, this.optimalNodes, 0, nodes.length);
+    private void setOptimalPoints(TargetPoint[] nodes) {
+        optimalPoints = new TargetPoint[nodes.length];
+        System.arraycopy(nodes, 0, optimalPoints, 0, nodes.length);
     }
 }

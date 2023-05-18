@@ -35,7 +35,7 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1() {
         Astrobee astrobee = new Astrobee(api);
-        boolean shouldConsiderGoal = false;
+        boolean shouldConsiderGoal;
         boolean isGoingToGoal = false;
         // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
@@ -43,12 +43,12 @@ public class YourService extends KiboRpcService {
             do {
                 shouldConsiderGoal = true;
                 TargetPoint[] activePoints = astrobee.getActivePoints();
-                PathFindNode[] pathNodes = new OptimalPath(api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
+                TargetPoint[] pathNodes = new OptimalPath(
+                        api.getTimeRemaining().get(1), (TargetPoint) astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
                 if (pathNodes == null) break;
                 else if (pathNodes.length != activePoints.length) isGoingToGoal = true;
-                for (PathFindNode nextNode : pathNodes) {
-                    astrobee.moveTo(nextNode);
-                    TargetPoint nextTargetPoint = (TargetPoint) nextNode;
+                for (TargetPoint nextTargetPoint : pathNodes) {
+                    astrobee.moveTo(nextTargetPoint);
                     if (nextTargetPoint.getPointNumber() <= 6) {
                         astrobee.shootLaser();
                     }
