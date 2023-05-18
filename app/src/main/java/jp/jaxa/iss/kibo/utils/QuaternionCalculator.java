@@ -5,6 +5,7 @@ import gov.nasa.arc.astrobee.types.Quaternion;
 
 public class QuaternionCalculator {
     public static double extraX;
+
     /**
      * Calculate and return Quaternion of Astrobee
      * to the target from any position
@@ -36,7 +37,7 @@ public class QuaternionCalculator {
 
         // value of vector of laser shoot form <xi,0j,0k>
         double _cos = Math.cos(Math.acos(0.1302d / normLaser));
-        extraX = calculateDistanceBetweenLaserToPoint(normLaser,normVec1,_cos);
+        extraX = calculateDistanceBetweenLaserToPoint(normLaser, normVec1, _cos);
 
         //vector between pivot of Astrobee to final laser pos
         double x2 = 0.1302d + extraX;
@@ -77,28 +78,27 @@ public class QuaternionCalculator {
 
 
     /**
-     *
      * Calculate x distance from laser position to desire position from <xi,0,0>
-     *
+     * <p>
      * R3^2 = R1^2 + R2^2 + 2R1R2cos(theta)
      *
-     * @param normR1    norm of vector R1 (normLaser)
-     * @param normR3    norm of vector R3 (normVector1)
-     * @param cos       cos of theta between vector R1 and R2
-     * @return          value of x type double
+     * @param normR1 norm of vector R1 (normLaser)
+     * @param normR3 norm of vector R3 (normVector1)
+     * @param cos    cos of theta between vector R1 and R2
+     * @return value of x type double
      */
-    public static double calculateDistanceBetweenLaserToPoint(double normR1, double normR3, double cos){
+    public static double calculateDistanceBetweenLaserToPoint(double normR1, double normR3, double cos) {
         return (-2 * normR1 * cos + Math.sqrt(Math.pow(2 * normR1 * cos, 2) - 4 * (Math.pow(normR1, 2) - Math.pow(normR3, 2)))) / 2;
     }
 
     /**
      * Calculate quaternion from NavCam vector to the target point
      *
-     * @param pos       coordinate(x,y,z) of Astrobee of the Astrobee (pivot at center point)
-     * @param target    coordinate(x,y,z) of Astrobee of the target
-     * @return          quaternion to where NavCam point to target
+     * @param pos    coordinate(x,y,z) of Astrobee of the Astrobee (pivot at center point)
+     * @param target coordinate(x,y,z) of Astrobee of the target
+     * @return quaternion to where NavCam point to target
      */
-    public static Quaternion calculateNavCamQuaternion(Point pos, Point target){
+    public static Quaternion calculateNavCamQuaternion(Point pos, Point target) {
         //vector between point pos to target
         double x1 = target.getX() - pos.getX();
         double y1 = target.getY() - pos.getY();
@@ -112,7 +112,7 @@ public class QuaternionCalculator {
 
         // value of vector of laser shoot form <xi,0j,0k>
         double _cos = Math.cos(Math.acos(0.1302d / normLaser));
-        double extraX = calculateDistanceBetweenLaserToPoint(normLaser,normVec1,_cos);
+        double extraX = calculateDistanceBetweenLaserToPoint(normLaser, normVec1, _cos);
 
         //vector between pivot of Astrobee to final laser pos
         double x2 = 0.1177d + extraX;
@@ -151,14 +151,15 @@ public class QuaternionCalculator {
         return new Quaternion((float) (i * Math.sin(theta / 2)), (float) (j * Math.sin(theta / 2)), (float) (k * Math.sin(theta / 2)), (float) Math.cos(theta / 2));
 
     }
+
     /**
      * Calculate quaternion from DockCam vector to the target point
      *
-     * @param pos       coordinate(x,y,z) of Astrobee of the Astrobee (pivot at center point)
-     * @param target    coordinate(x,y,z) of Astrobee of the target
-     * @return          quaternion to where DockCam point to target
+     * @param pos    coordinate(x,y,z) of Astrobee of the Astrobee (pivot at center point)
+     * @param target coordinate(x,y,z) of Astrobee of the target
+     * @return quaternion to where DockCam point to target
      */
-    public static Quaternion calculateDockCamQuaternion(Point pos, Point target){
+    public static Quaternion calculateDockCamQuaternion(Point pos, Point target) {
         //vector between point pos to target
         double x1 = target.getX() - pos.getX();
         double y1 = target.getY() - pos.getY();
@@ -172,7 +173,7 @@ public class QuaternionCalculator {
 
         // value of vector of laser shoot form <xi,0j,0k>
         double _cos = Math.cos(Math.acos(0.1302d / normLaser));
-        double extraX = calculateDistanceBetweenLaserToPoint(normLaser,normVec1,_cos);
+        double extraX = calculateDistanceBetweenLaserToPoint(normLaser, normVec1, _cos);
 
         //vector between pivot of Astrobee to final laser pos
         double x2 = -0.1061d - extraX;
@@ -215,46 +216,44 @@ public class QuaternionCalculator {
 
     /**
      * Calculate between two Quaternion order not necessary
+     * <p>
+     * <a href="https://www.thepulsar.be/article/quaternion-based-rotations/">...</a>
      *
-     *
-     * https://www.thepulsar.be/article/quaternion-based-rotations/
-     *
-     *
-     * @param one   Quaternion one
-     * @param two   Quaternion two
-     * @return      angle in radian between 2 quaternion
+     * @param one Quaternion one
+     * @param two Quaternion two
+     * @return angle in radian between 2 quaternion
      */
 
-    static public double calculateRadianBetweenQuaternion (Quaternion one, Quaternion two){
-        double[] normalVector = new double[] {1,0,0}; //(v)
+    static public double calculateRadianBetweenQuaternion(Quaternion one, Quaternion two) {
+        double[] normalVector = new double[]{1, 0, 0}; //(v)
 
         //find half theta from normal vector to that orientation
         double halfThetaOne = Math.acos(one.getW());
         double halfThetaTwo = Math.acos(two.getW());
 
         //find axis of rotation of two quaternion
-        double[] axisOne = new double[]{(one.getX()/Math.sin(halfThetaOne)),(one.getY()/Math.sin(halfThetaOne)),(one.getZ()/Math.sin(halfThetaOne))};
-        double[] axisTwo = new double[]{(two.getX()/Math.sin(halfThetaTwo)),(two.getY()/Math.sin(halfThetaTwo)),(two.getZ()/Math.sin(halfThetaTwo))};
+        double[] axisOne = new double[]{(one.getX() / Math.sin(halfThetaOne)), (one.getY() / Math.sin(halfThetaOne)), (one.getZ() / Math.sin(halfThetaOne))};
+        double[] axisTwo = new double[]{(two.getX() / Math.sin(halfThetaTwo)), (two.getY() / Math.sin(halfThetaTwo)), (two.getZ() / Math.sin(halfThetaTwo))};
 
         //v x n
-        double[] normalCrossAxisOne = new double[] {
+        double[] normalCrossAxisOne = new double[]{
                 0,
                 -axisOne[2],
                 axisOne[1]
         };
-        double[] normalCrossAxisTwo = new double[] {
+        double[] normalCrossAxisTwo = new double[]{
                 0,
                 -axisTwo[2],
                 axisTwo[1]
         };
 
         //n x v
-        double[] axisOneCrossNormal = new double[] {
+        double[] axisOneCrossNormal = new double[]{
                 0,
                 axisOne[2],
                 -axisOne[1]
         };
-        double[] axisTwoCrossNormal = new double[] {
+        double[] axisTwoCrossNormal = new double[]{
                 0,
                 axisTwo[2],
                 -axisTwo[1]
@@ -265,25 +264,24 @@ public class QuaternionCalculator {
         double normalDotAxisTwo = axisTwo[0];
 
         //find both vector of quaternion
-        double i1 =Math.pow(Math.cos(halfThetaOne),2) - (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[0])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[0])-(Math.pow(Math.sin(halfThetaOne),2) * (normalVector[0]-2*normalDotAxisOne*axisOne[0]));
-        double j1 =-(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[1])) + (Math.sin(halfThetaOne)*Math.cos(halfThetaOne) * axisOneCrossNormal[1])-(Math.pow(Math.sin(halfThetaOne),2) * (normalVector[1]- 2 * normalDotAxisOne * axisOne[1]));
-        double k1 =-(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[2])) + (Math.sin(halfThetaOne)*Math.cos(halfThetaOne) * axisOneCrossNormal[2])-(Math.pow(Math.sin(halfThetaOne),2) * (normalVector[2]- 2 * normalDotAxisOne * axisOne[2]));
-        double i2 =Math.pow(Math.cos(halfThetaTwo),2) - (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[0])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[0])-(Math.pow(Math.sin(halfThetaTwo),2) * (normalVector[0]-2*normalDotAxisTwo*axisTwo[0]));
-        double j2 =-(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[1])) + (Math.sin(halfThetaTwo)*Math.cos(halfThetaTwo) * axisTwoCrossNormal[1])-(Math.pow(Math.sin(halfThetaTwo),2) * (normalVector[1]- 2 * normalDotAxisTwo * axisTwo[1]));
-        double k2 =-(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[2])) + (Math.sin(halfThetaTwo)*Math.cos(halfThetaTwo) * axisTwoCrossNormal[2])-(Math.pow(Math.sin(halfThetaTwo),2) * (normalVector[2]- 2 * normalDotAxisTwo * axisTwo[2]));
+        double i1 = Math.pow(Math.cos(halfThetaOne), 2) - (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[0])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[0]) - (Math.pow(Math.sin(halfThetaOne), 2) * (normalVector[0] - 2 * normalDotAxisOne * axisOne[0]));
+        double j1 = -(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[1])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[1]) - (Math.pow(Math.sin(halfThetaOne), 2) * (normalVector[1] - 2 * normalDotAxisOne * axisOne[1]));
+        double k1 = -(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[2])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[2]) - (Math.pow(Math.sin(halfThetaOne), 2) * (normalVector[2] - 2 * normalDotAxisOne * axisOne[2]));
+        double i2 = Math.pow(Math.cos(halfThetaTwo), 2) - (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[0])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[0]) - (Math.pow(Math.sin(halfThetaTwo), 2) * (normalVector[0] - 2 * normalDotAxisTwo * axisTwo[0]));
+        double j2 = -(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[1])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[1]) - (Math.pow(Math.sin(halfThetaTwo), 2) * (normalVector[1] - 2 * normalDotAxisTwo * axisTwo[1]));
+        double k2 = -(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[2])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[2]) - (Math.pow(Math.sin(halfThetaTwo), 2) * (normalVector[2] - 2 * normalDotAxisTwo * axisTwo[2]));
 
         //norm of vectors from Quaternion one and two
-        double normVec1 = Math.sqrt(Math.pow(i1,2) + Math.pow(j1,2) + Math.pow(k1,2));
-        double normVec2 = Math.sqrt(Math.pow(i2,2) + Math.pow(j2,2) + Math.pow(k2,2));
+        double normVec1 = Math.sqrt(Math.pow(i1, 2) + Math.pow(j1, 2) + Math.pow(k1, 2));
+        double normVec2 = Math.sqrt(Math.pow(i2, 2) + Math.pow(j2, 2) + Math.pow(k2, 2));
 
         //dot product between 2 vector
         double dotProductVec1Vec2 = i1 * i2 + j1 * j2 + k1 * k2;
-        if(two.getW() ==1){
-            return Math.acos(i1/normVec1);
+        if (two.getW() == 1) {
+            return Math.acos(i1 / normVec1);
+        } else if (one.getW() == 1) {
+            return Math.acos(i2 / normVec2);
         }
-        else if(one.getW() == 1){
-            return Math.acos(i2/normVec2);
-        }
-        return Math.acos(dotProductVec1Vec2/(normVec1*normVec2));
+        return Math.acos(dotProductVec1Vec2 / (normVec1 * normVec2));
     }
 }
