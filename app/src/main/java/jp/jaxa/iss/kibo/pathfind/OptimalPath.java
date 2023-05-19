@@ -3,7 +3,7 @@ package jp.jaxa.iss.kibo.pathfind;
 import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
 
 public class OptimalPath {
-    private static final int THRESHOLD = 0;
+    private static final int THRESHOLD = 2000;
     private double minTime = 1e7;
     private int maxScore = 0;
     private TargetPoint[] optimalPoints = null;
