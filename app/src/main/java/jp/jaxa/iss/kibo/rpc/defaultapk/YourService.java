@@ -37,6 +37,7 @@ public class YourService extends KiboRpcService {
         Astrobee astrobee = new Astrobee(api);
         boolean shouldConsiderGoal;
         boolean isGoingToGoal = false;
+        double timeMin = 0;
         // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
             astrobee.startMission();
@@ -45,6 +46,9 @@ public class YourService extends KiboRpcService {
                 TargetPoint[] activePoints = astrobee.getActivePoints();
                 TargetPoint[] pathNodes = new OptimalPath(
                         api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
+                timeMin = new OptimalPath(
+                        api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getMinTime();
+
                 if (pathNodes == null) break;
                 else if (pathNodes.length != activePoints.length) isGoingToGoal = true;
                 for (TargetPoint nextTargetPoint : pathNodes) {
@@ -58,11 +62,12 @@ public class YourService extends KiboRpcService {
                         astrobee.attemptScanQRNav(true, 3);
                     }
                 }
+                astrobee.result += "Time from calculation: " + timeMin;
                 if (isGoingToGoal) break;
 
             } while (api.getTimeRemaining().get(1) > MINIMUM_MILLISECONDS_TO_END_MISSION);
 
-            astrobee.endMission();
+            astrobee.endMissionWithTime();
 
         } catch (Exception e) {
             Logger.__log("CRITICAL ERROR");

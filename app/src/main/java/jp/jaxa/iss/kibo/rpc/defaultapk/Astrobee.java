@@ -19,6 +19,7 @@ public class Astrobee {
     public static final long TIME_THRESHOLD = 30000;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     String scannedQrText = null;
+    String result = "";
     PathFindNode currentPathFindNode = PathFindNode.START;
     public final KiboRpcApi api;
 
@@ -57,6 +58,7 @@ public class Astrobee {
             orientation = QuaternionCalculator.calculateQuaternion(node, PointOfInterest.QR_CODE);
         }
         moveTo(node, orientation);
+
     }
 
     public void moveToPoint(int pointNumber) {
@@ -66,6 +68,13 @@ public class Astrobee {
     public void moveTo(PathFindNode node, Quaternion orientation) {
         PathFind.pathFindMoveTo(this, currentPathFindNode, node, orientation);
         currentPathFindNode = node;
+    }
+
+    public void endMissionWithTime(){
+        api.notifyGoingToGoal();
+        moveTo(PathFindNode.GOAL);
+        api.reportMissionCompletion(result);
+
     }
 
 
@@ -89,6 +98,8 @@ public class Astrobee {
         TargetPoint pointNode = (TargetPoint) currentPathFindNode;
         api.laserControl(true);
         api.takeTargetSnapshot(pointNode.getPointNumber());
+        result += "Target number " + pointNode.getPointNumber()+ ": " + api.getTimeRemaining().get(1);
+
     }
 
     /**
