@@ -8,10 +8,7 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import java.util.HashMap;
 
 public class QRReader {
-    public enum CameraMode {
-        NAV, DOCK
 
-    }
 
     private static final HashMap<String, String> MESSAGES = new HashMap<String, String>();
 
