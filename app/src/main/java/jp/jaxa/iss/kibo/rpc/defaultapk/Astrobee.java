@@ -6,6 +6,7 @@ import jp.jaxa.iss.kibo.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.QRReader;
 import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
+import jp.jaxa.iss.kibo.utils.CameraMode;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import static jp.jaxa.iss.kibo.utils.QuaternionCalculator.calculateRadianBetween
 
 public class Astrobee {
     public static final double ASTROBEE_ACCELERATION = 0.0087406;
+    public static final double ASTROBEE_DEACCELERATION = 0.00734847;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
     public static final long TIME_THRESHOLD = 30000;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
@@ -62,7 +64,7 @@ public class Astrobee {
     }
 
     public void moveTo(PathFindNode node, Quaternion orientation) {
-        PathFind.pathFindMoveTo(api, currentPathFindNode, node, orientation);
+        PathFind.pathFindMoveTo(this, currentPathFindNode, node, orientation);
         currentPathFindNode = node;
     }
 
@@ -100,8 +102,8 @@ public class Astrobee {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
-            scannedQrText = QRReader.readQR(api);
             if (scannedQrText != null) break;
+            scannedQrText = QRReader.readQR(api);
         }
         return scannedQrText != null;
     }
@@ -118,8 +120,8 @@ public class Astrobee {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
         for (int i = 0; i < attempts; ++i) {
-            scannedQrText = QRReader.readQR(api, QRReader.CameraMode.DOCK);
             if (scannedQrText != null) break;
+            scannedQrText = QRReader.readQR(api, CameraMode.DOCK);
         }
         return scannedQrText != null;
     }
