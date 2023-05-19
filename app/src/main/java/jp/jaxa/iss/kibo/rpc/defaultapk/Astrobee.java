@@ -12,7 +12,7 @@ import java.util.List;
 import static jp.jaxa.iss.kibo.utils.QuaternionCalculator.calculateRadianBetweenQuaternion;
 
 public class Astrobee {
-    public static final double ASTROBEE_ACCELERATION = 0.0934912;
+    public static final double ASTROBEE_ACCELERATION = 0.0087406;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
     public static final long TIME_THRESHOLD = 30000;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
