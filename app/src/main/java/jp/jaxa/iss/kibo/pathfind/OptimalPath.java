@@ -35,7 +35,7 @@ public class OptimalPath {
     private void findOptimalPath(TargetPoint[] nodes, int pos, TargetPoint[] originalNodes) {
         if (pos == nodes.length) {
             double timeUsed = getPathTime(nodes);
-            if (originalNodes.length == nodes.length || getScore(nodes) == maxScore) {
+            if (originalNodes.length == nodes.length || getTotalScore(nodes) == maxScore) {
                 if (timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
                     setOptimalPoints(nodes);
                     minTime = timeUsed;
