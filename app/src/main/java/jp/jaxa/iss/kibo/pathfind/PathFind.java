@@ -202,7 +202,7 @@ public class PathFind {
                         };
                     case POINT_6:
                         return new Node[]{
-                                findNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut4.zMax, start, end)
+                                findNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end)
                         };
                 }
                 break;
