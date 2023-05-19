@@ -5,6 +5,7 @@ import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
+import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
 
 import static jp.jaxa.iss.kibo.utils.Line.distanceBetweenPoints;
 
@@ -22,31 +23,63 @@ public class PathFind {
         return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
     }
 
+    private static OrientedNode findOrientedNodeX(double y, double z, Node start, Node end, Node pointedNode) {
+        return OrientedNode.fromNode(findNodeX(y, z, start, end), pointedNode);
+    }
+
+    private static OrientedNode findOrientedNodeY(double x, double z, Node start, Node end, Node pointedNode) {
+        return OrientedNode.fromNode(findNodeY(x, z, start, end), pointedNode);
+    }
+
+    private static OrientedNode findOrientedNodeZ(double x, double y, Node start, Node end, Node pointedNode) {
+        return OrientedNode.fromNode(findNodeZ(x, y, start, end), pointedNode);
+    }
+
     /**
      * Move to the PathFindNode using approximated the shortest path
      *
-     * @param api         KiboRpcApi to call moveTo
+     * @param astrobee    Astrobee object
      * @param from        current position of Astrobee
      * @param to          position to move to
      * @param orientation orientation parameter of api.moveTo
      */
-    public static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation) {
-        pathFindMoveTo(api, from, to, orientation, false);
+    public static void pathFindMoveTo(Astrobee astrobee, PathFindNode from, PathFindNode to, Quaternion orientation) {
+        pathFindMoveTo(astrobee, from, to, orientation, false);
     }
 
 
     /**
      * Move to the PathFindNode using approximated the shortest path
      *
-     * @param api                KiboRpcApi to call moveTo
+     * @param astrobee           Astrobee object
      * @param from               current position of Astrobee
      * @param to                 position to move to
      * @param orientation        orientation parameter of api.moveTo
      * @param printRobotPosition whether to print position
      */
-    public static void pathFindMoveTo(KiboRpcApi api, PathFindNode from, PathFindNode to, Quaternion orientation, boolean printRobotPosition) {
+    public static void pathFindMoveTo(Astrobee astrobee, PathFindNode from, PathFindNode to, Quaternion orientation, boolean printRobotPosition) {
+        KiboRpcApi api = astrobee.api;
         for (Node node : getPathNodes(from, to)) {
-            api.moveTo(node, orientation, printRobotPosition);
+            if (node instanceof OrientedNode) {
+                OrientedNode orientedNode = (OrientedNode)node;
+                if (orientedNode.getPointedNode().equals(PointOfInterest.QR_CODE) && !astrobee.isQrScanned()) {
+                    api.moveTo(orientedNode, orientedNode.getOrientation(), printRobotPosition);
+                    switch (orientedNode.getCameraMode()) {
+                        case DOCK:
+                            astrobee.attemptScanQRDock(false, 5);
+                            break;
+                        case NAV:
+                            astrobee.attemptScanQRNav(false, 5);
+                            break;
+                        default:
+                            astrobee.attemptScanQRNav(false, 5);
+                            break;
+                    }
+                }
+                else api.moveTo(orientedNode, orientation, printRobotPosition);
+
+            }
+            else api.moveTo(node, orientation, printRobotPosition);
         }
         api.moveTo(to, orientation, printRobotPosition);
     }
@@ -124,8 +157,10 @@ public class PathFind {
                 switch (end.id) {
                     case START:
                         break;
-                    case POINT_1:
-                        return new Node[]{};
+                    case POINT_1: // must add one anchor point
+                        return new Node[]{
+                                findOrientedNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
+                        };
                     case POINT_2:
                     return new Node[]{
                                 findNodeY(Zone.keepOut4.xMin, Zone.keepOut3.zMax, start, end)
@@ -151,7 +186,7 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_3:
                         return new Node[]{
-                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end)
+                                findOrientedNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                     case POINT_4:
                     case POINT_5:
@@ -169,11 +204,11 @@ public class PathFind {
                         return nodes;
                     case POINT_3:
                         return new Node[]{
-                                findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)
+                                findOrientedNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                     case POINT_4:
                         return new Node[]{
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, start, end)
+                                findNodeX(Zone.keepOut5.yMin, Zone.keepOut4.zMax, start, end)
                         };
                     case POINT_5:
                         return new Node[]{};
@@ -202,7 +237,7 @@ public class PathFind {
                         };
                     case POINT_6:
                         return new Node[]{
-                                findNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end)
+                                findOrientedNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                 }
                 break;
@@ -220,7 +255,7 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_6:
                         return new Node[]{
-                                findNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end)
+                                findOrientedNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                 }
                 break;
