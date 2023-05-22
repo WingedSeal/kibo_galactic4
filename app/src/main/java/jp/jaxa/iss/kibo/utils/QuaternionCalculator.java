@@ -224,16 +224,13 @@ public class QuaternionCalculator {
      * @return angle in radian between 2 quaternion
      */
 
-    static public double calculateRadianBetweenQuaternion(Quaternion one, Quaternion two) {
+    public static double calculateRadianBetweenQuaternion(Quaternion one, Quaternion two) {
         double[] normalVector = new double[]{1, 0, 0}; //(v)
-
+        double[] axisOne = getInfoQuaternion(one);
+        double[] axisTwo = getInfoQuaternion(two);
         //find half theta from normal vector to that orientation
-        double halfThetaOne = Math.acos(one.getW());
-        double halfThetaTwo = Math.acos(two.getW());
-
-        //find axis of rotation of two quaternion
-        double[] axisOne = new double[]{(one.getX() / Math.sin(halfThetaOne)), (one.getY() / Math.sin(halfThetaOne)), (one.getZ() / Math.sin(halfThetaOne))};
-        double[] axisTwo = new double[]{(two.getX() / Math.sin(halfThetaTwo)), (two.getY() / Math.sin(halfThetaTwo)), (two.getZ() / Math.sin(halfThetaTwo))};
+        double halfThetaOne = axisOne[3];
+        double halfThetaTwo = axisTwo[3];
 
         //v x n
         double[] normalCrossAxisOne = new double[]{
@@ -283,5 +280,23 @@ public class QuaternionCalculator {
             return Math.acos(i2 / normVec2);
         }
         return Math.acos(dotProductVec1Vec2 / (normVec1 * normVec2));
+    }
+
+    public static double[] getInfoQuaternion(Quaternion quaternion){
+        double halfThetaOfRotation = Math.acos(quaternion.getW());
+        double[] infoQuaternion = new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)),halfThetaOfRotation};
+        return infoQuaternion;
+    }
+
+    public static Point rotateVector(double[] axis , Point vector, double radianOfRotation){
+        double crossX = axis[1] * vector.getZ() - axis[2] * vector.getY();
+        double crossY = -(axis[0] * vector.getZ() - axis[2] * vector.getX());
+        double crossZ = axis[0] * vector.getY() - axis[1] * vector.getX();
+
+        double x = Math.cos(radianOfRotation) * vector.getX() + Math.sin(radianOfRotation) * crossX ;
+        double y = Math.cos(radianOfRotation) * vector.getY() + Math.sin(radianOfRotation) * crossY ;
+        double z = Math.cos(radianOfRotation) * vector.getZ() + Math.sin(radianOfRotation) * crossZ ;
+
+        return new Point(x,y,z);
     }
 }
