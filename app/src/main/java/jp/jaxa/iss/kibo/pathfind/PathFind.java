@@ -148,8 +148,7 @@ public class PathFind {
                                 findNodeX(Zone.keepOut3.yMin, Zone.keepOut3.zMax, edgeNode, end)
                         };
                     case POINT_5:
-                        return new Node[]{};
-                    case POINT_6: // remove node (KOZ not violated)
+                    case POINT_6:
                         return new Node[]{};
                 }
                 break;
@@ -157,7 +156,7 @@ public class PathFind {
                 switch (end.id) {
                     case START:
                         break;
-                    case POINT_1: // must add one anchor point
+                    case POINT_1:
                         return new Node[]{
                                 findOrientedNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
@@ -167,7 +166,7 @@ public class PathFind {
                         };
                     case POINT_3:
                     case POINT_4:
-                    case POINT_5: // Point 5 is unsure of keep out 4
+                    case POINT_5:
                         return new Node[]{};
                     case POINT_6:
                         return new Node[]{
@@ -182,7 +181,7 @@ public class PathFind {
                         Node[] nodes = getPathNodes(end, start);
                         ArrayUtils.reverse(nodes);
                         return nodes;
-                    case POINT_2: // unsure of keep out 2
+                    case POINT_2:
                         return new Node[]{};
                     case POINT_3:
                         return new Node[]{
