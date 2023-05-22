@@ -13,8 +13,6 @@ import java.util.Arrays;
 
 public class YourService extends KiboRpcService {
     private static final long MINIMUM_MILLISECONDS_TO_END_MISSION = 20000;
-    private static final long MILLISECONDS_TO_CONSIDER_GOAL = 120000;
-
 
     protected void runPlan1_backup() {
         Astrobee astrobee = new Astrobee(api);
@@ -37,15 +35,14 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1() {
         Astrobee astrobee = new Astrobee(api);
-        boolean shouldConsiderGoal = false;
+        boolean shouldConsiderGoal;
         boolean isGoingToGoal = false;
 
         // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
             astrobee.startMission();
             do {
-                if (api.getTimeRemaining().get(1) < MILLISECONDS_TO_CONSIDER_GOAL) shouldConsiderGoal = true;
-
+                shouldConsiderGoal = true;
                 TargetPoint[] activePoints = astrobee.getActivePoints();
                 TargetPoint[] pathNodes = new OptimalPath(
                         api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
@@ -59,7 +56,7 @@ public class YourService extends KiboRpcService {
                     }
                     if (nextTargetPoint.getPointNumber() == 5 && !astrobee.isQrScanned()) {
                         astrobee.attemptScanQRDock(false, 5);
-                    } else if (nextTargetPoint.getPointNumber() == 7 && !astrobee.isQrScanned()) {
+                    } else if (nextTargetPoint.getPointNumber() == 7) {
                         astrobee.attemptScanQRNav(true, 3);
                     }
                 }

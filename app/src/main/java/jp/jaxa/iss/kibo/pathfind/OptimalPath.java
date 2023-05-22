@@ -3,7 +3,7 @@ package jp.jaxa.iss.kibo.pathfind;
 import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
 
 public class OptimalPath {
-    private static final int THRESHOLD = 500;
+    private static final int THRESHOLD = 2000;
     private double minTime = 1e7;
     private int maxScore = 0;
     private TargetPoint[] optimalPoints = null;
@@ -38,16 +38,15 @@ public class OptimalPath {
     private void findOptimalPath(TargetPoint[] nodes, int pos, TargetPoint[] originalNodes) {
         if (pos == nodes.length) {
             double timeUsed = getPathTime(nodes);
-            int score = getTotalScore(nodes);
-            if ((originalNodes.length == nodes.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
+            if (originalNodes.length == nodes.length || getTotalScore(nodes) == maxScore) {
+                if (timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
                     setOptimalPoints(nodes);
                     minTime = timeUsed;
                 }
             }
-            else if (score > maxScore && timeRemaining - timeUsed > THRESHOLD) {
+            else if (getTotalScore(nodes) > maxScore && timeRemaining - timeUsed > THRESHOLD) {
                 setOptimalPoints(nodes);
                 minTime = timeUsed;
-                maxScore = score;
             }
         } else {
             for (TargetPoint originalNode : originalNodes) {
