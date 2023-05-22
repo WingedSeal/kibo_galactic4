@@ -8,8 +8,8 @@ import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 public class OrientedNode extends Node {
 
     private Quaternion orientation;
-    private CameraMode cameraMode;
-    private Node pointedNode;
+    private final CameraMode cameraMode;
+    private final Node pointedNode;
 
     public OrientedNode(double x, double y, double z, Node pointedNode) {
         this(x, y, z, pointedNode, CameraMode.NAV);
