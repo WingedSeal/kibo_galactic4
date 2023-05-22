@@ -35,15 +35,16 @@ public class OptimalPath {
     private void findOptimalPath(TargetPoint[] nodes, int pos, TargetPoint[] originalNodes) {
         if (pos == nodes.length) {
             double timeUsed = getPathTime(nodes);
-            if (originalNodes.length == nodes.length || getTotalScore(nodes) == maxScore) {
-                if (timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
+            int score = getTotalScore(nodes);
+            if ((originalNodes.length == nodes.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
                     setOptimalPoints(nodes);
                     minTime = timeUsed;
                 }
             }
-            else if (getTotalScore(nodes) > maxScore && timeRemaining - timeUsed > THRESHOLD) {
+            else if (score > maxScore && timeRemaining - timeUsed > THRESHOLD) {
                 setOptimalPoints(nodes);
                 minTime = timeUsed;
+                maxScore = score;
             }
         } else {
             for (TargetPoint originalNode : originalNodes) {
