@@ -66,13 +66,13 @@ public class PathFind {
                     api.moveTo(orientedNode, orientedNode.getOrientation(), printRobotPosition);
                     switch (orientedNode.getCameraMode()) {
                         case DOCK:
-                            astrobee.attemptScanQRDock(false, 5);
+                            astrobee.attemptScanQRDock(true, 5);
                             break;
                         case NAV:
-                            astrobee.attemptScanQRNav(false, 5);
+                            astrobee.attemptScanQRNav(true, 5);
                             break;
                         default:
-                            astrobee.attemptScanQRNav(false, 5);
+                            astrobee.attemptScanQRNav(true, 5);
                             break;
                     }
                 }
