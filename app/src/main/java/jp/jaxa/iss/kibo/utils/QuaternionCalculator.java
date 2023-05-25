@@ -282,6 +282,12 @@ public class QuaternionCalculator {
         return Math.acos(dotProductVec1Vec2 / (normVec1 * normVec2));
     }
 
+    /**
+     * get axis and radian of quaternion
+     *
+     * @param quaternion    Quaternion
+     * @return              array of double [axis x, axis y, axis z, radian]
+     */
     public static double[] getInfoQuaternion(Quaternion quaternion){
         double halfThetaOfRotation = Math.acos(quaternion.getW());
         double[] infoQuaternion = new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)),halfThetaOfRotation};
