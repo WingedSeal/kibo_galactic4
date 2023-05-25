@@ -43,7 +43,13 @@ public class ARReader {
 
     }
 
-
+    /**
+     * Calculate error distance between laser point and target. Use result in api.RelativeMoveto()
+     *
+     * @param api           KiboRpcApi
+     * @param quaternion    current Quaternion of Astrobee
+     * @return              Point, use in relativeMoveTo
+     */
     public static Point calculateErrorCoordinate(KiboRpcApi api, Quaternion quaternion) {
         Mat rVec = new Mat();
         Mat tVec = new Mat();
