@@ -103,7 +103,7 @@ public class Astrobee {
      */
     public boolean attemptScanQRNav(boolean isRotate, int attempts) {
         if (isRotate)
-            moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api);
@@ -121,7 +121,7 @@ public class Astrobee {
      */
     public boolean attemptScanQRDock(boolean isRotate, int attempts) {
         if (isRotate)
-            moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateDockCamQuaternion(currentPathFindNode,PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api, CameraMode.DOCK);
