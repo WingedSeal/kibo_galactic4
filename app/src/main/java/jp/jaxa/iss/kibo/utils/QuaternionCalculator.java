@@ -294,6 +294,17 @@ public class QuaternionCalculator {
         return infoQuaternion;
     }
 
+    /**
+     * Calculate rotateVector by axis
+     * <p>
+     * <a href="https://www.youtube.com/watch?v=q-ESzg03mQc&t=134s/">...</a>
+     *
+     *
+     * @param axis                  axis of rotation
+     * @param vector                vector to calculate
+     * @param radianOfRotation      radion of rotation
+     * @return                      calculated vector
+     */
     public static Point rotateVector(double[] axis , Point vector, double radianOfRotation){
         double crossX = axis[1] * vector.getZ() - axis[2] * vector.getY();
         double crossY = -(axis[0] * vector.getZ() - axis[2] * vector.getX());
