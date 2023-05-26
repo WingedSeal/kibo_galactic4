@@ -77,6 +77,7 @@ public class PathFind {
                             break;
                     }
                     api.moveTo(orientedNode, rotate, printRobotPosition);
+                    astrobee.attemptScanQR(5,orientedNode.getCameraMode());
                 }
                 else api.moveTo(orientedNode, orientation, printRobotPosition);
 
