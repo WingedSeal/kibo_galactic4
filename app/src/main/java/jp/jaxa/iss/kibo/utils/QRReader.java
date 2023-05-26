@@ -47,7 +47,6 @@ public class QRReader {
                 bMap = api.getBitmapDockCam();
 
         }
-        api.saveBitmapImage(bMap,"qrcode");
         if (bMap == null) {
             throw new RuntimeException("bMap is null");
         }

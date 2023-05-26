@@ -103,7 +103,7 @@ public class Astrobee {
      */
     public boolean attemptScanQRNav(boolean isRotate, int attempts) {
         if (isRotate)
-            moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api);
@@ -121,7 +121,7 @@ public class Astrobee {
      */
     public boolean attemptScanQRDock(boolean isRotate, int attempts) {
         if (isRotate)
-            moveTo(currentPathFindNode, QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateDockCamQuaternion(currentPathFindNode,PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api, CameraMode.DOCK);
@@ -136,15 +136,24 @@ public class Astrobee {
      * @param attempts amount of attempts to try to scan
      * @return whether the scan was successful
      */
-    public boolean attemptScanQR(int attempts) {
-        Quaternion currentOrientation = api.getRobotKinematics().getOrientation();
-        double navCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
-                QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
-        double dockCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
-                QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
-        if (dockCamRadian < navCamRadian)
-            return attemptScanQRDock(true, attempts);
-        return attemptScanQRNav(true, attempts);
+    public boolean attemptScanQR(int attempts, CameraMode mode) {
+//        Quaternion currentOrientation = api.getRobotKinematics().getOrientation();
+//        double navCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
+//                QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+//        double dockCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
+//                QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+//        if (dockCamRadian < navCamRadian)
+//            return attemptScanQRDock(true, attempts);
+//        return attemptScanQRNav(true, attempts);
+        switch (mode){
+            case NAV:
+                attemptScanQRNav(false, attempts);
+                break;
+            case DOCK:
+                attemptScanQRDock(false, attempts);
+                break;
+        }
+        return scannedQrText != null;
     }
 
 

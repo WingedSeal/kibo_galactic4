@@ -282,12 +282,29 @@ public class QuaternionCalculator {
         return Math.acos(dotProductVec1Vec2 / (normVec1 * normVec2));
     }
 
+    /**
+     * get axis and radian of quaternion
+     *
+     * @param quaternion    Quaternion
+     * @return              array of double [axis x, axis y, axis z, radian]
+     */
     public static double[] getInfoQuaternion(Quaternion quaternion){
         double halfThetaOfRotation = Math.acos(quaternion.getW());
         double[] infoQuaternion = new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)),halfThetaOfRotation};
         return infoQuaternion;
     }
 
+    /**
+     * Calculate rotateVector by axis
+     * <p>
+     * <a href="https://www.youtube.com/watch?v=q-ESzg03mQc&t=134s/">...</a>
+     *
+     *
+     * @param axis                  axis of rotation
+     * @param vector                vector to calculate
+     * @param radianOfRotation      radion of rotation
+     * @return                      calculated vector
+     */
     public static Point rotateVector(double[] axis , Point vector, double radianOfRotation){
         double crossX = axis[1] * vector.getZ() - axis[2] * vector.getY();
         double crossY = -(axis[0] * vector.getZ() - axis[2] * vector.getX());
