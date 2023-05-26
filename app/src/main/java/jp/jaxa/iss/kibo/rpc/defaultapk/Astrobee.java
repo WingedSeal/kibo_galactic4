@@ -136,15 +136,24 @@ public class Astrobee {
      * @param attempts amount of attempts to try to scan
      * @return whether the scan was successful
      */
-    public boolean attemptScanQR(int attempts) {
-        Quaternion currentOrientation = api.getRobotKinematics().getOrientation();
-        double navCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
-                QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
-        double dockCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
-                QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
-        if (dockCamRadian < navCamRadian)
-            return attemptScanQRDock(true, attempts);
-        return attemptScanQRNav(true, attempts);
+    public boolean attemptScanQR(int attempts, CameraMode mode) {
+//        Quaternion currentOrientation = api.getRobotKinematics().getOrientation();
+//        double navCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
+//                QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+//        double dockCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
+//                QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
+//        if (dockCamRadian < navCamRadian)
+//            return attemptScanQRDock(true, attempts);
+//        return attemptScanQRNav(true, attempts);
+        switch (mode){
+            case NAV:
+                attemptScanQRNav(false, attempts);
+                break;
+            case DOCK:
+                attemptScanQRDock(false, attempts);
+                break;
+        }
+        return scannedQrText != null;
     }
 
 
