@@ -40,9 +40,8 @@ public class OptimalPath {
             double timeUsed = getPathTime(nodes);
             int score = getTotalScore(nodes);
             if ((originalNodes.length == nodes.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
-                    setOptimalPoints(nodes);
-                    minTime = timeUsed;
-                }
+                setOptimalPoints(nodes);
+                minTime = timeUsed;
             }
             else if (score > maxScore && timeRemaining - timeUsed > THRESHOLD) {
                 setOptimalPoints(nodes);
