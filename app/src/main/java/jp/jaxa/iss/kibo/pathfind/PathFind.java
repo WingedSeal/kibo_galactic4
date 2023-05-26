@@ -6,6 +6,7 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
 import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
+import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
 
 import static jp.jaxa.iss.kibo.utils.Line.distanceBetweenPoints;
 
@@ -63,18 +64,19 @@ public class PathFind {
             if (node instanceof OrientedNode) {
                 OrientedNode orientedNode = (OrientedNode)node;
                 if (orientedNode.getPointedNode().equals(PointOfInterest.QR_CODE) && !astrobee.isQrScanned()) {
-                    api.moveTo(orientedNode, orientedNode.getOrientation(), printRobotPosition);
+                    Quaternion rotate;
                     switch (orientedNode.getCameraMode()) {
                         case DOCK:
-                            astrobee.attemptScanQRDock(true, 5);
+                            rotate = QuaternionCalculator.calculateDockCamQuaternion(orientedNode,Target.QR_CODE);
                             break;
                         case NAV:
-                            astrobee.attemptScanQRNav(true, 5);
+                            rotate = QuaternionCalculator.calculateNavCamQuaternion(orientedNode,Target.QR_CODE);
                             break;
                         default:
-                            astrobee.attemptScanQRNav(true, 5);
+                            rotate = QuaternionCalculator.calculateNavCamQuaternion(orientedNode,Target.QR_CODE);
                             break;
                     }
+                    api.moveTo(orientedNode, rotate, printRobotPosition);
                 }
                 else api.moveTo(orientedNode, orientation, printRobotPosition);
 
