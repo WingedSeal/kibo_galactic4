@@ -1,7 +1,7 @@
 package jp.jaxa.iss.kibo.pathfind;
 
 import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
-
+import java.util.ArrayList;
 public class OptimalPath {
     private static final int THRESHOLD = 500;
     private double minTime = 1e7;
@@ -10,54 +10,81 @@ public class OptimalPath {
     private final PathFindNode currentNode;
     private final long timeRemaining;
     private final boolean shouldConsiderGoal;
+    private TargetPoint[] activeTargets;
 
     public OptimalPath(long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
         this.currentNode = currentNode;
         this.timeRemaining = timeRemaining;
         this.shouldConsiderGoal = shouldConsiderGoal;
-        findOptimalPath(new TargetPoint[activeTargets.length], 0, activeTargets);
-        if (optimalPoints == null && activeTargets.length == 2) {
-            findOptimalPath(new TargetPoint[1], 0, activeTargets);
-        }
+        this.activeTargets = activeTargets;
+        int totalPointOnPath = activeTargets.length;
+        do {
+            ArrayList<TargetPoint[]> permutation = getTargetPointPermutation(activeTargets, totalPointOnPath);
+            findOptimalPath(permutation, totalPointOnPath);
+            totalPointOnPath--;
+        } while (totalPointOnPath > 0 && optimalPoints == null);
     }
 
     public TargetPoint[] getPath() {
         return optimalPoints;
     }
 
+    public double getMinTime(){
+        return minTime;
+    }
 
-    public double  getMinTime(){ return minTime;}
+    public static ArrayList<TargetPoint[]> getTargetPointPermutation(TargetPoint[] targetArray, int totalPointOnPath) {
+        ArrayList<TargetPoint[]> allPermutations = new ArrayList<>();
+        enumerate(targetArray, targetArray.length, totalPointOnPath, allPermutations);
+        return allPermutations;
+    }
+
+    private static void enumerate(TargetPoint[] a, int n, int k, ArrayList<TargetPoint[]> allPermutations) {
+        if (k == 0) {
+            TargetPoint[] singlePermutation = new TargetPoint[a.length-n];
+            for (int i = n; i < a.length; i++){
+                singlePermutation[i-n] = a[i];
+            }
+            allPermutations.add(singlePermutation);
+        }
+
+        for (int i = 0; i < n; i++) {
+            swap(a, i, n-1);
+            enumerate(a, n-1, k-1, allPermutations);
+            swap(a, i, n-1);
+        }
+    }
+
+    // helper function that swaps element of a between position i and j
+    public static void swap(TargetPoint[] a, int i, int j) {
+        TargetPoint temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
 
     /**
      * a recursive function to find optimal node order using brute force algorithm
      * 
-     * @param nodes         an array of `PathFindNode` to return to in optimal order
-     * @param pos           position on array to assign `PathFindNode` object
-     * @param originalNodes an original array of `PathFindNode` choices
+     * @param allPermutations
+     * @param totalPointOnPath
      */
-    private void findOptimalPath(TargetPoint[] nodes, int pos, TargetPoint[] originalNodes) {
-
-        if (pos == nodes.length) {
-            double timeUsed = getPathTime(nodes);
-            int score = getTotalScore(nodes);
-            if ((originalNodes.length == nodes.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
-                    setOptimalPoints(nodes);
-                    minTime = timeUsed;
+    private void findOptimalPath(ArrayList<TargetPoint[]> allPermutations, int totalPointOnPath) {
+        for (int i=0; i<allPermutations.size(); i++) {
+            TargetPoint[] pointsToVisit = allPermutations.get(i);
+            double timeUsed = getPathTime(pointsToVisit);
+            int score = getTotalScore(pointsToVisit);
+            if ((activeTargets.length == pointsToVisit.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
+                setOptimalPoints(pointsToVisit);
+                minTime = timeUsed;
             }
             else if (score > maxScore && timeRemaining - timeUsed > THRESHOLD) {
-                setOptimalPoints(nodes);
+                setOptimalPoints(pointsToVisit);
                 minTime = timeUsed;
                 maxScore = score;
             }
         }
-        else {
-            for (TargetPoint originalNode : originalNodes) {
-                nodes[pos] = originalNode;
-                findOptimalPath(nodes, pos + 1, originalNodes);
-            }
-        }
     }
-    
+
     /**
      * calculate the time spent on walking along the nodes 
      *
