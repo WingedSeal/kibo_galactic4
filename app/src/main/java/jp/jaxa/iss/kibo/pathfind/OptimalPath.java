@@ -19,7 +19,7 @@ public class OptimalPath {
         this.activeTargets = activeTargets;
         int totalPointOnPath = activeTargets.length;
         do {
-            ArrayList<ArrayList<TargetPoint>> permutation = getTargetPointPermutation(activeTargets, totalPointOnPath);
+            ArrayList<TargetPoint[]> permutation = getTargetPointPermutation(activeTargets, totalPointOnPath);
             findOptimalPath(permutation, totalPointOnPath);
             totalPointOnPath--;
         } while (totalPointOnPath > 0 && optimalPoints == null);
@@ -33,20 +33,19 @@ public class OptimalPath {
         return minTime;
     }
 
-    public static ArrayList<ArrayList<TargetPoint>> getTargetPointPermutation(TargetPoint[] targetArray, int totalPointOnPath) {
-        ArrayList<ArrayList<TargetPoint>> allPermutations = new ArrayList<>();
+    public static ArrayList<TargetPoint[]> getTargetPointPermutation(TargetPoint[] targetArray, int totalPointOnPath) {
+        ArrayList<TargetPoint[]> allPermutations = new ArrayList<>();
         enumerate(targetArray, targetArray.length, totalPointOnPath, allPermutations);
         return allPermutations;
     }
 
-    private static void enumerate(TargetPoint[] a, int n, int k, ArrayList<ArrayList<TargetPoint>> allPermutations) {
+    private static void enumerate(TargetPoint[] a, int n, int k, ArrayList<TargetPoint[]> allPermutations) {
         if (k == 0) {
-            ArrayList<TargetPoint> singlePermutation = new ArrayList<>();
+            TargetPoint[] singlePermutation = new TargetPoint[a.length-n];
             for (int i = n; i < a.length; i++){
-                singlePermutation.add(a[i]);
+                singlePermutation[i-n] = a[i];
             }
             allPermutations.add(singlePermutation);
-            return;
         }
 
         for (int i = 0; i < n; i++) {
@@ -69,9 +68,9 @@ public class OptimalPath {
      * @param allPermutations
      * @param totalPointOnPath
      */
-    private void findOptimalPath(ArrayList<ArrayList<TargetPoint>> allPermutations, int totalPointOnPath) {
+    private void findOptimalPath(ArrayList<TargetPoint[]> allPermutations, int totalPointOnPath) {
         for (int i=0; i<allPermutations.size(); i++) {
-            TargetPoint[] pointsToVisit = allPermutations.get(i).toArray(new TargetPoint[totalPointOnPath]);
+            TargetPoint[] pointsToVisit = allPermutations.get(i);
             double timeUsed = getPathTime(pointsToVisit);
             int score = getTotalScore(pointsToVisit);
             if ((activeTargets.length == pointsToVisit.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
