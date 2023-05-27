@@ -1,5 +1,6 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
+import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.*;
@@ -10,7 +11,7 @@ import jp.jaxa.iss.kibo.utils.CameraMode;
 
 import java.util.List;
 
-import static jp.jaxa.iss.kibo.utils.QuaternionCalculator.calculateRadianBetweenQuaternion;
+
 
 public class Astrobee {
     public static final double ASTROBEE_ACCELERATION = 0.0087406;
@@ -82,16 +83,20 @@ public class Astrobee {
     /**
      * Shoot laser in the direction Astrobee is facing
      *
-     * @throws IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
+     * @throw IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
      */
     public void shootLaser() {
         if (!(currentPathFindNode instanceof TargetPoint)) {
             throw new IllegalStateException("Attempted to shoot laser while not being on a point node");
         }
         TargetPoint pointNode = (TargetPoint) currentPathFindNode;
-        api.laserControl(true);
+        Result result = null;
+        int loopCount = 0;
+        while(result == null && loopCount <5){
+            result = api.laserControl(true);
+            ++loopCount;
+        }
         api.takeTargetSnapshot(pointNode.getPointNumber());
-
     }
 
     /**
@@ -137,14 +142,6 @@ public class Astrobee {
      * @return whether the scan was successful
      */
     public boolean attemptScanQR(int attempts, CameraMode mode) {
-//        Quaternion currentOrientation = api.getRobotKinematics().getOrientation();
-//        double navCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
-//                QuaternionCalculator.calculateQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
-//        double dockCamRadian = calculateRadianBetweenQuaternion(currentOrientation,
-//                QuaternionCalculator.calculateQuaternion(PointOfInterest.QR_CODE, currentPathFindNode));
-//        if (dockCamRadian < navCamRadian)
-//            return attemptScanQRDock(true, attempts);
-//        return attemptScanQRNav(true, attempts);
         switch (mode){
             case NAV:
                 attemptScanQRNav(false, attempts);
