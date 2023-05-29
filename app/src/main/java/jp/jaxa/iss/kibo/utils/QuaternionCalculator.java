@@ -169,7 +169,7 @@ public class QuaternionCalculator {
         double normVec1 = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2) + Math.pow(z1, 2));
 
         //norm of vector from pivot of astrobee to laser pos
-        double normDockCam = Math.sqrt(Math.pow(0.1061d, 2) + Math.pow(0.054d, 2) + Math.pow(0.054d, 2));
+        double normDockCam = Math.sqrt(Math.pow(0.1061d, 2) + Math.pow(0.054d, 2) + Math.pow(0.0064d, 2));
 
         // value of vector of laser shoot form <xi,0j,0k>
         double _cos = Math.cos(Math.acos(0.1061d / normDockCam));
@@ -178,7 +178,7 @@ public class QuaternionCalculator {
         //vector between pivot of Astrobee to final laser pos
         double x2 = -0.1061d - extraX;
         double y2 = -0.054d;
-        double z2 = -0.054d;
+        double z2 = -0.0064d;
 
         //norm of <x2,y2,z2>
         double normVec2 = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2) + Math.pow(z2, 2));
