@@ -108,11 +108,11 @@ public class QuaternionCalculator {
         double normVec1 = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2) + Math.pow(z1, 2));
 
         //norm of vector from pivot of astrobee to laser pos
-        double normLaser = Math.sqrt(Math.pow(0.1302, 2) + Math.pow(0.0572, 2) + Math.pow(0.1111, 2));
+        double normNavCam = Math.sqrt(Math.pow(0.1177d, 2) + Math.pow(0.0422d, 2) + Math.pow(0.0826d, 2));
 
         // value of vector of laser shoot form <xi,0j,0k>
-        double _cos = Math.cos(Math.acos(0.1302d / normLaser));
-        double extraX = calculateDistanceBetweenLaserToPoint(normLaser, normVec1, _cos);
+        double _cos = Math.cos(Math.acos(0.1177d / normNavCam));
+        double extraX = calculateDistanceBetweenLaserToPoint(normNavCam, normVec1, _cos);
 
         //vector between pivot of Astrobee to final laser pos
         double x2 = 0.1177d + extraX;
@@ -169,11 +169,11 @@ public class QuaternionCalculator {
         double normVec1 = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2) + Math.pow(z1, 2));
 
         //norm of vector from pivot of astrobee to laser pos
-        double normLaser = Math.sqrt(Math.pow(0.1302, 2) + Math.pow(0.0572, 2) + Math.pow(0.1111, 2));
+        double normDockCam = Math.sqrt(Math.pow(0.1061d, 2) + Math.pow(0.054d, 2) + Math.pow(0.054d, 2));
 
         // value of vector of laser shoot form <xi,0j,0k>
-        double _cos = Math.cos(Math.acos(0.1302d / normLaser));
-        double extraX = calculateDistanceBetweenLaserToPoint(normLaser, normVec1, _cos);
+        double _cos = Math.cos(Math.acos(0.1061d / normDockCam));
+        double extraX = calculateDistanceBetweenLaserToPoint(normDockCam, normVec1, _cos);
 
         //vector between pivot of Astrobee to final laser pos
         double x2 = -0.1061d - extraX;
