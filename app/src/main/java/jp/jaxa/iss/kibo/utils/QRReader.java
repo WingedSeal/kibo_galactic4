@@ -8,7 +8,8 @@ import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import java.util.HashMap;
 
 public class QRReader {
-
+    private static int imageNumber = 0;
+    private static final boolean saveImages = true;
 
     private static final HashMap<String, String> MESSAGES = new HashMap<String, String>();
 
@@ -45,7 +46,6 @@ public class QRReader {
                 break;
             case DOCK:
                 bMap = api.getBitmapDockCam();
-
         }
         if (bMap == null) {
             throw new RuntimeException("bMap is null");
@@ -62,8 +62,17 @@ public class QRReader {
         try {
             Result result = reader.decode(bitmap);
             String contents = result.getText();
-            return MESSAGES.get(contents);
+            String message = MESSAGES.get(contents);
+            if (saveImages){
+                api.saveBitmapImage(bMap, "qrcode" + imageNumber + "_" + message + ".bmp");
+                imageNumber++;
+            }
+            return message;
         } catch (ReaderException e) {
+            if (saveImages) {
+                api.saveBitmapImage(bMap, "[FAILED] qrcode" + imageNumber + ".bmp");
+                imageNumber++;
+            }
             return null;
         }
     }
