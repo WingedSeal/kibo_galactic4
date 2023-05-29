@@ -20,7 +20,7 @@ public class OptimalPath {
         int totalPointOnPath = activeTargets.length;
         do {
             ArrayList<TargetPoint[]> permutation = getTargetPointPermutation(activeTargets, totalPointOnPath);
-            findOptimalPath(permutation, totalPointOnPath);
+            findOptimalPath(permutation);
             totalPointOnPath--;
         } while (totalPointOnPath > 0 && optimalPoints == null);
     }
@@ -66,9 +66,8 @@ public class OptimalPath {
      * a recursive function to find optimal node order using brute force algorithm
      * 
      * @param allPermutations
-     * @param totalPointOnPath
      */
-    private void findOptimalPath(ArrayList<TargetPoint[]> allPermutations, int totalPointOnPath) {
+    private void findOptimalPath(ArrayList<TargetPoint[]> allPermutations) {
         for (int i=0; i<allPermutations.size(); i++) {
             TargetPoint[] pointsToVisit = allPermutations.get(i);
             double timeUsed = getPathTime(pointsToVisit);
