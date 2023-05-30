@@ -18,6 +18,8 @@ public class Astrobee {
     public static final double ASTROBEE_DECELERATION = 0.00734847;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
     public static final long TIME_THRESHOLD = 30000;
+    private final double[][] NAV_CAM_INTRINSICS;
+    private final double[][] DOCK_CAM_INTRINSICS;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     String scannedQrText = null;
     PathFindNode currentPathFindNode = PathFindNode.START;
@@ -25,6 +27,8 @@ public class Astrobee {
 
     public Astrobee(KiboRpcApi api) {
         this.api = api;
+        this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
+        this.DOCK_CAM_INTRINSICS = api.getDockCamIntrinsics();
     }
 
     public void startMission() {
@@ -93,6 +97,7 @@ public class Astrobee {
         Result result = null;
         int loopCount = 0;
         while(result == null && loopCount <5){
+
             result = api.laserControl(true);
             ++loopCount;
         }
@@ -109,6 +114,7 @@ public class Astrobee {
     public boolean attemptScanQRNav(boolean isRotate, int attempts) {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
+//            moveTo(currentPathFindNode, new Quaternion(0,0.707f,0,0.707f));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api);
@@ -166,5 +172,23 @@ public class Astrobee {
             activePoints[i] = TargetPoint.getTargetPoint(activeTargetsNumbers.get(i));
         }
         return activePoints;
+    }
+
+    /**
+     * Get Nav camera intrinsics
+     *
+     * @return [0] Nav camera matrix [1] distortion coefficient
+     */
+    public double[][] getNavCamIntrinsics(){
+        return this.NAV_CAM_INTRINSICS;
+    }
+
+    /**
+     * Get Dock camera intrinsics
+     *
+     * @return [0] Dock camera matrix [1] distortion coefficient
+     */
+    public double[][] getDockCamIntrinsics(){
+        return this.DOCK_CAM_INTRINSICS;
     }
 }
