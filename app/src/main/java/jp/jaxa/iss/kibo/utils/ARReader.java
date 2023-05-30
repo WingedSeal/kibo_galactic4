@@ -4,6 +4,8 @@ package jp.jaxa.iss.kibo.utils;
 import gov.nasa.arc.astrobee.types.Point;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
+import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
+
 import org.opencv.aruco.Aruco;
 import org.opencv.aruco.Dictionary;
 import org.opencv.core.CvType;
@@ -46,21 +48,21 @@ public class ARReader {
     /**
      * Calculate error distance between laser point and target. Use result in api.RelativeMoveto()
      *
-     * @param api           KiboRpcApi
+     * @param astrobee           Astrobee
      * @param quaternion    current Quaternion of Astrobee
      * @return              Point, use in relativeMoveTo
      */
-    public static Point calculateErrorCoordinate(KiboRpcApi api, Quaternion quaternion) {
+    public static Point calculateErrorCoordinate(Astrobee astrobee, Quaternion quaternion) {
         Mat rVec = new Mat();
         Mat tVec = new Mat();
-        double[][] navCamInstinct = api.getNavCamIntrinsics();
+        double[][] navCamInstinct = astrobee.getNavCamIntrinsics();
         Mat cameraMatrix = new Mat(3, 3, CvType.CV_32FC1);
         Mat dstMatrix = new Mat(1, 5, CvType.CV_32FC1);
         Mat objPoints = new Mat();
         cameraMatrix.put(0, 0, navCamInstinct[0]);
         dstMatrix.put(0, 0, navCamInstinct[1]);
         final float ARUCO_SIZE_CM = 5f;
-        List<Mat> corners = readAR(api);
+        List<Mat> corners = readAR(astrobee.api);
         Aruco.estimatePoseSingleMarkers(corners, ARUCO_SIZE_CM, cameraMatrix, dstMatrix, rVec, tVec, objPoints);
         if (AR_ID.length == 0) return null;
 
