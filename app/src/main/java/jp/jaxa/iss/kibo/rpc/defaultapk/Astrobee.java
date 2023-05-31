@@ -94,10 +94,9 @@ public class Astrobee {
             throw new IllegalStateException("Attempted to shoot laser while not being on a point node");
         }
         TargetPoint pointNode = (TargetPoint) currentPathFindNode;
-        Result result = null;
+        Result result = api.laserControl(true);
         int loopCount = 0;
-        while(result == null && loopCount <5){
-
+        while(result.hasSucceeded() && loopCount <5){
             result = api.laserControl(true);
             ++loopCount;
         }
