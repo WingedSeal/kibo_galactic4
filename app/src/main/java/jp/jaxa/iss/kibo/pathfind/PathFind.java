@@ -77,15 +77,15 @@ public class PathFind {
                             rotate = QuaternionCalculator.calculateNavCamQuaternion(orientedNode,Target.QR_CODE);
                             break;
                     }
-                    api.moveTo(orientedNode, rotate, printRobotPosition);
+                    moveTo(astrobee, orientedNode, rotate, printRobotPosition);
                     astrobee.attemptScanQR(5,orientedNode.getCameraMode());
                 }
-                else api.moveTo(orientedNode, orientation, printRobotPosition);
+                else moveTo(astrobee, orientedNode, orientation, printRobotPosition);
 
             }
-            else api.moveTo(node, orientation, printRobotPosition);
+            else moveTo(astrobee, node, orientation, printRobotPosition);
         }
-        api.moveTo(to, orientation, printRobotPosition);
+        moveTo(astrobee, to, orientation, printRobotPosition);
     }
 
     /**
