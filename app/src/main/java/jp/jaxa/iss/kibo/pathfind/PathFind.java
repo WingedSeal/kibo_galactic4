@@ -1,5 +1,6 @@
 package jp.jaxa.iss.kibo.pathfind;
 
+import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
@@ -85,6 +86,24 @@ public class PathFind {
             else api.moveTo(node, orientation, printRobotPosition);
         }
         api.moveTo(to, orientation, printRobotPosition);
+    }
+
+    /**
+     * move Astrobee to node and quaternion
+     *
+     * @param astrobee             Astrobee
+     * @param node                 Point
+     * @param quaternion           Quaternion
+     * @param printRoBotPosition   printRobotPosition
+     */
+    public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRoBotPosition){
+        Result result = astrobee.api.moveTo(node,quaternion,printRoBotPosition);
+        int loopCounter = 0;
+        while(result.hasSucceeded() && loopCounter < 4){
+            result = astrobee.api.moveTo(node, quaternion,printRoBotPosition);
+            ++loopCounter;
+        }
+        //can be implement to return boolean, use for checking if astrobee move successfully.
     }
 
     public static double estimateTotalDistance(PathFindNode from, PathFindNode to) {
