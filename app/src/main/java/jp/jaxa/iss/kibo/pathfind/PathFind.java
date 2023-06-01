@@ -207,7 +207,7 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_3:
                         return new Node[]{
-                                findOrientedNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
+                                findNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end)
                         };
                     case POINT_4:
                     case POINT_5:
@@ -225,7 +225,7 @@ public class PathFind {
                         return nodes;
                     case POINT_3:
                         return new Node[]{
-                                findOrientedNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
+                                findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                     case POINT_4:
                         return new Node[]{
