@@ -99,7 +99,7 @@ public class PathFind {
     public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRoBotPosition){
         Result result = astrobee.api.moveTo(node,quaternion,printRoBotPosition);
         int loopCounter = 0;
-        while(result.hasSucceeded() && loopCounter < 4){
+        while(!result.hasSucceeded() && loopCounter < 4){
             result = astrobee.api.moveTo(node, quaternion,printRoBotPosition);
             ++loopCounter;
         }

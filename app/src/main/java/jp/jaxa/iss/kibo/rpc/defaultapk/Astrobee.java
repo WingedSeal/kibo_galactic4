@@ -96,7 +96,7 @@ public class Astrobee {
         TargetPoint pointNode = (TargetPoint) currentPathFindNode;
         Result result = api.laserControl(true);
         int loopCount = 0;
-        while(result.hasSucceeded() && loopCount <4){
+        while(!result.hasSucceeded() && loopCount <4){
             result = api.laserControl(true);
             ++loopCount;
         }
