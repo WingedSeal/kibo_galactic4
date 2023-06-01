@@ -21,7 +21,7 @@ public class Astrobee {
     private final double[][] NAV_CAM_INTRINSICS;
     private final double[][] DOCK_CAM_INTRINSICS;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
-    String scannedQrText = null;
+    private static String scannedQrText = null;
     PathFindNode currentPathFindNode = PathFindNode.START;
     public final KiboRpcApi api;
 
@@ -79,7 +79,7 @@ public class Astrobee {
     /**
      * @return whether the QR code was already scanned
      */
-    public boolean isQrScanned() {
+    public static boolean isQrScanned() {
         return scannedQrText != null;
     }
 
