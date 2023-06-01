@@ -25,16 +25,16 @@ public class PathFind {
         return new Node(x, y, Line.findOptimizedPosition(start, end, x, y, null));
     }
 
-    private static OrientedNode findOrientedNodeX(double y, double z, Node start, Node end, Node pointedNode) {
-        return OrientedNode.fromNode(findNodeX(y, z, start, end), pointedNode);
+    private static NodeWithOrientation findNodeWithOrientationX(double y, double z, Node start, Node end, Node pointedNode) {
+        return NodeWithOrientation.fromNode(findNodeX(y, z, start, end), pointedNode);
     }
 
-    private static OrientedNode findOrientedNodeY(double x, double z, Node start, Node end, Node pointedNode) {
-        return OrientedNode.fromNode(findNodeY(x, z, start, end), pointedNode);
+    private static NodeWithOrientation findNodeWithOrientationY(double x, double z, Node start, Node end, Node pointedNode) {
+        return NodeWithOrientation.fromNode(findNodeY(x, z, start, end), pointedNode);
     }
 
-    private static OrientedNode findOrientedNodeZ(double x, double y, Node start, Node end, Node pointedNode) {
-        return OrientedNode.fromNode(findNodeZ(x, y, start, end), pointedNode);
+    private static NodeWithOrientation findNodeWithOrientationZ(double x, double y, Node start, Node end, Node pointedNode) {
+        return NodeWithOrientation.fromNode(findNodeZ(x, y, start, end), pointedNode);
     }
 
     /**
@@ -62,25 +62,25 @@ public class PathFind {
     public static void pathFindMoveTo(Astrobee astrobee, PathFindNode from, PathFindNode to, Quaternion orientation, boolean printRobotPosition) {
         KiboRpcApi api = astrobee.api;
         for (Node node : getPathNodes(from, to)) {
-            if (node instanceof OrientedNode) {
-                OrientedNode orientedNode = (OrientedNode)node;
-                if (orientedNode.getPointedNode().equals(PointOfInterest.QR_CODE) && !astrobee.isQrScanned()) {
+            if (node instanceof NodeWithOrientation) {
+                NodeWithOrientation nodeWithOrientation = (NodeWithOrientation)node;
+                if (nodeWithOrientation.getPointedNode().equals(PointOfInterest.QR_CODE) && !astrobee.isQrScanned()) {
                     Quaternion rotate;
-                    switch (orientedNode.getCameraMode()) {
+                    switch (nodeWithOrientation.getCameraMode()) {
                         case DOCK:
-                            rotate = QuaternionCalculator.calculateDockCamQuaternion(orientedNode,Target.QR_CODE);
+                            rotate = QuaternionCalculator.calculateDockCamQuaternion(nodeWithOrientation,Target.QR_CODE);
                             break;
                         case NAV:
-                            rotate = QuaternionCalculator.calculateNavCamQuaternion(orientedNode,Target.QR_CODE);
+                            rotate = QuaternionCalculator.calculateNavCamQuaternion(nodeWithOrientation,Target.QR_CODE);
                             break;
                         default:
-                            rotate = QuaternionCalculator.calculateNavCamQuaternion(orientedNode,Target.QR_CODE);
+                            rotate = QuaternionCalculator.calculateNavCamQuaternion(nodeWithOrientation,Target.QR_CODE);
                             break;
                     }
-                    moveTo(astrobee, orientedNode, rotate, printRobotPosition);
-                    astrobee.attemptScanQR(5,orientedNode.getCameraMode());
+                    moveTo(astrobee, nodeWithOrientation, rotate, printRobotPosition);
+                    astrobee.attemptScanQR(5,nodeWithOrientation.getCameraMode());
                 }
-                else moveTo(astrobee, orientedNode, orientation, printRobotPosition);
+                else moveTo(astrobee, nodeWithOrientation, orientation, printRobotPosition);
 
             }
             else moveTo(astrobee, node, orientation, printRobotPosition);
@@ -180,7 +180,7 @@ public class PathFind {
                         break;
                     case POINT_1:
                         return new Node[]{
-                                findOrientedNodeX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
+                                findNodeWithOrientationX(Zone.keepOut3.yMax, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                     case POINT_2:
                     return new Node[]{
@@ -258,7 +258,7 @@ public class PathFind {
                         };
                     case POINT_6:
                         return new Node[]{
-                                findOrientedNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
+                                findNodeWithOrientationX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                 }
                 break;
@@ -276,7 +276,7 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_6:
                         return new Node[]{
-                                findOrientedNodeX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end, PointOfInterest.QR_CODE)
+                                findNodeWithOrientationX(Zone.keepOut3.yMin, Zone.keepOut4.zMax, start, end, PointOfInterest.QR_CODE)
                         };
                 }
                 break;
