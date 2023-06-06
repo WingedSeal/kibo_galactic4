@@ -310,9 +310,13 @@ public class QuaternionCalculator {
         double crossY = -(axis[0] * vector.getZ() - axis[2] * vector.getX());
         double crossZ = axis[0] * vector.getY() - axis[1] * vector.getX();
 
-        double x = Math.cos(radianOfRotation) * vector.getX() + Math.sin(radianOfRotation) * crossX ;
-        double y = Math.cos(radianOfRotation) * vector.getY() + Math.sin(radianOfRotation) * crossY ;
-        double z = Math.cos(radianOfRotation) * vector.getZ() + Math.sin(radianOfRotation) * crossZ ;
+        double dotX = axis[0] * vector.getX();
+        double dotY = axis[1] * vector.getY();
+        double dotZ = axis[2] * vector.getZ();
+
+        double x = Math.cos(radianOfRotation) * vector.getX() + Math.sin(radianOfRotation) * crossX + (1 - Math.cos(radianOfRotation)) * dotX * axis[0];
+        double y = Math.cos(radianOfRotation) * vector.getY() + Math.sin(radianOfRotation) * crossY + (1 - Math.cos(radianOfRotation)) * dotY * axis[1];
+        double z = Math.cos(radianOfRotation) * vector.getZ() + Math.sin(radianOfRotation) * crossZ + (1 - Math.cos(radianOfRotation)) * dotZ * axis[2];
 
         return new Point(x,y,z);
     }
