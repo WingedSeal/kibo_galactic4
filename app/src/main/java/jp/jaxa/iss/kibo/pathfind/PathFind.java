@@ -94,13 +94,16 @@ public class PathFind {
      * @param astrobee             Astrobee
      * @param node                 Point
      * @param quaternion           Quaternion
-     * @param printRoBotPosition   printRobotPosition
+     * @param printRobotPosition   printRobotPosition
      */
-    public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRoBotPosition){
-        Result result = astrobee.api.moveTo(node,quaternion,printRoBotPosition);
+    public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRobotPosition){
+        Result result = null;
+        for(int i = 0; i < 5 && result == null; ++i ){
+            result = astrobee.api.moveTo(node, quaternion, printRobotPosition);
+        }
         int loopCounter = 0;
         while(!result.hasSucceeded() && loopCounter < 4){
-            result = astrobee.api.moveTo(node, quaternion,printRoBotPosition);
+            result = astrobee.api.moveTo(node, quaternion,printRobotPosition);
             ++loopCounter;
         }
         //can be implement to return boolean, use for checking if astrobee move successfully.
