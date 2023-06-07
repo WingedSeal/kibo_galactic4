@@ -200,7 +200,7 @@ public class PathFind {
                             return new Node[]{NodeWithOrientation.node5};
 
                         else
-                            return new Node[]{findNodeWithOrientationX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)};
+                            return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end),};
                     case POINT_4:
                         return new Node[]{};
                     case POINT_5:
@@ -220,7 +220,7 @@ public class PathFind {
                         if(!astrobee.isQrScanned())
                             return new Node[]{NodeWithOrientation.node5};
                         else
-                            return new Node[]{findNodeWithOrientationX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)};
+                            return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)};
                     case POINT_4:
                         return new Node[]{};
                     case POINT_5:
@@ -240,7 +240,7 @@ public class PathFind {
 
                         else
                             return new Node[]{
-                                    findNodeWithOrientationX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)};
+                                    findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)};
                     case POINT_2:
                         Node[] nodes = getPathNodes(astrobee, end, start);
                         ArrayUtils.reverse(nodes);
@@ -253,7 +253,7 @@ public class PathFind {
                         if(!astrobee.isQrScanned())
                             return new Node[]{NodeWithOrientation.node5};
                         else
-                            return new Node[]{findNodeWithOrientationX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end, PointOfInterest.QR_CODE)};
+                            return new Node[]{findNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end)};
                 }
                 break;
             case POINT_4:
@@ -266,9 +266,7 @@ public class PathFind {
                     case POINT_2:
                         return new Node[]{};
                     case POINT_3:
-                        Node[] nodes = getPathNodes(astrobee,end, start);
-                        ArrayUtils.reverse(nodes);
-                        return nodes;
+                        return new Node[]{};
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
