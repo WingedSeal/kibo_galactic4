@@ -11,8 +11,10 @@ public class OptimalPath {
     private final long timeRemaining;
     private final boolean shouldConsiderGoal;
     private TargetPoint[] activeTargets;
+    public Astrobee astrobee;
 
-    public OptimalPath(long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
+    public OptimalPath(Astrobee astrobee,long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
+        this.astrobee = astrobee;
         this.currentNode = currentNode;
         this.timeRemaining = timeRemaining;
         this.shouldConsiderGoal = shouldConsiderGoal;
@@ -92,16 +94,16 @@ public class OptimalPath {
      */
     private double getPathTime(TargetPoint[] midNodes) {
         double totalTimeSec = 0;
-        for (double distance : PathFind.estimatePathDistances(currentNode, midNodes[0])) {
+        for (double distance : PathFind.estimatePathDistances(astrobee,currentNode, midNodes[0])) {
             totalTimeSec += 2 * Math.sqrt(distance * 2 / (Astrobee.ASTROBEE_ACCELERATION + Astrobee.ASTROBEE_DECELERATION));
         }
         for (int i = 1; i < midNodes.length; i++) {
-            for (double distance : PathFind.estimatePathDistances(midNodes[i - 1], midNodes[i])) {
+            for (double distance : PathFind.estimatePathDistances(astrobee,midNodes[i - 1], midNodes[i])) {
                 totalTimeSec += 2 * Math.sqrt(distance * 2 / (Astrobee.ASTROBEE_ACCELERATION + Astrobee.ASTROBEE_DECELERATION));
             }
         }
         if (shouldConsiderGoal) {
-            for (double distance : PathFind.estimatePathDistances(midNodes[midNodes.length - 1], PathFindNode.GOAL)) {
+            for (double distance : PathFind.estimatePathDistances(astrobee,midNodes[midNodes.length - 1], PathFindNode.GOAL)) {
                 totalTimeSec += 2 * Math.sqrt(distance * 2 / (Astrobee.ASTROBEE_ACCELERATION + Astrobee.ASTROBEE_DECELERATION));
             }
         }
