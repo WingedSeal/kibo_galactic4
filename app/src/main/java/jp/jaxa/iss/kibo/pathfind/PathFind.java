@@ -65,6 +65,7 @@ public class PathFind {
             if (node instanceof NodeWithOrientation) {
                 NodeWithOrientation nodeWithOrientation = (NodeWithOrientation)node;
                 if (nodeWithOrientation.getPointedNode().equals(PointOfInterest.QR_CODE) && !astrobee.isQrScanned()) {
+                    /*
                     Quaternion rotate;
                     switch (nodeWithOrientation.getCameraMode()) {
                         case DOCK:
@@ -78,6 +79,9 @@ public class PathFind {
                             break;
                     }
                     moveTo(astrobee, nodeWithOrientation, rotate, printRobotPosition);
+                    astrobee.attemptScanQR(5,nodeWithOrientation.getCameraMode());
+                    */
+                    moveTo(astrobee, nodeWithOrientation, nodeWithOrientation.getOrientation(), printRobotPosition);
                     astrobee.attemptScanQR(5,nodeWithOrientation.getCameraMode());
                 }
                 else moveTo(astrobee, nodeWithOrientation, orientation, printRobotPosition);
