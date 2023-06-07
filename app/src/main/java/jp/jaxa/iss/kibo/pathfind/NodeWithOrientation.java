@@ -10,6 +10,17 @@ public class NodeWithOrientation extends Node {
     private final CameraMode cameraMode;
     private final Node pointedNode;
 
+    public static NodeWithOrientation node5 = new NodeWithOrientation(11.355, -8.9929, 4.7818+0.3d);
+
+    public NodeWithOrientation(double x, double y, double z) {
+        super(x, y, z);
+        this.pointedNode = PointOfInterest.QR_CODE;
+        this.cameraMode = CameraMode.NAV;
+        this.orientation = new Quaternion(0f,0.707f,0f,0.707f);
+
+    }
+
+
     public NodeWithOrientation(double x, double y, double z, Node pointedNode) {
         this(x, y, z, pointedNode, CameraMode.NAV);
     }
