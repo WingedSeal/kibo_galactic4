@@ -61,6 +61,10 @@ public class YourService extends KiboRpcService {
                     }
                 }
                 if (isGoingToGoal) break;
+                if(!astrobee.isQrScanned() && api.getTimeRemaining().get(1) < 120000){
+                    astrobee.moveTo(TargetPoint.getTargetPoint(5));
+                    astrobee.attemptScanQRDock(false, 5);
+                }
 
             } while (api.getTimeRemaining().get(1) > MINIMUM_MILLISECONDS_TO_END_MISSION);
 
