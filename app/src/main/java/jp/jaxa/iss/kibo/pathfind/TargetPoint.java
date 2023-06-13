@@ -15,7 +15,7 @@ public class TargetPoint extends PathFindNode {
 
 
     private static final TargetPoint[] TARGET_POINTS = {
-            new TargetPoint(11.2681d, -9.73d-0.05d, 5.3625d-0.28d, POI_Id.POINT_1, 1, 30),
+            new TargetPoint(11.2681d, -9.73d-0.10d, 5.3625d-0.28d, POI_Id.POINT_1, 1, 30),
             new TargetPoint(10.513384d, -9.085172d, 3.76203d+0.90d, POI_Id.POINT_2, 2, 20),
             new TargetPoint(10.6031d, -7.71007d, 3.76093d+0.80d, POI_Id.POINT_3, 3, 40),
             new TargetPoint(10.402d, -6.8406d, 5.0825, POI_Id.POINT_4, 4, 20),
