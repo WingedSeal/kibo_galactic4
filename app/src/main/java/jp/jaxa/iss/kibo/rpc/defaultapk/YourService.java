@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 
 public class YourService extends KiboRpcService {
-    private static final long MINIMUM_MILLISECONDS_TO_END_MISSION = 20000;
+    private static final long MINIMUM_MILLISECONDS_TO_END_MISSION = 30000;
 
     protected void runPlan1_backup() {
         Astrobee astrobee = new Astrobee(api);
