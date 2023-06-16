@@ -14,8 +14,8 @@ import java.util.List;
 
 
 public class Astrobee {
-    public static final double ASTROBEE_ACCELERATION = 0.00720;
-    public static final double ASTROBEE_DECELERATION = 0.00720;
+    public static final double ASTROBEE_ACCELERATION = 0.00740;
+    public static final double ASTROBEE_DECELERATION = 0.00740;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
     public static final long TIME_THRESHOLD = 30000;
     private final double[][] NAV_CAM_INTRINSICS;
