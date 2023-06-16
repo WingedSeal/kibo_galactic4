@@ -110,6 +110,9 @@ public class PathFind {
             result = astrobee.api.moveTo(node, quaternion,printRobotPosition);
             ++loopCounter;
         }
+        if(!result.hasSucceeded()){
+            astrobee.moveTo(TargetPoint.getTargetPoint(5));
+        }
         //can be implement to return boolean, use for checking if astrobee move successfully.
     }
 
