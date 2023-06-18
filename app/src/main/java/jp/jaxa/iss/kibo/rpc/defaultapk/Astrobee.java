@@ -97,15 +97,15 @@ public class Astrobee {
         Result result = api.laserControl(true);
         if(result == null){
             moveToPoint(5);
+            return;
         }
-        else{
-            int loopCount = 0;
-            while(!result.hasSucceeded() && loopCount <4){
-                result = api.laserControl(true);
-                ++loopCount;
-            }
-            api.takeTargetSnapshot(pointNode.getPointNumber());
+        int loopCount = 0;
+        while(!result.hasSucceeded() && loopCount <4){
+            result = api.laserControl(true);
+            ++loopCount;
         }
+        api.takeTargetSnapshot(pointNode.getPointNumber());
+
 
     }
 
