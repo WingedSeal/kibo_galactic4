@@ -60,7 +60,7 @@ public class PathFind {
      * @param printRobotPosition whether to print position
      */
     public static void pathFindMoveTo(Astrobee astrobee, PathFindNode from, PathFindNode to, Quaternion orientation, boolean printRobotPosition) {
-        KiboRpcApi api = astrobee.api;
+        //KiboRpcApi api = astrobee.api;
         for (Node node : getPathNodes(astrobee,from, to)) {
             if (node instanceof NodeWithOrientation) {
                 NodeWithOrientation nodeWithOrientation = (NodeWithOrientation)node;
@@ -89,6 +89,7 @@ public class PathFind {
             }
             else moveTo(astrobee, node, orientation, printRobotPosition);
         }
+        if(astrobee.getCurrentPathFindNode() == PathFindNode.GOAL){return;}
         moveTo(astrobee, to, orientation, printRobotPosition);
     }
 
@@ -100,20 +101,25 @@ public class PathFind {
      * @param quaternion           Quaternion
      * @param printRobotPosition   printRobotPosition
      */
-    public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRobotPosition){
+    public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRobotPosition) {
         Result result = null;
-        for(int i = 0; i < 5 && result == null; ++i ){
+        for (int i = 0; i < 5 && result == null; ++i) {
             result = astrobee.api.moveTo(node, quaternion, printRobotPosition);
         }
+        //not sure either it cause error that result equals null or false in hasSucceeded()
+        if (result == null) {
+            throw new NullPointerException("commands error");
+        }
         int loopCounter = 0;
-        while(!result.hasSucceeded() && loopCounter < 4){
-            result = astrobee.api.moveTo(node, quaternion,printRobotPosition);
+        while (!result.hasSucceeded() && loopCounter < 4) {
+            result = astrobee.api.moveTo(node, quaternion, printRobotPosition);
             ++loopCounter;
         }
-        if(!result.hasSucceeded()){
-            astrobee.moveTo(TargetPoint.getTargetPoint(5));
+        if (!result.hasSucceeded()) {
+            throw new IllegalStateException("fail to move to the target point.");
         }
         //can be implement to return boolean, use for checking if astrobee move successfully.
+
     }
 
     public static double estimateTotalDistance(Astrobee astrobee,PathFindNode from, PathFindNode to) {

@@ -24,13 +24,13 @@ public class ARReader {
     private static final Point BOT_RIGHT_TO_CENTER = new Point(-0.1, 0.0375, 0);
 
 
-    /**
+    /*
      * Read AR from the NavCam type Mat and mark that Numbers of TargetsID start from the upper right
      * and increase in a counterclockwise direction.
      *
      * @param astrobee KiboRpcApi
      * @return Corners(List < Mat >) of each AR that can detect from NavCam image type Mat
-     */
+     *
     public static List<Mat> readAR(Astrobee astrobee) {
         double[][] navCamInstinct = astrobee.getNavCamIntrinsics();
         Mat cameraMatrix = new Mat(3, 3, CvType.CV_32FC1);
@@ -56,13 +56,13 @@ public class ARReader {
 
     }
 
-    /**
+    **
      * Calculate error distance between laser point and target. Use result in api.RelativeMoveto()
      *
      * @param astrobee           Astrobee
      * @param quaternion    current Quaternion of Astrobee
      * @return              Point, use in relativeMoveTo
-     */
+     *
     public static Point calculateErrorCoordinate(Astrobee astrobee, Quaternion quaternion) {
         Mat rVec = new Mat();
         Mat tVec = new Mat();
@@ -147,6 +147,7 @@ public class ARReader {
         Logger.__log("quaternion = x:" + currentQuaternionInfo[0] + " y:" + currentQuaternionInfo[1] + " z:" + currentQuaternionInfo[2] + " w:"+currentQuaternionInfo[3]);
         return QuaternionCalculator.rotateVector(currentQuaternionInfo,moveTo,2 * currentQuaternionInfo[3]);
     }
+    */
 
 
 }

@@ -20,7 +20,7 @@ public class YourService extends KiboRpcService {
             astrobee.startMission();
 
             astrobee.moveToPoint(5);
-            astrobee.shootLaser();
+            astrobee.shootLaser(1);
             astrobee.attemptScanQRDock(false, 5);
 
             astrobee.endMission();
@@ -44,16 +44,30 @@ public class YourService extends KiboRpcService {
             do {
                 shouldConsiderGoal = true;
                 TargetPoint[] activePoints = astrobee.getActivePoints();
+                int activatedTargets = activePoints.length;
                 TargetPoint[] pathNodes = new OptimalPath(astrobee,
-                        api.getTimeRemaining().get(1), astrobee.currentPathFindNode, activePoints, shouldConsiderGoal).getPath();
+                        api.getTimeRemaining().get(1), astrobee.getCurrentPathFindNode(), activePoints, shouldConsiderGoal).getPath();
 
                 if (pathNodes == null) break;
                 else if (pathNodes.length != activePoints.length) isGoingToGoal = true;
                 for (TargetPoint nextTargetPoint : pathNodes) {
-                    astrobee.moveTo(nextTargetPoint);
-                    if (nextTargetPoint.getPointNumber() <= 6) {
-                        astrobee.shootLaser();
+                    try{
+                        astrobee.moveTo(nextTargetPoint);
+                    }catch (Exception e){
+                        if(astrobee.failMoveTo()){
+                            isGoingToGoal = true;
+                        }
+                        break;
                     }
+                    try{
+                        if (nextTargetPoint.getPointNumber() <= 6) {
+                            astrobee.shootLaser(activatedTargets);
+                        }
+                    }catch (Exception e){
+                        astrobee.failMoveTo();
+                        break;
+                    }
+
                     if (nextTargetPoint.getPointNumber() == 5 && !astrobee.isQrScanned()) {
                         astrobee.attemptScanQRDock(false, 5);
                     } else if (nextTargetPoint.getPointNumber() == 7) {

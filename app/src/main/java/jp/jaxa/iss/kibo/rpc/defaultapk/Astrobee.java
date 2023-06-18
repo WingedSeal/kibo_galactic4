@@ -17,17 +17,18 @@ public class Astrobee {
     public static double ASTROBEE_ACCELERATION = 0.00699;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
     public static final long TIME_THRESHOLD = 30000;
-    private final double[][] NAV_CAM_INTRINSICS;
-    private final double[][] DOCK_CAM_INTRINSICS;
+    //private final double[][] NAV_CAM_INTRINSICS;
+    //private final double[][] DOCK_CAM_INTRINSICS;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     private static String scannedQrText = null;
-    PathFindNode currentPathFindNode = PathFindNode.START;
+    private PathFindNode previousPathFindNode = null;
+    private PathFindNode currentPathFindNode = PathFindNode.START;
     public final KiboRpcApi api;
 
     public Astrobee(KiboRpcApi api) {
         this.api = api;
-        this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
-        this.DOCK_CAM_INTRINSICS = api.getDockCamIntrinsics();
+        //this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
+        //this.DOCK_CAM_INTRINSICS = api.getDockCamIntrinsics();
     }
 
     public void startMission() {
@@ -70,7 +71,9 @@ public class Astrobee {
 
     public void moveTo(PathFindNode node, Quaternion orientation) {
         PathFind.pathFindMoveTo(this, currentPathFindNode, node, orientation);
+        previousPathFindNode = currentPathFindNode;
         currentPathFindNode = node;
+
     }
 
 
@@ -87,23 +90,19 @@ public class Astrobee {
      * Shoot laser in the direction Astrobee is facing
      *
      * @throw IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
+     * @throw NullPointerException Attempted to turn laser on while not in the target point area
      */
-    public void shootLaser() {
+    public void shootLaser(int numOfActivatedTarget) {
         if (!(currentPathFindNode instanceof TargetPoint)) {
             throw new IllegalStateException("Attempted to shoot laser while not being on a point node");
         }
         TargetPoint pointNode = (TargetPoint) currentPathFindNode;
         Result result = api.laserControl(true);
-        if(result == null){
-            moveToPoint(5);
-            return;
-        }
-        int loopCount = 0;
-        while(!result.hasSucceeded() && loopCount <4){
-            result = api.laserControl(true);
-            ++loopCount;
-        }
+        if(result == null){ throw new NullPointerException("astrobee not on the target point");}
         api.takeTargetSnapshot(pointNode.getPointNumber());
+        if(numOfActivatedTarget == api.getActiveTargets().size()){
+            throw new IllegalStateException("Fail to deactivate target");
+        }
 
 
     }
@@ -178,11 +177,11 @@ public class Astrobee {
         return activePoints;
     }
 
-    /**
+    /*/**
      * Get Nav camera intrinsics
      *
      * @return [0] Nav camera matrix [1] distortion coefficient
-     */
+     *
     public double[][] getNavCamIntrinsics(){
         return this.NAV_CAM_INTRINSICS;
     }
@@ -191,8 +190,46 @@ public class Astrobee {
      * Get Dock camera intrinsics
      *
      * @return [0] Dock camera matrix [1] distortion coefficient
-     */
+     *
     public double[][] getDockCamIntrinsics(){
         return this.DOCK_CAM_INTRINSICS;
+    }*/
+
+    /**
+     * Get node that astrobee currently at
+     *
+     * @return currentPathFindNode
+     */
+    public PathFindNode getCurrentPathFindNode(){ return currentPathFindNode;}
+
+    /**
+     * Get node where astrobee was before
+     *
+     * @return previousPathFindNode
+     */
+
+    public PathFindNode getPreviousPathFindNode(){ return  previousPathFindNode;}
+    /**
+     * Error handling when Astrobee.shootLaser() and PathFind.moveTo is not working properly
+     *
+     * @return  true if everything fail to run, false if it can go on
+     */
+    public boolean failMoveTo(){
+        try{
+            if(previousPathFindNode == PathFindNode.GOAL || currentPathFindNode == PathFindNode.GOAL) {
+                return true;
+            }
+            else if(((TargetPoint)currentPathFindNode).getPointNumber() == 5 || ((TargetPoint)previousPathFindNode).getPointNumber() == 5) {
+                moveTo(TargetPoint.GOAL);
+            }
+            else{
+                moveTo(TargetPoint.getTargetPoint(5));
+            }
+            return false;
+        } catch(Exception e){
+            return failMoveTo();
+        }
+
+
     }
 }
