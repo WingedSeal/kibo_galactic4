@@ -93,7 +93,7 @@ public class Astrobee {
      * @throw IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
      * @throw NullPointerException Attempted to turn laser on while not in the target point area
      */
-    public void shootLaser() {
+    public void shootLaser(int numOfActivatedTarget) {
         if (!(currentPathFindNode instanceof TargetPoint)) {
             throw new IllegalStateException("Attempted to shoot laser while not being on a point node");
         }
@@ -101,6 +101,9 @@ public class Astrobee {
         Result result = api.laserControl(true);
         if(result == null){ throw new NullPointerException("astrobee not on the target point");}
         api.takeTargetSnapshot(pointNode.getPointNumber());
+        if(numOfActivatedTarget == api.getActiveTargets().size()){
+            throw new IllegalStateException("Fail to deactivate target");
+        }
 
 
     }

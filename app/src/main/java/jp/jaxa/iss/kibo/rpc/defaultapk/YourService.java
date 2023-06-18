@@ -20,7 +20,7 @@ public class YourService extends KiboRpcService {
             astrobee.startMission();
 
             astrobee.moveToPoint(5);
-            astrobee.shootLaser();
+            astrobee.shootLaser(1);
             astrobee.attemptScanQRDock(false, 5);
 
             astrobee.endMission();
@@ -44,6 +44,7 @@ public class YourService extends KiboRpcService {
             do {
                 shouldConsiderGoal = true;
                 TargetPoint[] activePoints = astrobee.getActivePoints();
+                int activatedTargets = activePoints.length;
                 TargetPoint[] pathNodes = new OptimalPath(astrobee,
                         api.getTimeRemaining().get(1), astrobee.getCurrentPathFindNode(), activePoints, shouldConsiderGoal).getPath();
 
@@ -60,7 +61,7 @@ public class YourService extends KiboRpcService {
                     }
                     try{
                         if (nextTargetPoint.getPointNumber() <= 6) {
-                            astrobee.shootLaser();
+                            astrobee.shootLaser(activatedTargets);
                         }
                     }catch (Exception e){
                         astrobee.failMoveTo();
