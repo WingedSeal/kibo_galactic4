@@ -213,6 +213,7 @@ public class Astrobee {
      */
     public boolean failMoveTo(){
         try{
+
             if(previousPathFindNode == PathFindNode.GOAL || currentPathFindNode == PathFindNode.GOAL) {
                 return true;
             }
