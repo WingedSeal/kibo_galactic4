@@ -162,7 +162,7 @@ public class PathFind {
             case START:
                 switch (end.id) {
                     case POINT_1:
-                        return new Node[]{NodeWithOrientation.node5};
+                        return new Node[]{findNodeY(Zone.keepOut1.xMin,Zone.keepOut1.zMax,start,end),};
                     case POINT_2:
                         return new Node[]{};
                     case POINT_3:
