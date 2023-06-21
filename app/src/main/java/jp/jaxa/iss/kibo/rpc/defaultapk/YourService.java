@@ -53,9 +53,8 @@ public class YourService extends KiboRpcService {
                     try{
                         astrobee.moveTo(nextTargetPoint);
                     }catch (Exception e){
-                        if(astrobee.failMoveTo()){
-                            isGoingToGoal = true;
-                        }
+                        Logger.__log(e.getMessage());
+                        isGoingToGoal = astrobee.failMoveTo();
                         break;
                     }
                     try{
@@ -63,8 +62,9 @@ public class YourService extends KiboRpcService {
                             astrobee.shootLaser();
                         }
                     }catch (Exception e){
-                        astrobee.failMoveTo();
+                        isGoingToGoal = astrobee.failDeactivatedTarget();
                         break;
+
                     }
 
                     if (nextTargetPoint.getPointNumber() == 5 && !astrobee.isQrScanned()) {
@@ -84,7 +84,6 @@ public class YourService extends KiboRpcService {
                 }
 
             } while (api.getTimeRemaining().get(1) > MINIMUM_MILLISECONDS_TO_END_MISSION);
-
             astrobee.endMission();
 
         } catch (Exception e) {

@@ -2,6 +2,7 @@ package jp.jaxa.iss.kibo.pathfind;
 
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
+import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.utils.Line;
@@ -89,7 +90,7 @@ public class PathFind {
             }
             else moveTo(astrobee, node, orientation, printRobotPosition);
         }
-        if(astrobee.getCurrentPathFindNode() == PathFindNode.GOAL){return;}
+        if(astrobee.getCurrentPathFindNode().equals(PathFindNode.GOAL ) && astrobee.getPreviousPathFindNode().equals(PathFindNode.GOAL)){return;}
         moveTo(astrobee, to, orientation, printRobotPosition);
     }
 
@@ -102,20 +103,14 @@ public class PathFind {
      * @param printRobotPosition   printRobotPosition
      */
     public static void moveTo(Astrobee astrobee, Node node ,Quaternion quaternion,boolean printRobotPosition) {
-        Result result = null;
-        for (int i = 0; i < 5 && result == null; ++i) {
-            result = astrobee.api.moveTo(node, quaternion, printRobotPosition);
-        }
-        //not sure either it cause error that result equals null or false in hasSucceeded()
-        if (result == null) {
-            throw new NullPointerException("commands error");
-        }
+        Result result = astrobee.api.moveTo(node, quaternion, printRobotPosition);;
         int loopCounter = 0;
         while (!result.hasSucceeded() && loopCounter < 4) {
             result = astrobee.api.moveTo(node, quaternion, printRobotPosition);
             ++loopCounter;
         }
         if (!result.hasSucceeded()) {
+            Logger.__log("fail to move");
             throw new IllegalStateException("fail to move to the target point.");
         }
         //can be implement to return boolean, use for checking if astrobee move successfully.

@@ -21,8 +21,8 @@ public class Astrobee {
     //private final double[][] DOCK_CAM_INTRINSICS;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     private static String scannedQrText = null;
-    private PathFindNode previousPathFindNode = null;
-    private PathFindNode currentPathFindNode = PathFindNode.START;
+    private PathFindNode previousPathFindNode = TargetPoint.START;
+    private PathFindNode currentPathFindNode = TargetPoint.START;
     public final KiboRpcApi api;
 
     public Astrobee(KiboRpcApi api) {
@@ -71,10 +71,9 @@ public class Astrobee {
     }
 
     public void moveTo(PathFindNode node, Quaternion orientation) {
-        PathFind.pathFindMoveTo(this, currentPathFindNode, node, orientation);
         previousPathFindNode = currentPathFindNode;
         currentPathFindNode = node;
-
+        PathFind.pathFindMoveTo(this, previousPathFindNode, node, orientation);
     }
 
 
@@ -101,8 +100,9 @@ public class Astrobee {
         Result result = api.laserControl(true);
         if(result == null){ throw new NullPointerException("astrobee not on the target point");}
         api.takeTargetSnapshot(pointNode.getPointNumber());
-
-
+        if(api.getActiveTargets().indexOf(pointNode.getPointNumber()) != -1){ //must fix this
+            throw new IllegalStateException("fail to deactivate target");
+        }
     }
 
     /**
@@ -213,22 +213,38 @@ public class Astrobee {
      * @return  true if everything fail to run, false if it can go on
      */
     public boolean failMoveTo(){
-        try{
-
-            if(previousPathFindNode == PathFindNode.GOAL || currentPathFindNode == PathFindNode.GOAL) {
+        try {
+            if (previousPathFindNode.equals(PathFindNode.GOAL) || currentPathFindNode.equals(PathFindNode.GOAL)) {
+                Logger.__log("end");
                 return true;
-            }
-            else if(((TargetPoint)currentPathFindNode).getPointNumber() == 5 || ((TargetPoint)previousPathFindNode).getPointNumber() == 5) {
+            } else if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5)) || previousPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
+                Logger.__log("to goal");
                 moveTo(TargetPoint.GOAL);
-            }
-            else{
+            } else {
+                Logger.__log("to 5");
                 moveTo(TargetPoint.getTargetPoint(5));
+
             }
             return false;
-        } catch(Exception e){
+
+        }catch (Exception e){
             return failMoveTo();
         }
+    }
 
+    public boolean failDeactivatedTarget(){
+        try{
+            if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
+                Logger.__log("to goal");
+                moveTo(TargetPoint.GOAL);
+            } else {
+                Logger.__log("to 5");
+                moveTo(TargetPoint.getTargetPoint(5));
 
+            }
+            return false;
+        }catch (Exception e){
+            return failMoveTo();
+        }
     }
 }
