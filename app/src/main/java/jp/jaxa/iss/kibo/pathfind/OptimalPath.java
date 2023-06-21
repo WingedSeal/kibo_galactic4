@@ -97,9 +97,9 @@ public class OptimalPath {
         double totalDistance = 0;
         totalDistance = PathFind.estimateTotalDistance(astrobee, currentNode, midNodes[0]);
         if (totalDistance > 1.1d) Astrobee.ASTROBEE_ACCELERATION = 0.00688;
-        else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00645;
-        else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00629;
-        else Astrobee.ASTROBEE_ACCELERATION = 0.00563;
+        else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;
+        else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00634;
+        else Astrobee.ASTROBEE_ACCELERATION = 0.00555;
         for (double distance : PathFind.estimatePathDistances(astrobee, currentNode, midNodes[0])){
             totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
         }
@@ -107,16 +107,16 @@ public class OptimalPath {
         for (int i = 1; i < midNodes.length; i++) {
             totalDistance = PathFind.estimateTotalDistance(astrobee, midNodes[i - 1], midNodes[i]);
             if (totalDistance > 1.1d) Astrobee.ASTROBEE_ACCELERATION = 0.00688;
-            else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00645;
-            else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00629;
-            else Astrobee.ASTROBEE_ACCELERATION = 0.00563;
+            else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;
+            else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00634;
+            else Astrobee.ASTROBEE_ACCELERATION = 0.00555;
             for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[i - 1], midNodes[i])){
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
         }
 
         if (shouldConsiderGoal) {
-            Astrobee.ASTROBEE_ACCELERATION = 0.00782;
+            Astrobee.ASTROBEE_ACCELERATION = 0.00766;
             for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[midNodes.length - 1], PathFindNode.GOAL)){
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
