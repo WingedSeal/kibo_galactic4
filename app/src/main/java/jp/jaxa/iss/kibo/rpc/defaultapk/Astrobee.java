@@ -59,7 +59,8 @@ public class Astrobee {
         if (pointNode.getPointNumber() <= 6) {
             orientation = QuaternionCalculator.calculateQuaternion(node, Target.getTarget(pointNode.getPointNumber()));
         } else {
-            orientation = QuaternionCalculator.calculateQuaternion(node, PointOfInterest.QR_CODE);
+            //orientation = QuaternionCalculator.calculateQuaternion(node, PointOfInterest.QR_CODE);
+            orientation = new Quaternion(0f,0.707f,0f,0.707f);
         }
         moveTo(node, orientation);
 

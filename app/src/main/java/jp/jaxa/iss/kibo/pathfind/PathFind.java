@@ -167,16 +167,18 @@ public class PathFind {
             case START:
                 switch (end.id) {
                     case POINT_1:
-                        return new Node[]{findNodeY(Zone.keepOut1.xMin,Zone.keepOut1.zMax,start,end),};
+                        return new Node[]{NodeWithOrientation.node5};
                     case POINT_2:
                         return new Node[]{};
                     case POINT_3:
                         return new Node[]{NodeWithOrientation.node5};
                     case POINT_4:
-                        return new Node[]{TargetPoint.getTargetPoint(2)};
+                        return new Node[]{NodeWithOrientation.node5};
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
+                        return new Node[]{};
+                    case POINT_7:
                         return new Node[]{};
                 }
                 break;
@@ -196,6 +198,8 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_6:
                         return new Node[]{};
+                    case POINT_7:
+                        return new Node[]{};
                 }
                 break;
             case POINT_1:
@@ -208,16 +212,14 @@ public class PathFind {
                     case POINT_2:
                         return new Node[]{};
                     case POINT_3:
-                        if(!astrobee.isQrScanned())
-                            return new Node[]{NodeWithOrientation.node5};
-
-                        else
-                            return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end),};
+                        return new Node[]{};
                     case POINT_4:
                         return new Node[]{};
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
+                        return new Node[]{};
+                    case POINT_7:
                         return new Node[]{};
                 }
                 break;
@@ -239,6 +241,8 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_6:
                         return new Node[]{};
+                    case POINT_7:
+                        return new Node[]{};
                 }
                 break;
             case POINT_3:
@@ -247,12 +251,7 @@ public class PathFind {
                     case GOAL:
                         return new Node[]{};
                     case POINT_1:
-                        if(!astrobee.isQrScanned())
-                            return new Node[]{NodeWithOrientation.node5};
-
-                        else
-                            return new Node[]{
-                                    findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)};
+                        return new Node[]{};
                     case POINT_2:
                         Node[] nodes = getPathNodes(astrobee, end, start);
                         ArrayUtils.reverse(nodes);
@@ -262,10 +261,9 @@ public class PathFind {
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
-                        if(!astrobee.isQrScanned())
-                            return new Node[]{NodeWithOrientation.node5};
-                        else
-                            return new Node[]{findNodeX((Zone.keepOut3.yMax + Zone.keepOut3.yMin)/2, Zone.keepOut3.zMax, start, end)};
+                        return new Node[]{};
+                    case POINT_7:
+                        return new Node[]{};
                 }
                 break;
             case POINT_4:
@@ -283,16 +281,42 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_6:
                         return new Node[]{};
+                    case POINT_7:
+                        return new Node[]{};
                 }
                 break;
             case POINT_5:
                 switch (end.id) {
                     case START:
                     case GOAL:
+                        return new Node[]{};
                     case POINT_1:
+                        return new Node[]{};
                     case POINT_2:
+                        return new Node[]{};
                     case POINT_3:
+                        return new Node[]{};
                     case POINT_4:
+                        return new Node[]{};
+                    case POINT_6:
+                        return new Node[]{};
+                    case POINT_7:
+                        return new Node[]{};
+                }
+                break;
+            case POINT_7:
+                switch (end.id) {
+                    case START:
+                    case GOAL:
+                        return new Node[]{};
+                    case POINT_1:
+                        return new Node[]{};
+                    case POINT_2:
+                        return new Node[]{};
+                    case POINT_3:
+                        return new Node[]{};
+                    case POINT_4:
+                        return new Node[]{};
                     case POINT_6:
                         return new Node[]{};
                 }

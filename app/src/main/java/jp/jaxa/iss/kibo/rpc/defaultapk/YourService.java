@@ -79,8 +79,7 @@ public class YourService extends KiboRpcService {
                     astrobee.attemptScanQRDock(false, 5);
                     if(!astrobee.isQrScanned()){
                         astrobee.moveTo(TargetPoint.getTargetPoint(7));
-                        astrobee.attemptScanQRNav(true, 5);
-                        astrobee.moveTo(TargetPoint.getTargetPoint(5));
+                        astrobee.attemptScanQRNav(false, 5);
                     }
                 }
 
