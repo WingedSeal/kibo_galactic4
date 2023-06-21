@@ -168,7 +168,7 @@ public class PathFind {
                     case POINT_3:
                         return new Node[]{NodeWithOrientation.node5};
                     case POINT_4:
-                        return new Node[]{NodeWithOrientation.node5};
+                        return new Node[]{TargetPoint.getTargetPoint(2),};
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
