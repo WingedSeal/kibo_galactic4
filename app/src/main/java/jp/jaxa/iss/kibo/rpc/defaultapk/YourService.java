@@ -35,14 +35,16 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1() {
         Astrobee astrobee = new Astrobee(api);
-        boolean shouldConsiderGoal;
+        boolean shouldConsiderGoal = false;
         boolean isGoingToGoal = false;
 
         // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
             astrobee.startMission();
             do {
-                shouldConsiderGoal = true;
+                if (api.getTimeRemaining().get(1) < 120000){
+                    shouldConsiderGoal = true;
+                }
                 TargetPoint[] activePoints = astrobee.getActivePoints();
 
                 TargetPoint[] pathNodes = new OptimalPath(astrobee,
@@ -84,7 +86,7 @@ public class YourService extends KiboRpcService {
                 }
 
             } while (api.getTimeRemaining().get(1) > MINIMUM_MILLISECONDS_TO_END_MISSION);
-            astrobee.endMission();
+            astrobee.__forceEndMission(); // change this normal end mission
 
         } catch (Exception e) {
             Logger.__log("CRITICAL ERROR");

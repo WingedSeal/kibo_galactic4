@@ -1,6 +1,11 @@
 package jp.jaxa.iss.kibo.pathfind;
 
+import org.apache.commons.lang.ArrayUtils;
+
+import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class OptimalPath {
     private static final int THRESHOLD = 500;
@@ -74,15 +79,24 @@ public class OptimalPath {
             TargetPoint[] pointsToVisit = allPermutations.get(i);
             double timeUsed = getPathTime(pointsToVisit);
             int score = getTotalScore(pointsToVisit);
-            if ((activeTargets.length == pointsToVisit.length || score == maxScore) && timeUsed < minTime && timeRemaining - timeUsed > THRESHOLD) {
+            if ((activeTargets.length == pointsToVisit.length || score == maxScore) && (timeUsed < minTime) && (timeRemaining - timeUsed > THRESHOLD)) {
                 setOptimalPoints(pointsToVisit);
                 minTime = timeUsed;
             }
-            else if (score > maxScore && timeRemaining - timeUsed > THRESHOLD) {
+            else if ((score > maxScore) && (timeRemaining - timeUsed > THRESHOLD)) {
                 setOptimalPoints(pointsToVisit);
                 minTime = timeUsed;
                 maxScore = score;
             }
+            Logger.__log("timeUsed: " + timeUsed);
+            Logger.__log("minTime: " + minTime);
+            Logger.__log("maxScore: " + maxScore);
+            Logger.__log("score: " + score);
+            String pointThatVisit = "point: ";
+            for(TargetPoint point : pointsToVisit){
+                pointThatVisit += (""+ point.getPointNumber() + ", ");
+            }
+            Logger.__log(pointThatVisit);
         }
     }
 
