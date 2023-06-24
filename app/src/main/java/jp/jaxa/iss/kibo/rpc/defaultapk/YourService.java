@@ -86,7 +86,7 @@ public class YourService extends KiboRpcService {
                 }
 
             } while (api.getTimeRemaining().get(1) > MINIMUM_MILLISECONDS_TO_END_MISSION);
-            astrobee.__forceEndMission(); // change this normal end mission
+            astrobee.endMission();
 
         } catch (Exception e) {
             Logger.__log("CRITICAL ERROR");
