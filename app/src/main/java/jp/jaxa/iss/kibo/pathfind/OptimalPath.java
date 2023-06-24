@@ -133,6 +133,8 @@ public class OptimalPath {
         if (shouldConsiderGoal) {
             Astrobee.ASTROBEE_ACCELERATION = 0.00766;
             for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[midNodes.length - 1], PathFindNode.GOAL)){
+                if(distance > 2.0d && distance < 3.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00766;
+                else Astrobee.ASTROBEE_ACCELERATION = 0.00753;
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
         }
