@@ -82,6 +82,7 @@ public class OptimalPath {
             if ((activeTargets.length == pointsToVisit.length || score == maxScore) && (timeUsed < minTime) && (timeRemaining - timeUsed > THRESHOLD)) {
                 setOptimalPoints(pointsToVisit);
                 minTime = timeUsed;
+                maxScore = score;
             }
             else if ((score > maxScore) && (timeRemaining - timeUsed > THRESHOLD)) {
                 setOptimalPoints(pointsToVisit);
