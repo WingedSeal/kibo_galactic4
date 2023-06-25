@@ -15,10 +15,14 @@ public class Target extends PointOfInterest {
     public double getRadius() {
         return radius;
     }
+
     public int getTargetNumber() {
         return targetNumber;
     }
-    public int getScore() {return score;}
+
+    public int getScore() {
+        return score;
+    }
 
     private static final Target[] TARGETS = {
             new Target(11.2625, -10.58, 5.3625, POI_Id.TARGET_1, 0.04, 1, 30),

@@ -1,7 +1,9 @@
 package jp.jaxa.iss.kibo.pathfind;
 
 import gov.nasa.arc.astrobee.types.Point;
+
 import java.util.Objects;
+
 /**
  * A special Point, Astrobee can pass through while pathfinding
  */

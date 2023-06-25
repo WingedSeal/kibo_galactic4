@@ -285,12 +285,12 @@ public class QuaternionCalculator {
     /**
      * get axis and radian of quaternion
      *
-     * @param quaternion    Quaternion
-     * @return              array of double [axis x, axis y, axis z, radian]
+     * @param quaternion Quaternion
+     * @return array of double [axis x, axis y, axis z, radian]
      */
-    public static double[] getInfoQuaternion(Quaternion quaternion){
+    public static double[] getInfoQuaternion(Quaternion quaternion) {
         double halfThetaOfRotation = Math.acos(quaternion.getW());
-        double[] infoQuaternion = new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)),halfThetaOfRotation};
+        double[] infoQuaternion = new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)), halfThetaOfRotation};
         return infoQuaternion;
     }
 
@@ -299,13 +299,12 @@ public class QuaternionCalculator {
      * <p>
      * <a href="https://www.youtube.com/watch?v=q-ESzg03mQc&t=134s/">...</a>
      *
-     *
-     * @param axis                  axis of rotation
-     * @param vector                vector to calculate
-     * @param radianOfRotation      radion of rotation
-     * @return                      calculated vector
+     * @param axis             axis of rotation
+     * @param vector           vector to calculate
+     * @param radianOfRotation radion of rotation
+     * @return calculated vector
      */
-    public static Point rotateVector(double[] axis , Point vector, double radianOfRotation){
+    public static Point rotateVector(double[] axis, Point vector, double radianOfRotation) {
         double crossX = axis[1] * vector.getZ() - axis[2] * vector.getY();
         double crossY = -(axis[0] * vector.getZ() - axis[2] * vector.getX());
         double crossZ = axis[0] * vector.getY() - axis[1] * vector.getX();
@@ -318,6 +317,6 @@ public class QuaternionCalculator {
         double y = Math.cos(radianOfRotation) * vector.getY() + Math.sin(radianOfRotation) * crossY + (1 - Math.cos(radianOfRotation)) * dotY * axis[1];
         double z = Math.cos(radianOfRotation) * vector.getZ() + Math.sin(radianOfRotation) * crossZ + (1 - Math.cos(radianOfRotation)) * dotZ * axis[2];
 
-        return new Point(x,y,z);
+        return new Point(x, y, z);
     }
 }

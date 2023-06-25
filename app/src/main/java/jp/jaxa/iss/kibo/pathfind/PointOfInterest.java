@@ -9,6 +9,7 @@ public class PointOfInterest extends Node {
         super(x, y, z);
         this.id = id;
     }
+
     public static final PointOfInterest QR_CODE = new PointOfInterest(11.381944, -8.566172, 3.76203, POI_Id.QR_CODE);
 
     /**

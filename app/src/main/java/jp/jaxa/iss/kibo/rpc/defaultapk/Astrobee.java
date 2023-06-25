@@ -5,20 +5,17 @@ import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
+import jp.jaxa.iss.kibo.utils.CameraMode;
 import jp.jaxa.iss.kibo.utils.QRReader;
 import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
-import jp.jaxa.iss.kibo.utils.CameraMode;
 
 import java.util.List;
-
 
 
 public class Astrobee {
     public static double ASTROBEE_ACCELERATION = 0.00699;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
     public static final long TIME_THRESHOLD = 30000;
-    //private final double[][] NAV_CAM_INTRINSICS;
-    //private final double[][] DOCK_CAM_INTRINSICS;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     private static String scannedQrText = null;
     private PathFindNode previousPathFindNode = TargetPoint.START;
@@ -27,8 +24,6 @@ public class Astrobee {
 
     public Astrobee(KiboRpcApi api) {
         this.api = api;
-        //this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
-        //this.DOCK_CAM_INTRINSICS = api.getDockCamIntrinsics();
     }
 
     public void startMission() {
@@ -60,7 +55,7 @@ public class Astrobee {
             orientation = QuaternionCalculator.calculateQuaternion(node, Target.getTarget(pointNode.getPointNumber()));
         } else {
             //orientation = QuaternionCalculator.calculateQuaternion(node, PointOfInterest.QR_CODE);
-            orientation = new Quaternion(0f,0.707f,0f,0.707f);
+            orientation = new Quaternion(0f, 0.707f, 0f, 0.707f);
         }
         moveTo(node, orientation);
 
@@ -77,7 +72,6 @@ public class Astrobee {
     }
 
 
-
     /**
      * @return whether the QR code was already scanned
      */
@@ -92,16 +86,18 @@ public class Astrobee {
      * @throw IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
      * @throw NullPointerException Attempted to turn laser on while not in the target point area
      */
-    public void shootLaser( ) {
+    public void shootLaser() {
         if (!(currentPathFindNode instanceof TargetPoint)) {
             throw new IllegalStateException("Attempted to shoot laser while not being on a point node");
         }
         TargetPoint pointNode = (TargetPoint) currentPathFindNode;
         Result result = api.laserControl(true);
-        if(result == null){ throw new NullPointerException("astrobee not on the target point");}
+        if (result == null) {
+            throw new NullPointerException("astrobee not on the target point");
+        }
         api.takeTargetSnapshot(pointNode.getPointNumber());
         List<Integer> activateTargets = api.getActiveTargets();
-        if(activateTargets.indexOf(pointNode.getPointNumber()) != -1 && activateTargets.size() ==1 ){ //change this to throw only when lastest activate target list count = 1
+        if (activateTargets.indexOf(pointNode.getPointNumber()) != -1 && activateTargets.size() == 1) { //change this to throw only when lastest activate target list count = 1
             throw new IllegalStateException("fail to deactivate target");
         }
     }
@@ -134,7 +130,7 @@ public class Astrobee {
      */
     public boolean attemptScanQRDock(boolean isRotate, int attempts) {
         if (isRotate)
-            moveTo(currentPathFindNode, QuaternionCalculator.calculateDockCamQuaternion(currentPathFindNode,PointOfInterest.QR_CODE));
+            moveTo(currentPathFindNode, QuaternionCalculator.calculateDockCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api, CameraMode.DOCK);
@@ -150,7 +146,7 @@ public class Astrobee {
      * @return whether the scan was successful
      */
     public boolean attemptScanQR(int attempts, CameraMode mode) {
-        switch (mode){
+        switch (mode) {
             case NAV:
                 attemptScanQRNav(false, attempts);
                 break;
@@ -199,7 +195,9 @@ public class Astrobee {
      *
      * @return currentPathFindNode
      */
-    public PathFindNode getCurrentPathFindNode(){ return currentPathFindNode;}
+    public PathFindNode getCurrentPathFindNode() {
+        return currentPathFindNode;
+    }
 
     /**
      * Get node where astrobee was before
@@ -207,13 +205,16 @@ public class Astrobee {
      * @return previousPathFindNode
      */
 
-    public PathFindNode getPreviousPathFindNode(){ return  previousPathFindNode;}
+    public PathFindNode getPreviousPathFindNode() {
+        return previousPathFindNode;
+    }
+
     /**
      * Error handling when Astrobee.shootLaser() and PathFind.moveTo is not working properly
      *
-     * @return  true if everything fail to run, false if it can go on
+     * @return true if everything fail to run, false if it can go on
      */
-    public boolean failMoveTo(){
+    public boolean failMoveTo() {
         try {
             if (previousPathFindNode.equals(PathFindNode.GOAL) || currentPathFindNode.equals(PathFindNode.GOAL)) {
                 Logger.__log("end");
@@ -228,13 +229,13 @@ public class Astrobee {
             }
             return false;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return failMoveTo();
         }
     }
 
-    public boolean failDeactivatedTarget(){
-        try{
+    public boolean failDeactivatedTarget() {
+        try {
             if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
                 Logger.__log("to goal");
                 moveTo(TargetPoint.GOAL);
@@ -244,7 +245,7 @@ public class Astrobee {
 
             }
             return false;
-        }catch (Exception e){
+        } catch (Exception e) {
             return failMoveTo();
         }
     }

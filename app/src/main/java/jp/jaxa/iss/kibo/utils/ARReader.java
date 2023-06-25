@@ -2,18 +2,6 @@ package jp.jaxa.iss.kibo.utils;
 
 
 import gov.nasa.arc.astrobee.types.Point;
-import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.logger.Logger;
-import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.aruco.Aruco;
-import org.opencv.aruco.Dictionary;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ARReader {
     private static int count = 0;

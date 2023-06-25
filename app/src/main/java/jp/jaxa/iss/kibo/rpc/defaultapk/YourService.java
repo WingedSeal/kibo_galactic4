@@ -43,7 +43,7 @@ public class YourService extends KiboRpcService {
             astrobee.startMission();
             do {
                 long timeRemaining = api.getTimeRemaining().get(1);
-                if (timeRemaining < 120000){
+                if (timeRemaining < 120000) {
                     shouldConsiderGoal = true;
                 }
                 TargetPoint[] activePoints = astrobee.getActivePoints();
@@ -53,18 +53,18 @@ public class YourService extends KiboRpcService {
                 if (pathNodes == null) break;
                 else if (pathNodes.length != activePoints.length) isGoingToGoal = true;
                 for (TargetPoint nextTargetPoint : pathNodes) {
-                    try{
+                    try {
                         astrobee.moveTo(nextTargetPoint);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Logger.__log(e.getMessage());
                         isGoingToGoal = astrobee.failMoveTo();
                         break;
                     }
-                    try{
+                    try {
                         if (nextTargetPoint.getPointNumber() <= 6) {
                             astrobee.shootLaser();
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         isGoingToGoal = astrobee.failDeactivatedTarget();
                         break;
 
@@ -77,10 +77,10 @@ public class YourService extends KiboRpcService {
                     }
                 }
                 if (isGoingToGoal) break;
-                if(!astrobee.isQrScanned() && api.getTimeRemaining().get(1) < 120000){
+                if (!astrobee.isQrScanned() && api.getTimeRemaining().get(1) < 120000) {
                     astrobee.moveTo(TargetPoint.getTargetPoint(5));
                     astrobee.attemptScanQRDock(false, 5);
-                    if(!astrobee.isQrScanned()){
+                    if (!astrobee.isQrScanned()) {
                         astrobee.moveTo(TargetPoint.getTargetPoint(7));
                         astrobee.attemptScanQRNav(false, 5);
                     }

@@ -1,12 +1,10 @@
 package jp.jaxa.iss.kibo.pathfind;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import jp.jaxa.iss.kibo.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
 public class OptimalPath {
     private static final int THRESHOLD = 500;
     private double minTime = 1e7;
@@ -18,7 +16,7 @@ public class OptimalPath {
     private TargetPoint[] activeTargets;
     public Astrobee astrobee;
 
-    public OptimalPath(Astrobee astrobee,long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
+    public OptimalPath(Astrobee astrobee, long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
         this.astrobee = astrobee;
         this.currentNode = currentNode;
         this.timeRemaining = timeRemaining;
@@ -36,7 +34,7 @@ public class OptimalPath {
         return optimalPoints;
     }
 
-    public double getMinTime(){
+    public double getMinTime() {
         return minTime;
     }
 
@@ -48,17 +46,17 @@ public class OptimalPath {
 
     private static void enumerate(TargetPoint[] a, int n, int k, ArrayList<TargetPoint[]> allPermutations) {
         if (k == 0) {
-            TargetPoint[] singlePermutation = new TargetPoint[a.length-n];
-            for (int i = n; i < a.length; i++){
-                singlePermutation[i-n] = a[i];
+            TargetPoint[] singlePermutation = new TargetPoint[a.length - n];
+            for (int i = n; i < a.length; i++) {
+                singlePermutation[i - n] = a[i];
             }
             allPermutations.add(singlePermutation);
         }
 
         for (int i = 0; i < n; i++) {
-            swap(a, i, n-1);
-            enumerate(a, n-1, k-1, allPermutations);
-            swap(a, i, n-1);
+            swap(a, i, n - 1);
+            enumerate(a, n - 1, k - 1, allPermutations);
+            swap(a, i, n - 1);
         }
     }
 
@@ -71,11 +69,11 @@ public class OptimalPath {
 
     /**
      * a recursive function to find optimal node order using brute force algorithm
-     * 
+     *
      * @param allPermutations
      */
     private void findOptimalPath(ArrayList<TargetPoint[]> allPermutations) {
-        for (int i=0; i<allPermutations.size(); i++) {
+        for (int i = 0; i < allPermutations.size(); i++) {
             TargetPoint[] pointsToVisit = allPermutations.get(i);
             double timeUsed = getPathTime(pointsToVisit);
             int score = getTotalScore(pointsToVisit);
@@ -83,8 +81,7 @@ public class OptimalPath {
                 setOptimalPoints(pointsToVisit);
                 minTime = timeUsed;
                 maxScore = score;
-            }
-            else if ((score > maxScore) && (timeRemaining - timeUsed > THRESHOLD)) {
+            } else if ((score > maxScore) && (timeRemaining - timeUsed > THRESHOLD)) {
                 setOptimalPoints(pointsToVisit);
                 minTime = timeUsed;
                 maxScore = score;
@@ -94,15 +91,15 @@ public class OptimalPath {
             Logger.__log("maxScore: " + maxScore);
             Logger.__log("score: " + score);
             String pointThatVisit = "point: ";
-            for(TargetPoint point : pointsToVisit){
-                pointThatVisit += (""+ point.getPointNumber() + ", ");
+            for (TargetPoint point : pointsToVisit) {
+                pointThatVisit += ("" + point.getPointNumber() + ", ");
             }
             Logger.__log(pointThatVisit);
         }
     }
 
     /**
-     * calculate the time spent on walking along the nodes 
+     * calculate the time spent on walking along the nodes
      *
      * @param midNodes an array of `PathFindNode` object to walk pass and calculate time
      * @return estimated total time in milliseconds
@@ -115,7 +112,7 @@ public class OptimalPath {
         else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;
         else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00634;
         else Astrobee.ASTROBEE_ACCELERATION = 0.00555;
-        for (double distance : PathFind.estimatePathDistances(astrobee, currentNode, midNodes[0])){
+        for (double distance : PathFind.estimatePathDistances(astrobee, currentNode, midNodes[0])) {
             totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
         }
 
@@ -125,15 +122,15 @@ public class OptimalPath {
             else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;
             else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00634;
             else Astrobee.ASTROBEE_ACCELERATION = 0.00555;
-            for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[i - 1], midNodes[i])){
+            for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[i - 1], midNodes[i])) {
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
         }
 
         if (shouldConsiderGoal) {
             Astrobee.ASTROBEE_ACCELERATION = 0.00766;
-            for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[midNodes.length - 1], PathFindNode.GOAL)){
-                if(distance > 2.0d && distance < 3.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00766;
+            for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[midNodes.length - 1], PathFindNode.GOAL)) {
+                if (distance > 2.0d && distance < 3.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00766;
                 else Astrobee.ASTROBEE_ACCELERATION = 0.00753;
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
@@ -143,7 +140,7 @@ public class OptimalPath {
 
     private int getTotalScore(TargetPoint[] midPoints) {
         int totalScore = 0;
-        for (TargetPoint point: midPoints) {
+        for (TargetPoint point : midPoints) {
             totalScore += point.getScore();
         }
         return totalScore;
