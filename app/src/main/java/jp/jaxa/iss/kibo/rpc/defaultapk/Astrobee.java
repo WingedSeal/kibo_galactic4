@@ -100,7 +100,8 @@ public class Astrobee {
         Result result = api.laserControl(true);
         if(result == null){ throw new NullPointerException("astrobee not on the target point");}
         api.takeTargetSnapshot(pointNode.getPointNumber());
-        if(api.getActiveTargets().indexOf(pointNode.getPointNumber()) != -1){ //must fix this
+        List<Integer> activateTargets = api.getActiveTargets();
+        if(activateTargets.indexOf(pointNode.getPointNumber()) != -1 && activateTargets.size() ==1 ){ //change this to throw only when lastest activate target list count = 1
             throw new IllegalStateException("fail to deactivate target");
         }
     }

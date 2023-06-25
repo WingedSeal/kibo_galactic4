@@ -90,7 +90,7 @@ public class PathFind {
             }
             else moveTo(astrobee, node, orientation, printRobotPosition);
         }
-        if(astrobee.getCurrentPathFindNode().equals(PathFindNode.GOAL ) && astrobee.getPreviousPathFindNode().equals(PathFindNode.GOAL)){return;}
+        if(astrobee.getCurrentPathFindNode().equals(astrobee.getPreviousPathFindNode())){return;}
         moveTo(astrobee, to, orientation, printRobotPosition);
     }
 
@@ -207,9 +207,15 @@ public class PathFind {
                     case POINT_2:
                         return new Node[]{};
                     case POINT_3:
-                        return new Node[]{};
+                        if(!astrobee.isQrScanned())
+                            return new Node[]{NodeWithOrientation.node5};
+                        else
+                            return new Node[]{};
                     case POINT_4:
-                        return new Node[]{};
+                        if(!astrobee.isQrScanned())
+                            return new Node[]{NodeWithOrientation.node5};
+                        else
+                            return new Node[]{};
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
@@ -226,10 +232,7 @@ public class PathFind {
                     case POINT_1:
                         return new Node[]{};
                     case POINT_3:
-                        if(!astrobee.isQrScanned())
-                            return new Node[]{NodeWithOrientation.node5};
-                        else
-                            return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)};
+                        return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax)/2, Zone.keepOut3.zMax, start, end)};
                     case POINT_4:
                         return new Node[]{};
                     case POINT_5:
@@ -256,6 +259,9 @@ public class PathFind {
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
+                        if(!astrobee.isQrScanned())
+                        return new Node[]{NodeWithOrientation.node5};
+                    else
                         return new Node[]{};
                     case POINT_7:
                         return new Node[]{};
@@ -275,7 +281,10 @@ public class PathFind {
                     case POINT_5:
                         return new Node[]{};
                     case POINT_6:
-                        return new Node[]{};
+                        if(!astrobee.isQrScanned())
+                            return new Node[]{NodeWithOrientation.node5};
+                        else
+                            return new Node[]{};
                     case POINT_7:
                         return new Node[]{};
                 }
