@@ -13,7 +13,7 @@ public class OptimalPath {
     private final PathFindNode currentNode;
     private final long timeRemaining;
     private final boolean shouldConsiderGoal;
-    private TargetPoint[] activeTargets;
+    private final TargetPoint[] activeTargets;
     public Astrobee astrobee;
 
     public OptimalPath(Astrobee astrobee, long timeRemaining, PathFindNode currentNode, TargetPoint[] activeTargets, boolean shouldConsiderGoal) {
@@ -34,10 +34,6 @@ public class OptimalPath {
         return optimalPoints;
     }
 
-    public double getMinTime() {
-        return minTime;
-    }
-
     public static ArrayList<TargetPoint[]> getTargetPointPermutation(TargetPoint[] targetArray, int totalPointOnPath) {
         ArrayList<TargetPoint[]> allPermutations = new ArrayList<>();
         enumerate(targetArray, targetArray.length, totalPointOnPath, allPermutations);
@@ -47,9 +43,7 @@ public class OptimalPath {
     private static void enumerate(TargetPoint[] a, int n, int k, ArrayList<TargetPoint[]> allPermutations) {
         if (k == 0) {
             TargetPoint[] singlePermutation = new TargetPoint[a.length - n];
-            for (int i = n; i < a.length; i++) {
-                singlePermutation[i - n] = a[i];
-            }
+            if (a.length - n >= 0) System.arraycopy(a, n, singlePermutation, 0, a.length - n);
             allPermutations.add(singlePermutation);
         }
 
@@ -70,11 +64,10 @@ public class OptimalPath {
     /**
      * a recursive function to find optimal node order using brute force algorithm
      *
-     * @param allPermutations
+     * @param allPermutations All permutations of target point
      */
     private void findOptimalPath(ArrayList<TargetPoint[]> allPermutations) {
-        for (int i = 0; i < allPermutations.size(); i++) {
-            TargetPoint[] pointsToVisit = allPermutations.get(i);
+        for (TargetPoint[] pointsToVisit : allPermutations) {
             double timeUsed = getPathTime(pointsToVisit);
             int score = getTotalScore(pointsToVisit);
             if ((activeTargets.length == pointsToVisit.length || score == maxScore) && (timeUsed < minTime) && (timeRemaining - timeUsed > THRESHOLD)) {
@@ -90,11 +83,11 @@ public class OptimalPath {
             Logger.__log("minTime: " + minTime);
             Logger.__log("maxScore: " + maxScore);
             Logger.__log("score: " + score);
-            String pointThatVisit = "point: ";
+            StringBuilder pointThatVisit = new StringBuilder("point: ");
             for (TargetPoint point : pointsToVisit) {
-                pointThatVisit += ("" + point.getPointNumber() + ", ");
+                pointThatVisit.append(point.getPointNumber()).append(", ");
             }
-            Logger.__log(pointThatVisit);
+            Logger.__log(pointThatVisit.toString());
         }
     }
 
@@ -106,7 +99,7 @@ public class OptimalPath {
      */
     private double getPathTime(TargetPoint[] midNodes) {
         double totalTimeSec = 0;
-        double totalDistance = 0;
+        double totalDistance;
         totalDistance = PathFind.estimateTotalDistance(astrobee, currentNode, midNodes[0]);
         if (totalDistance > 1.1d) Astrobee.ASTROBEE_ACCELERATION = 0.00688;
         else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;

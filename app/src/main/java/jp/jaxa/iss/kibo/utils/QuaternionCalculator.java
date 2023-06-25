@@ -290,8 +290,7 @@ public class QuaternionCalculator {
      */
     public static double[] getInfoQuaternion(Quaternion quaternion) {
         double halfThetaOfRotation = Math.acos(quaternion.getW());
-        double[] infoQuaternion = new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)), halfThetaOfRotation};
-        return infoQuaternion;
+        return new double[]{(quaternion.getX() / Math.sin(halfThetaOfRotation)), (quaternion.getY() / Math.sin(halfThetaOfRotation)), (quaternion.getZ() / Math.sin(halfThetaOfRotation)), halfThetaOfRotation};
     }
 
     /**

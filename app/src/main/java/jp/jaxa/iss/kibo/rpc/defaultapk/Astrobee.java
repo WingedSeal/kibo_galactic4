@@ -15,7 +15,7 @@ import java.util.List;
 public class Astrobee {
     public static double ASTROBEE_ACCELERATION = 0.00699;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
-    public static final long TIME_THRESHOLD = 30000;
+//    public static final long TIME_THRESHOLD = 30000;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     private static String scannedQrText = null;
     private PathFindNode previousPathFindNode = TargetPoint.START;
@@ -73,18 +73,18 @@ public class Astrobee {
 
 
     /**
-     * @return whether the QR code was already scanned
+     * @return whether the QR code was NOT already scanned
      */
-    public static boolean isQrScanned() {
-        return scannedQrText != null;
+    public boolean isQrNotScanned() {
+        return scannedQrText == null;
     }
 
 
     /**
      * Shoot laser in the direction Astrobee is facing
      *
-     * @throw IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
-     * @throw NullPointerException Attempted to turn laser on while not in the target point area
+     * @throws IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
+     * @throws NullPointerException Attempted to turn laser on while not in the target point area
      */
     public void shootLaser() {
         if (!(currentPathFindNode instanceof TargetPoint)) {
@@ -97,7 +97,7 @@ public class Astrobee {
         }
         api.takeTargetSnapshot(pointNode.getPointNumber());
         List<Integer> activateTargets = api.getActiveTargets();
-        if (activateTargets.indexOf(pointNode.getPointNumber()) != -1 && activateTargets.size() == 1) { //change this to throw only when lastest activate target list count = 1
+        if (activateTargets.contains(pointNode.getPointNumber()) && activateTargets.size() == 1) { //change this to throw only when lastest activate target list count = 1
             throw new IllegalStateException("fail to deactivate target");
         }
     }

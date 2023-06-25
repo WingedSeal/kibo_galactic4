@@ -14,24 +14,6 @@ import java.util.Arrays;
 public class YourService extends KiboRpcService {
     private static final long MINIMUM_MILLISECONDS_TO_END_MISSION = 30000;
 
-    protected void runPlan1_backup() {
-        Astrobee astrobee = new Astrobee(api);
-        try {
-            astrobee.startMission();
-
-            astrobee.moveToPoint(5);
-            astrobee.shootLaser();
-            astrobee.attemptScanQRDock(false, 5);
-
-            astrobee.endMission();
-        } catch (Exception e) {
-            Logger.__log("CRITICAL ERROR");
-            Logger.__log(e.getMessage());
-            Logger.__log(Arrays.toString(e.getStackTrace()));
-            astrobee.__forceEndMission();
-        }
-    }
-
     @Override
     protected void runPlan1() {
         Astrobee astrobee = new Astrobee(api);
@@ -70,17 +52,17 @@ public class YourService extends KiboRpcService {
 
                     }
 
-                    if (nextTargetPoint.getPointNumber() == 5 && !astrobee.isQrScanned()) {
+                    if (nextTargetPoint.getPointNumber() == 5 && astrobee.isQrNotScanned()) {
                         astrobee.attemptScanQRDock(false, 5);
                     } else if (nextTargetPoint.getPointNumber() == 7) {
                         astrobee.attemptScanQRNav(true, 3);
                     }
                 }
                 if (isGoingToGoal) break;
-                if (!astrobee.isQrScanned() && api.getTimeRemaining().get(1) < 120000) {
+                if (astrobee.isQrNotScanned() && api.getTimeRemaining().get(1) < 120000) {
                     astrobee.moveTo(TargetPoint.getTargetPoint(5));
                     astrobee.attemptScanQRDock(false, 5);
-                    if (!astrobee.isQrScanned()) {
+                    if (astrobee.isQrNotScanned()) {
                         astrobee.moveTo(TargetPoint.getTargetPoint(7));
                         astrobee.attemptScanQRNav(false, 5);
                     }

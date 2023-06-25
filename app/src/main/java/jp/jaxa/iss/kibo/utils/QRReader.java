@@ -13,7 +13,7 @@ public class QRReader {
     private static int imageNumber = 0;
     private static final boolean saveImages = false;
 
-    private static final HashMap<String, String> MESSAGES = new HashMap<String, String>();
+    private static final HashMap<String, String> MESSAGES = new HashMap<>();
 
     static {
         MESSAGES.put("COLUMBUS", "GO_TO_COLUMBUS");
