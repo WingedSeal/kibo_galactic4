@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class QRReader {
     private static int imageNumber = 0;
-    private static final boolean saveImages = true;
+    private static final boolean saveImages = false;
 
     private static final HashMap<String, String> MESSAGES = new HashMap<String, String>();
 
