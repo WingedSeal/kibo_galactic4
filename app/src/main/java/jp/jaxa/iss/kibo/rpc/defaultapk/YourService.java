@@ -72,10 +72,7 @@ public class YourService extends KiboRpcService {
             astrobee.endMission();
 
         } catch (Exception e) {
-            Logger.__log("CRITICAL ERROR");
-            Logger.__log(e.getMessage());
-            Logger.__log(Arrays.toString(e.getStackTrace()));
-            astrobee.__forceEndMission();
+            astrobee.endMission();
         }
     }
 
