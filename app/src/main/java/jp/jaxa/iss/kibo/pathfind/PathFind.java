@@ -260,9 +260,9 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_6:
                         if(!astrobee.isQrScanned())
-                        return new Node[]{NodeWithOrientation.node5};
-                    else
-                        return new Node[]{};
+                            return new Node[]{NodeWithOrientation.node5};
+                        else
+                            return new Node[]{};
                     case POINT_7:
                         return new Node[]{};
                 }
