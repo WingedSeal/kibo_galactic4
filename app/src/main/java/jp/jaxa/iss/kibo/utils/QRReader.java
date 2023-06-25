@@ -3,6 +3,8 @@ package jp.jaxa.iss.kibo.utils;
 import android.graphics.Bitmap;
 import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 
 import java.util.HashMap;
@@ -58,7 +60,7 @@ public class QRReader {
         //covert bitmap to BinaryBitmap(zxing) for reading QR
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
-        Reader reader = new MultiFormatReader();
+        Reader reader = new QRCodeReader();
         try {
             Result result = reader.decode(bitmap);
             String contents = result.getText();
