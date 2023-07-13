@@ -65,7 +65,7 @@ public class PathFind {
                 NodeWithOrientation nodeWithOrientation = (NodeWithOrientation) node;
                 if (nodeWithOrientation.getPointedNode().equals(PointOfInterest.QR_CODE) && astrobee.isQrNotScanned()) {
                     moveTo(astrobee, nodeWithOrientation, nodeWithOrientation.getOrientation(), printRobotPosition);
-                    astrobee.attemptScanQR(5, nodeWithOrientation.getCameraMode());
+                    astrobee.attemptScanQR(6, nodeWithOrientation.getCameraMode());
                 } else moveTo(astrobee, nodeWithOrientation, orientation, printRobotPosition);
 
             } else moveTo(astrobee, node, orientation, printRobotPosition);
@@ -144,14 +144,16 @@ public class PathFind {
             case START:
                 switch (end.id) {
                     case POINT_1:
-                        return new Node[]{findNodeY(Zone.keepOut1.xMin, Zone.keepOut1.zMax, start, end),};
+                        return new Node[]{NodeWithOrientation.node5,};
+                        //return new Node[]{findNodeY(Zone.keepOut1.xMin, Zone.keepOut1.zMax, start, end),};
                     case POINT_2:
                     case POINT_5:
                     case POINT_6:
                     case POINT_7:
                         return new Node[]{};
                     case POINT_3:
-                        return new Node[]{new NodeWithOrientation(11.114, -7.9756, 5.9076d - 0.810d)};
+                        return new Node[]{NodeWithOrientation.node5,};
+                        //return new Node[]{new NodeWithOrientation(11.114, -7.9756, 5.9076d - 0.810d)};
                     case POINT_4:
                         return new Node[]{TargetPoint.getTargetPoint(2),};
                 }
@@ -201,7 +203,8 @@ public class PathFind {
                     case POINT_7:
                         return new Node[]{};
                     case POINT_3:
-                        return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax) / 2, Zone.keepOut3.zMax, start, end)};
+                        return new Node[]{};
+                        //return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax) / 2, Zone.keepOut3.zMax, start, end)};
                 }
                 break;
             case POINT_3:
