@@ -190,6 +190,8 @@ public class PathFind {
                             return new Node[]{NodeWithOrientation.node5};
                         else
                             return new Node[]{};
+                    case REALPOINT_1:
+                        return new Node[]{};
                 }
                 break;
             case POINT_2:
@@ -205,6 +207,8 @@ public class PathFind {
                     case POINT_3:
                         return new Node[]{};
                         //return new Node[]{findNodeX((Zone.keepOut3.yMin + Zone.keepOut3.yMax) / 2, Zone.keepOut3.zMax, start, end)};
+                    case REALPOINT_2:
+                        return new Node[]{};
                 }
                 break;
             case POINT_3:
@@ -225,6 +229,8 @@ public class PathFind {
                             return new Node[]{NodeWithOrientation.node5};
                         else
                             return new Node[]{};
+                    case REALPOINT_3:
+                        return new Node[]{};
                 }
                 break;
             case POINT_4:
@@ -242,6 +248,8 @@ public class PathFind {
                             return new Node[]{NodeWithOrientation.node5};
                         else
                             return new Node[]{};
+                    case REALPOINT_4:
+                        return new Node[]{};
                 }
                 break;
             case POINT_5:
@@ -269,10 +277,19 @@ public class PathFind {
                         return new Node[]{};
                 }
                 break;
+            case REALPOINT_1:
+                return new Node[]{};
+            case REALPOINT_2:
+                return new Node[]{};
+            case REALPOINT_3:
+                return new Node[]{};
+            case REALPOINT_4:
+                return new Node[]{};
             case POINT_6:
                 Node[] nodes = getPathNodes(astrobee, end, start);
                 ArrayUtils.reverse(nodes);
                 return nodes;
+
         }
         throw new IllegalStateException("Unexpected value: " + start.id + " and " + end.id);
     }

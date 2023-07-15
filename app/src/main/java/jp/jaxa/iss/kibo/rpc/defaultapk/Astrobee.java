@@ -65,6 +65,9 @@ public class Astrobee {
         moveTo(TargetPoint.getTargetPoint(pointNumber));
     }
 
+    public void moveToRealPoint(int pointNumber) { moveTo(TargetPoint.getRealTargetPoint(pointNumber));}
+
+
     public void moveTo(PathFindNode node, Quaternion orientation) {
         previousPathFindNode = currentPathFindNode;
         currentPathFindNode = node;
@@ -236,6 +239,17 @@ public class Astrobee {
 
     public boolean failDeactivatedTarget() {
         try {
+            TargetPoint pointNode = (TargetPoint) currentPathFindNode;
+            if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
+                moveToPoint(pointNode.getPointNumber());
+            }
+            else{
+                moveToRealPoint(pointNode.getPointNumber());
+                shootLaser();
+                moveToPoint(pointNode.getPointNumber());
+            }
+            return false;
+            /*
             if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
                 Logger.__log("to goal");
                 moveTo(TargetPoint.GOAL);
@@ -245,8 +259,9 @@ public class Astrobee {
 
             }
             return false;
+            */
         } catch (Exception e) {
-            return failMoveTo();
+            return failDeactivatedTarget();
         }
     }
 }
