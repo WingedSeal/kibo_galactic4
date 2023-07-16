@@ -1,11 +1,9 @@
-package jp.jaxa.iss.kibo.rpc.defaultapk;
+package jp.jaxa.iss.kibo.rpc.galactic4;
 
-import jp.jaxa.iss.kibo.logger.Logger;
-import jp.jaxa.iss.kibo.pathfind.OptimalPath;
-import jp.jaxa.iss.kibo.pathfind.TargetPoint;
+import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.OptimalPath;
+import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
-
-import java.util.Arrays;
 
 /**
  * Class meant to handle commands from the Ground Data System and execute them in Astrobee

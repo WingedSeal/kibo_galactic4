@@ -1,13 +1,13 @@
-package jp.jaxa.iss.kibo.rpc.defaultapk;
+package jp.jaxa.iss.kibo.rpc.galactic4;
 
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.logger.Logger;
-import jp.jaxa.iss.kibo.pathfind.*;
+import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.utils.CameraMode;
-import jp.jaxa.iss.kibo.utils.QRReader;
-import jp.jaxa.iss.kibo.utils.QuaternionCalculator;
+import jp.jaxa.iss.kibo.rpc.galactic4.utils.CameraMode;
+import jp.jaxa.iss.kibo.rpc.galactic4.utils.QRReader;
+import jp.jaxa.iss.kibo.rpc.galactic4.utils.QuaternionCalculator;
 
 import java.util.List;
 

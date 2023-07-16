@@ -1,14 +1,13 @@
-package jp.jaxa.iss.kibo.pathfind;
+package jp.jaxa.iss.kibo.rpc.galactic4.pathfind;
 
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.logger.Logger;
-import jp.jaxa.iss.kibo.pathfind.zone.Zone;
-import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
-import jp.jaxa.iss.kibo.utils.Line;
+import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.galactic4.Astrobee;
+import jp.jaxa.iss.kibo.rpc.galactic4.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
 
-import static jp.jaxa.iss.kibo.utils.Line.distanceBetweenPoints;
+import static jp.jaxa.iss.kibo.rpc.galactic4.utils.Line.distanceBetweenPoints;
 
 public class PathFind {
 

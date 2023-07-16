@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.pathfind.zone;
+package jp.jaxa.iss.kibo.rpc.galactic4.pathfind.zone;
 
 public class Zone {
 

@@ -1,4 +1,4 @@
-//package jp.jaxa.iss.kibo.utils;
+//package jp.jaxa.iss.kibo.rpc.galactic4.utils;
 //
 //
 //import gov.nasa.arc.astrobee.types.Point;

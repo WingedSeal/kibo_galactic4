@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.utils;
+package jp.jaxa.iss.kibo.rpc.galactic4.utils;
 
 import android.graphics.Bitmap;
 import com.google.zxing.*;
