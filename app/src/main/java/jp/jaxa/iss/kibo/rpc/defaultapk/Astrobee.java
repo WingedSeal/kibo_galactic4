@@ -1,5 +1,12 @@
 package jp.jaxa.iss.kibo.rpc.defaultapk;
 
+import android.graphics.Bitmap;
+
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.logger.Logger;
@@ -121,7 +128,7 @@ public class Astrobee {
         api.flashlightControlFront(0.05f);
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
-            scannedQrText = QRReader.readQR(api);
+            scannedQrText = QRReader.readQR(this);
         }
         api.flashlightControlFront(0.0f);
         return scannedQrText != null;
@@ -140,7 +147,7 @@ public class Astrobee {
             moveTo(currentPathFindNode, QuaternionCalculator.calculateDockCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
-            scannedQrText = QRReader.readQR(api, CameraMode.DOCK);
+            scannedQrText = QRReader.readQR(this, CameraMode.DOCK);
         }
         return scannedQrText != null;
     }
@@ -267,5 +274,38 @@ public class Astrobee {
         } catch (Exception e) {
             return failDeactivatedTarget();
         }
+    }
+    public Bitmap undistoredMatImage(Mat distortImg , CameraMode mode){
+        double[][] camIntrinsics ;
+        switch(mode){
+            case NAV:
+                camIntrinsics = NAV_CAM_INTRINSICS;
+                break;
+            case DOCK:
+                camIntrinsics = DOCK_CAM_INTRINSICS;
+                break;
+            default:
+                throw new IllegalArgumentException("mode should be NAV or DOCK");
+        }
+        Mat cameraMatrix = new Mat(3, 3, CvType.CV_32FC1);
+        Mat dstMatrix = new Mat(1, 5, CvType.CV_32FC1);
+        cameraMatrix.put(0, 0, camIntrinsics[0]);
+        dstMatrix.put(0, 0, camIntrinsics[1]);
+        Mat undistortImg = new Mat(distortImg.rows(),distortImg.cols(),CvType.CV_8UC4);
+        Bitmap returnImg;
+        try{
+            Imgproc.undistort(distortImg,undistortImg,cameraMatrix,dstMatrix);
+            returnImg = Bitmap.createBitmap(distortImg.cols(),distortImg.rows(),Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(undistortImg,returnImg);
+            api.saveMatImage(distortImg, "before");
+            api.saveMatImage(undistortImg,"after");
+            api.saveBitmapImage(returnImg, "success");
+            return returnImg;
+        }
+        catch(Exception e){
+            Logger.__log(e.getMessage());
+        }
+        __forceEndMission();
+        return null;
     }
 }
