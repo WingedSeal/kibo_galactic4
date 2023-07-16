@@ -21,9 +21,11 @@ public class Astrobee {
     private PathFindNode previousPathFindNode = TargetPoint.START;
     private PathFindNode currentPathFindNode = TargetPoint.START;
     public final KiboRpcApi api;
-
+    private final double[][] NAV_CAM_INTRINSICS,DOCK_CAM_INTRINSICS;
     public Astrobee(KiboRpcApi api) {
         this.api = api;
+        this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
+        this.DOCK_CAM_INTRINSICS = api.getDockCamIntrinsics();
     }
 
     public void startMission() {
@@ -175,11 +177,11 @@ public class Astrobee {
         return activePoints;
     }
 
-    /*/**
+    /**
      * Get Nav camera intrinsics
      *
      * @return [0] Nav camera matrix [1] distortion coefficient
-     *
+     */
     public double[][] getNavCamIntrinsics(){
         return this.NAV_CAM_INTRINSICS;
     }
@@ -188,10 +190,10 @@ public class Astrobee {
      * Get Dock camera intrinsics
      *
      * @return [0] Dock camera matrix [1] distortion coefficient
-     *
+     */
     public double[][] getDockCamIntrinsics(){
         return this.DOCK_CAM_INTRINSICS;
-    }*/
+    }
 
     /**
      * Get node that astrobee currently at
