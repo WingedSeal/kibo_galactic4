@@ -116,10 +116,12 @@ public class Astrobee {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
 //            moveTo(currentPathFindNode, new Quaternion(0,0.707f,0,0.707f));
+        api.flashlightControlFront(0.05f);
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
             scannedQrText = QRReader.readQR(api);
         }
+        api.flashlightControlFront(0.0f);
         return scannedQrText != null;
     }
 
