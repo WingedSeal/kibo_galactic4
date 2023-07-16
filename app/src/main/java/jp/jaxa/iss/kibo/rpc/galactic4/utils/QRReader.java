@@ -1,11 +1,15 @@
 package jp.jaxa.iss.kibo.rpc.galactic4.utils;
 
 import android.graphics.Bitmap;
+
 import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
+import org.opencv.core.Mat;
+
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
+import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
 
 import java.util.HashMap;
 
@@ -29,7 +33,7 @@ public class QRReader {
      * @param api KiboRpcApi
      * @return translated message that can be used in api.reportMissionComplete, null if fails
      */
-    public static String readQR(KiboRpcApi api) {
+    public static String readQR(Astrobee api) {
         return readQR(api, CameraMode.NAV);
     }
 
@@ -40,18 +44,20 @@ public class QRReader {
      * @param mode which camera to use
      * @return translated message that can be used in api.reportMissionComplete, null if fails
      */
-    public static String readQR(KiboRpcApi api, CameraMode mode) {
-        Bitmap bMap = null;
+    public static String readQR(Astrobee api, CameraMode mode) {
+        Mat distoredQRImg = null;
         switch (mode) {
             case NAV:
-                bMap = api.getBitmapNavCam();
+                distoredQRImg = api.api.getMatNavCam();
                 break;
             case DOCK:
-                bMap = api.getBitmapDockCam();
+                distoredQRImg = api.api.getMatDockCam();
         }
-        if (bMap == null) {
+        if (distoredQRImg == null) {
             throw new RuntimeException("bMap is null");
         }
+
+        Bitmap bMap = api.undistoredMatImage(distoredQRImg,mode);
         int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
         //copy pixel data from the Bitmap into the 'intArray' array
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -66,13 +72,13 @@ public class QRReader {
             String contents = result.getText();
             String message = MESSAGES.get(contents);
             if (saveImages){
-                api.saveBitmapImage(bMap, "qrcode" + imageNumber + "_" + message + ".bmp");
+                api.api.saveBitmapImage(bMap, "qrcode" + imageNumber + "_" + message + ".bmp");
                 imageNumber++;
             }
             return message;
         } catch (ReaderException e) {
             if (saveImages) {
-                api.saveBitmapImage(bMap, "[FAILED] qrcode" + imageNumber + ".bmp");
+                api.api.saveBitmapImage(bMap, "[FAILED] qrcode" + imageNumber + ".bmp");
                 imageNumber++;
             }
             return null;

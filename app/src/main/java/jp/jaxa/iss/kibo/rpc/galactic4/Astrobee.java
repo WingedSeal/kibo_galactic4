@@ -1,5 +1,12 @@
 package jp.jaxa.iss.kibo.rpc.galactic4;
 
+import android.graphics.Bitmap;
+
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
@@ -21,9 +28,11 @@ public class Astrobee {
     private PathFindNode previousPathFindNode = TargetPoint.START;
     private PathFindNode currentPathFindNode = TargetPoint.START;
     public final KiboRpcApi api;
-
+    private final double[][] NAV_CAM_INTRINSICS,DOCK_CAM_INTRINSICS;
     public Astrobee(KiboRpcApi api) {
         this.api = api;
+        this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
+        this.DOCK_CAM_INTRINSICS = api.getDockCamIntrinsics();
     }
 
     public void startMission() {
@@ -64,6 +73,9 @@ public class Astrobee {
     public void moveToPoint(int pointNumber) {
         moveTo(TargetPoint.getTargetPoint(pointNumber));
     }
+
+    public void moveToRealPoint(int pointNumber) { moveTo(TargetPoint.getRealTargetPoint(pointNumber));}
+
 
     public void moveTo(PathFindNode node, Quaternion orientation) {
         previousPathFindNode = currentPathFindNode;
@@ -113,10 +125,12 @@ public class Astrobee {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
 //            moveTo(currentPathFindNode, new Quaternion(0,0.707f,0,0.707f));
+        api.flashlightControlFront(0.05f);
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
-            scannedQrText = QRReader.readQR(api);
+            scannedQrText = QRReader.readQR(this);
         }
+        api.flashlightControlFront(0.0f);
         return scannedQrText != null;
     }
 
@@ -133,7 +147,7 @@ public class Astrobee {
             moveTo(currentPathFindNode, QuaternionCalculator.calculateDockCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
-            scannedQrText = QRReader.readQR(api, CameraMode.DOCK);
+            scannedQrText = QRReader.readQR(this, CameraMode.DOCK);
         }
         return scannedQrText != null;
     }
@@ -172,11 +186,11 @@ public class Astrobee {
         return activePoints;
     }
 
-    /*/**
+    /**
      * Get Nav camera intrinsics
      *
      * @return [0] Nav camera matrix [1] distortion coefficient
-     *
+     */
     public double[][] getNavCamIntrinsics(){
         return this.NAV_CAM_INTRINSICS;
     }
@@ -185,10 +199,10 @@ public class Astrobee {
      * Get Dock camera intrinsics
      *
      * @return [0] Dock camera matrix [1] distortion coefficient
-     *
+     */
     public double[][] getDockCamIntrinsics(){
         return this.DOCK_CAM_INTRINSICS;
-    }*/
+    }
 
     /**
      * Get node that astrobee currently at
@@ -236,6 +250,17 @@ public class Astrobee {
 
     public boolean failDeactivatedTarget() {
         try {
+            TargetPoint pointNode = (TargetPoint) currentPathFindNode;
+            if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
+                moveToPoint(pointNode.getPointNumber());
+            }
+            else{
+                moveToRealPoint(pointNode.getPointNumber());
+                shootLaser();
+                moveToPoint(pointNode.getPointNumber());
+            }
+            return false;
+            /*
             if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
                 Logger.__log("to goal");
                 moveTo(TargetPoint.GOAL);
@@ -245,8 +270,42 @@ public class Astrobee {
 
             }
             return false;
+            */
         } catch (Exception e) {
-            return failMoveTo();
+            return failDeactivatedTarget();
         }
+    }
+    public Bitmap undistoredMatImage(Mat distortImg , CameraMode mode){
+        double[][] camIntrinsics ;
+        switch(mode){
+            case NAV:
+                camIntrinsics = NAV_CAM_INTRINSICS;
+                break;
+            case DOCK:
+                camIntrinsics = DOCK_CAM_INTRINSICS;
+                break;
+            default:
+                throw new IllegalArgumentException("mode should be NAV or DOCK");
+        }
+        Mat cameraMatrix = new Mat(3, 3, CvType.CV_32FC1);
+        Mat dstMatrix = new Mat(1, 5, CvType.CV_32FC1);
+        cameraMatrix.put(0, 0, camIntrinsics[0]);
+        dstMatrix.put(0, 0, camIntrinsics[1]);
+        Mat undistortImg = new Mat(distortImg.rows(),distortImg.cols(),CvType.CV_8UC4);
+        Bitmap returnImg;
+        try{
+            Imgproc.undistort(distortImg,undistortImg,cameraMatrix,dstMatrix);
+            returnImg = Bitmap.createBitmap(distortImg.cols(),distortImg.rows(),Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(undistortImg,returnImg);
+            api.saveMatImage(distortImg, "before");
+            api.saveMatImage(undistortImg,"after");
+            api.saveBitmapImage(returnImg, "success");
+            return returnImg;
+        }
+        catch(Exception e){
+            Logger.__log(e.getMessage());
+        }
+        __forceEndMission();
+        return null;
     }
 }
