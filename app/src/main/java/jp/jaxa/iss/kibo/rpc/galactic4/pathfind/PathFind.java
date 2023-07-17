@@ -4,6 +4,7 @@ import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.galactic4.Astrobee;
+import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.galactic4.utils.Line;
 import org.apache.commons.lang.ArrayUtils;
 

@@ -9,7 +9,7 @@ import com.google.zxing.qrcode.QRCodeReader;
 import org.opencv.core.Mat;
 
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.defaultapk.Astrobee;
+import jp.jaxa.iss.kibo.rpc.galactic4.Astrobee;
 
 import java.util.HashMap;
 
