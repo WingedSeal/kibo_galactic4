@@ -20,6 +20,7 @@ import java.util.List;
 
 
 public class Astrobee {
+    public static int __imgCount = 0; // delete this
     public static double ASTROBEE_ACCELERATION = 0.00699;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
 //    public static final long TIME_THRESHOLD = 30000;
@@ -244,12 +245,16 @@ public class Astrobee {
             return false;
 
         } catch (Exception e) {
+            Logger.__log(e.getMessage());
+            Logger.__log("movement error!");
             return failMoveTo();
+
         }
     }
 
     public boolean failDeactivatedTarget() {
         try {
+
             TargetPoint pointNode = (TargetPoint) currentPathFindNode;
             if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
                 moveToPoint(pointNode.getPointNumber());
@@ -260,19 +265,20 @@ public class Astrobee {
                 moveToPoint(pointNode.getPointNumber());
             }
             return false;
-            /*
-            if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
-                Logger.__log("to goal");
-                moveTo(TargetPoint.GOAL);
-            } else {
-                Logger.__log("to 5");
-                moveTo(TargetPoint.getTargetPoint(5));
+//
+//            if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
+//                Logger.__log("to goal shoot laser error");
+//                moveTo(TargetPoint.GOAL);
+//            } else {
+//                Logger.__log("to 5 shoot laser error");
+//                moveTo(TargetPoint.getTargetPoint(5));
+//
+//            }
+//            return false;
 
-            }
-            return false;
-            */
         } catch (Exception e) {
-            return failDeactivatedTarget();
+            Logger.__log("something wrong laser error");
+            return failMoveTo();
         }
     }
     public Bitmap undistoredMatImage(Mat distortImg , CameraMode mode){
@@ -297,9 +303,9 @@ public class Astrobee {
             Imgproc.undistort(distortImg,undistortImg,cameraMatrix,dstMatrix);
             returnImg = Bitmap.createBitmap(distortImg.cols(),distortImg.rows(),Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(undistortImg,returnImg);
-            api.saveMatImage(distortImg, "before");
-            api.saveMatImage(undistortImg,"after");
-            api.saveBitmapImage(returnImg, "success");
+            //api.saveMatImage(distortImg, mode.toString() +"_before_" + __imgCount + ".jpg");
+            //api.saveBitmapImage(returnImg, mode.toString()+"_success_"+ __imgCount + ".jpg");
+            //__imgCount++;
             return returnImg;
         }
         catch(Exception e){

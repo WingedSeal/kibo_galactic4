@@ -6,8 +6,13 @@ import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
+import gov.nasa.arc.astrobee.types.Point;
+import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 import jp.jaxa.iss.kibo.rpc.galactic4.Astrobee;
 
@@ -56,12 +61,10 @@ public class QRReader {
         if (distoredQRImg == null) {
             throw new RuntimeException("bMap is null");
         }
-
         Bitmap bMap = api.undistoredMatImage(distoredQRImg,mode);
         int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
         //copy pixel data from the Bitmap into the 'intArray' array
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-
         LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
         //covert bitmap to BinaryBitmap(zxing) for reading QR
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -81,7 +84,24 @@ public class QRReader {
                 api.api.saveBitmapImage(bMap, "[FAILED] qrcode" + imageNumber + ".bmp");
                 imageNumber++;
             }
-            return null;
+            try{
+                Bitmap distBitmap = Bitmap.createBitmap(distoredQRImg.cols(),distoredQRImg.rows(), Bitmap.Config.ARGB_4444);
+                Utils.matToBitmap(distoredQRImg,distBitmap);
+                //copy pixel data from the Bitmap into the 'intArray' array
+                distBitmap.getPixels(intArray, 0, distBitmap.getWidth(), 0, 0, distBitmap.getWidth(), distBitmap.getHeight());
+                source = new RGBLuminanceSource(distBitmap.getWidth(), distBitmap.getHeight(), intArray);
+                //covert bitmap to BinaryBitmap(zxing) for reading QR
+                bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                Result result = reader.decode(bitmap);
+                String contents = result.getText();
+                String message = MESSAGES.get(contents);
+                //api.api.saveBitmapImage(distBitmap, "[FAILED] qrcode" + imageNumber + ".bmp");
+                //imageNumber++;
+                return message;
+            }
+            catch (ReaderException ef){
+                return null;
+            }
         }
     }
 
