@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4;
+package jp.jaxa.iss.kibo.rpc.thailand;
 
 import android.graphics.Bitmap;
 
@@ -9,12 +9,12 @@ import org.opencv.imgproc.Imgproc;
 
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
-import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.*;
+import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.thailand.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.CameraMode;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.QRReader;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.QuaternionCalculator;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.CameraMode;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QRReader;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QuaternionCalculator;
 
 import java.util.List;
 

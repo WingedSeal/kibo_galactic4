@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.utils;
+package jp.jaxa.iss.kibo.rpc.thailand.utils;
 
 import gov.nasa.arc.astrobee.types.Point;
 import gov.nasa.arc.astrobee.types.Quaternion;

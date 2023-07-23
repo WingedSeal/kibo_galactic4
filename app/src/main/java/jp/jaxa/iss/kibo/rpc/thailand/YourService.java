@@ -1,8 +1,8 @@
-package jp.jaxa.iss.kibo.rpc.galactic4;
+package jp.jaxa.iss.kibo.rpc.thailand;
 
-import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
-import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.OptimalPath;
-import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.TargetPoint;
+import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.thailand.pathfind.OptimalPath;
+import jp.jaxa.iss.kibo.rpc.thailand.pathfind.TargetPoint;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
 /**

@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.logger;
+package jp.jaxa.iss.kibo.rpc.thailand.logger;
 
 
 import android.annotation.SuppressLint;
