@@ -230,31 +230,32 @@ public class Astrobee {
      * @return true if everything fail to run, false if it can go on
      */
     public boolean failMoveTo() {
-        try {
-            if (previousPathFindNode.equals(PathFindNode.GOAL) || currentPathFindNode.equals(PathFindNode.GOAL)) {
-                Logger.__log("end");
-                return true;
-            } else if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5)) || previousPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
-                Logger.__log("to goal");
-                moveTo(TargetPoint.GOAL);
-            } else {
-                Logger.__log("to 5");
-                moveTo(TargetPoint.getTargetPoint(5));
+        for(int i = 0 ; i < 10 ; ++i){
+            try {
+                if (previousPathFindNode.equals(PathFindNode.GOAL) || currentPathFindNode.equals(PathFindNode.GOAL)) {
+                    Logger.__log("end");
+                    return true;
+                } else if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5)) || previousPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
+                    Logger.__log("to goal");
+                    moveTo(TargetPoint.GOAL);
+                } else {
+                    Logger.__log("to 5");
+                    moveTo(TargetPoint.getTargetPoint(5));
 
+                }
+                return false;
+
+            } catch (Exception e) {
+                Logger.__log(e.getMessage());
+                Logger.__log("movement error!");
             }
-            return false;
-
-        } catch (Exception e) {
-            Logger.__log(e.getMessage());
-            Logger.__log("movement error!");
-            return failMoveTo();
-
         }
+        return true;
+
     }
 
     public boolean failDeactivatedTarget() {
         try {
-
             TargetPoint pointNode = (TargetPoint) currentPathFindNode;
             if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
                 moveToPoint(pointNode.getPointNumber());
@@ -265,17 +266,6 @@ public class Astrobee {
                 moveToPoint(pointNode.getPointNumber());
             }
             return false;
-//
-//            if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
-//                Logger.__log("to goal shoot laser error");
-//                moveTo(TargetPoint.GOAL);
-//            } else {
-//                Logger.__log("to 5 shoot laser error");
-//                moveTo(TargetPoint.getTargetPoint(5));
-//
-//            }
-//            return false;
-
         } catch (Exception e) {
             Logger.__log("something wrong laser error");
             return failMoveTo();

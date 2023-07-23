@@ -153,7 +153,7 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_3:
                     case POINT_4:
-                        return new Node[]{new NodeWithOrientation(10.8745, -8.5482, 4.86059)};
+                        return new Node[]{new NodeWithOrientation(10.9, -8.5518, 4.86059)};
                 }
                 break;
             case GOAL:
@@ -184,12 +184,12 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_3:
                         if (astrobee.isQrNotScanned())
-                            return new Node[]{new NodeWithOrientation(10.8745, -8.5482, 4.86059)};
+                            return new Node[]{new NodeWithOrientation(10.9, -8.5518, 4.86059)};
                         else
                             return new Node[]{};
                     case POINT_4:
                         if (astrobee.isQrNotScanned())
-                            return new Node[]{new NodeWithOrientation(11.0698,-8.5549,4.86059)};
+                            return new Node[]{new NodeWithOrientation(11.0698,-8.5518,4.86059)};
                         else
                             return new Node[]{};
                     case REALPOINT_1:
@@ -209,7 +209,7 @@ public class PathFind {
                     case POINT_3:
                     case POINT_4:
                         if (astrobee.isQrNotScanned())
-                            return new Node[]{new NodeWithOrientation(10.8645,-8.5571,4.86059)};
+                            return new Node[]{new NodeWithOrientation(10.9,-8.5518,4.86059)};
                         else
                             return new Node[]{};
                 }
