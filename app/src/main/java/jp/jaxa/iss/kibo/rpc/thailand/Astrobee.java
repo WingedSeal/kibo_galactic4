@@ -255,21 +255,26 @@ public class Astrobee {
     }
 
     public boolean failDeactivatedTarget() {
-        try {
-            TargetPoint pointNode = (TargetPoint) currentPathFindNode;
-            if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
-                moveToPoint(pointNode.getPointNumber());
+        for(int i = 0;i < 10;i++){
+            try {
+                TargetPoint pointNode = (TargetPoint) currentPathFindNode;
+                if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
+                    Logger.__log("end");
+                    moveToPoint(pointNode.getPointNumber());
+                }
+                else{
+                    Logger.__log("Move to RealPoint");
+                    moveToRealPoint(pointNode.getPointNumber());
+                    shootLaser();
+                    moveToPoint(pointNode.getPointNumber());
+                }
+                return false;
+            } catch (Exception e) {
+                Logger.__log("something wrong with laser error");
             }
-            else{
-                moveToRealPoint(pointNode.getPointNumber());
-                shootLaser();
-                moveToPoint(pointNode.getPointNumber());
-            }
-            return false;
-        } catch (Exception e) {
-            Logger.__log("something wrong laser error");
-            return failMoveTo();
         }
+        return true;
+
     }
     public Bitmap undistoredMatImage(Mat distortImg , CameraMode mode){
         double[][] camIntrinsics ;
