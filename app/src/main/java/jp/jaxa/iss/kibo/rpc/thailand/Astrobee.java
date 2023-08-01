@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4;
+package jp.jaxa.iss.kibo.rpc.thailand;
 
 import android.graphics.Bitmap;
 
@@ -9,12 +9,12 @@ import org.opencv.imgproc.Imgproc;
 
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
-import jp.jaxa.iss.kibo.rpc.galactic4.pathfind.*;
+import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.thailand.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.CameraMode;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.QRReader;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.QuaternionCalculator;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.CameraMode;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QRReader;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QuaternionCalculator;
 
 import java.util.List;
 
@@ -255,21 +255,26 @@ public class Astrobee {
     }
 
     public boolean failDeactivatedTarget() {
-        try {
-            TargetPoint pointNode = (TargetPoint) currentPathFindNode;
-            if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
-                moveToPoint(pointNode.getPointNumber());
+        for(int i = 0;i < 10;i++){
+            try {
+                TargetPoint pointNode = (TargetPoint) currentPathFindNode;
+                if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
+                    Logger.__log("end");
+                    moveToPoint(pointNode.getPointNumber());
+                }
+                else{
+                    Logger.__log("Move to RealPoint");
+                    moveToRealPoint(pointNode.getPointNumber());
+                    shootLaser();
+                    moveToPoint(pointNode.getPointNumber());
+                }
+                return false;
+            } catch (Exception e) {
+                Logger.__log("something wrong with laser error");
             }
-            else{
-                moveToRealPoint(pointNode.getPointNumber());
-                shootLaser();
-                moveToPoint(pointNode.getPointNumber());
-            }
-            return false;
-        } catch (Exception e) {
-            Logger.__log("something wrong laser error");
-            return failMoveTo();
         }
+        return true;
+
     }
     public Bitmap undistoredMatImage(Mat distortImg , CameraMode mode){
         double[][] camIntrinsics ;

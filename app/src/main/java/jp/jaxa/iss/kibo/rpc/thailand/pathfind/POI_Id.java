@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.pathfind;
+package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
 enum POI_Id {
     START, GOAL,

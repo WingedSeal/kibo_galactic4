@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.utils;
+package jp.jaxa.iss.kibo.rpc.thailand.utils;
 
 import android.graphics.Bitmap;
 
@@ -7,14 +7,9 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
 import org.opencv.android.Utils;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
-import gov.nasa.arc.astrobee.types.Point;
-import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.galactic4.Astrobee;
+import jp.jaxa.iss.kibo.rpc.thailand.Astrobee;
 
 import java.util.HashMap;
 

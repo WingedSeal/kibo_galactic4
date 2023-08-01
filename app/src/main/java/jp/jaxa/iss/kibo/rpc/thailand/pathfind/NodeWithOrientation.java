@@ -1,8 +1,8 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.pathfind;
+package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
 import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.CameraMode;
-import jp.jaxa.iss.kibo.rpc.galactic4.utils.QuaternionCalculator;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.CameraMode;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QuaternionCalculator;
 
 public class NodeWithOrientation extends Node {
 

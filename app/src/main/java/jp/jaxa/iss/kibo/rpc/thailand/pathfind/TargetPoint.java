@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.pathfind;
+package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
 public class TargetPoint extends PathFindNode {
     private final int pointNumber;

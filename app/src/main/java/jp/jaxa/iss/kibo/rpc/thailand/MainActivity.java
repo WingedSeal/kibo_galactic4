@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4;
+package jp.jaxa.iss.kibo.rpc.thailand;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

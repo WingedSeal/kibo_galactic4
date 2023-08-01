@@ -1,4 +1,4 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.pathfind;
+package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
 public class Target extends PointOfInterest {
     public Target(double x, double y, double z, POI_Id id, double radius, int targetNumber, int score) {

@@ -1,7 +1,7 @@
-package jp.jaxa.iss.kibo.rpc.galactic4.pathfind;
+package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
-import jp.jaxa.iss.kibo.rpc.galactic4.logger.Logger;
-import jp.jaxa.iss.kibo.rpc.galactic4.Astrobee;
+import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.thailand.Astrobee;
 
 import java.util.ArrayList;
 
