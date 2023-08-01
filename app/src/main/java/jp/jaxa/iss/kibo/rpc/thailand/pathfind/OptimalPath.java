@@ -101,30 +101,31 @@ public class OptimalPath {
         double totalTimeSec = 0;
         double totalDistance;
         totalDistance = PathFind.estimateTotalDistance(astrobee, currentNode, midNodes[0]);
-        if (totalDistance > 1.1d) Astrobee.ASTROBEE_ACCELERATION = 0.00688;
-        else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;
-        else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00634;
-        else Astrobee.ASTROBEE_ACCELERATION = 0.00555;
+        if (totalDistance > 2.6d) Astrobee.ASTROBEE_ACCELERATION = 0.00729d;
+        else if (totalDistance > 2.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00708d;
+        else if (totalDistance > 1.4d) Astrobee.ASTROBEE_ACCELERATION = 0.00672d;
+        else Astrobee.ASTROBEE_ACCELERATION = 0.006401d;
         for (double distance : PathFind.estimatePathDistances(astrobee, currentNode, midNodes[0])) {
             totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
         }
 
         for (int i = 1; i < midNodes.length; i++) {
             totalDistance = PathFind.estimateTotalDistance(astrobee, midNodes[i - 1], midNodes[i]);
-            if (totalDistance > 1.1d) Astrobee.ASTROBEE_ACCELERATION = 0.00688;
-            else if (totalDistance > 0.9d) Astrobee.ASTROBEE_ACCELERATION = 0.00641;
-            else if (totalDistance > 0.83d) Astrobee.ASTROBEE_ACCELERATION = 0.00634;
-            else Astrobee.ASTROBEE_ACCELERATION = 0.00555;
+            if (totalDistance > 2.6d) Astrobee.ASTROBEE_ACCELERATION = 0.00729d;
+            else if (totalDistance > 2.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00708d;
+            else if (totalDistance > 1.4d) Astrobee.ASTROBEE_ACCELERATION = 0.00672d;
+            else Astrobee.ASTROBEE_ACCELERATION = 0.006401d;
             for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[i - 1], midNodes[i])) {
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
         }
 
         if (shouldConsiderGoal) {
-            Astrobee.ASTROBEE_ACCELERATION = 0.00766;
             for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[midNodes.length - 1], PathFindNode.GOAL)) {
-                if (distance > 2.0d && distance < 3.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00766;
-                else Astrobee.ASTROBEE_ACCELERATION = 0.00753;
+                if(distance > 2.8d) Astrobee.ASTROBEE_ACCELERATION = 0.00804d;
+                else if(distance > 2.39d) Astrobee.ASTROBEE_ACCELERATION = 0.00798d;
+                else if(distance > 1.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00761d;
+                else Astrobee.ASTROBEE_ACCELERATION = 0.00736d;
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
         }
