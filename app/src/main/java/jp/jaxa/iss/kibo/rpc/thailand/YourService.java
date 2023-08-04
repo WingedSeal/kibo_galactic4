@@ -47,19 +47,12 @@ public class YourService extends KiboRpcService {
                     } catch (Exception e) {
                         isGoingToGoal = astrobee.failDeactivatedTarget();
                         break;
-
-                    }
-
-                    if (nextTargetPoint.getPointNumber() == 5 && astrobee.isQrNotScanned()) {
-                        astrobee.attemptScanQRDock(false, 5);
-                    } else if (nextTargetPoint.getPointNumber() == 7) {
-                        astrobee.attemptScanQRNav(true, 3);
                     }
                 }
                 if (isGoingToGoal) break;
                 if (astrobee.isQrNotScanned() && api.getTimeRemaining().get(1) < 120000) {
                     astrobee.moveTo(TargetPoint.getTargetPoint(5));
-                    astrobee.attemptScanQRDock(false, 5);
+                    astrobee.attemptScanQRNav(false, 5);
                     if (astrobee.isQrNotScanned()) {
                         astrobee.moveTo(TargetPoint.getTargetPoint(7));
                         astrobee.attemptScanQRNav(false, 5);
