@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class QRReader {
     private static int imageNumber = 0;
-    private static final boolean saveImages = false;
+    private static final boolean saveImages = true;
 
     private static final HashMap<String, String> MESSAGES = new HashMap<>();
 
@@ -79,8 +79,8 @@ public class QRReader {
                 api.api.saveBitmapImage(bMap, "[FAILED] qrcode" + imageNumber + ".bmp");
                 imageNumber++;
             }
+            Bitmap distBitmap = Bitmap.createBitmap(distoredQRImg.cols(),distoredQRImg.rows(), Bitmap.Config.ARGB_4444);
             try{
-                Bitmap distBitmap = Bitmap.createBitmap(distoredQRImg.cols(),distoredQRImg.rows(), Bitmap.Config.ARGB_4444);
                 Utils.matToBitmap(distoredQRImg,distBitmap);
                 //copy pixel data from the Bitmap into the 'intArray' array
                 distBitmap.getPixels(intArray, 0, distBitmap.getWidth(), 0, 0, distBitmap.getWidth(), distBitmap.getHeight());
@@ -95,6 +95,9 @@ public class QRReader {
                 return message;
             }
             catch (ReaderException ef){
+                if (saveImages) {
+                    api.api.saveBitmapImage(distBitmap, "[FAILED] qrcodebefore " + (imageNumber -1) + ".bmp");
+                }
                 return null;
             }
         }
