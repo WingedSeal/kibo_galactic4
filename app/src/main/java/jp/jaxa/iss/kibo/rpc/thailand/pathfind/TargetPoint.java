@@ -21,7 +21,7 @@ public class TargetPoint extends PathFindNode {
             new TargetPoint(10.612d, -9.0709d,4.715  , POI_Id.POINT_2, 2, 20),
             new TargetPoint(10.71d, -7.7d,4.715, POI_Id.POINT_3, 3, 40),
             new TargetPoint(10.5489, -6.8615,5.065 , POI_Id.POINT_4, 4, 20),
-            new TargetPoint(11.114, -7.9756, 5.9076d - 0.810d/*11.102d, -8.0304d, 5.9076d-0.810d*/, POI_Id.POINT_5, 5, 30),
+            new TargetPoint(10.94,-8.524172,4.86059/*11.102d, -8.0304d, 5.9076d-0.810d*/, POI_Id.POINT_5, 5, 30),
             new TargetPoint(12.023d - 0.85d, -8.989d, 4.8305, POI_Id.POINT_6, 6, 30),
             new TargetPoint(11.369, -8.5518, 4.95d, POI_Id.POINT_7, 7, 20),
     };
