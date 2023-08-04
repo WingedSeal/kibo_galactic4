@@ -65,7 +65,7 @@ public class PathFind {
                 NodeWithOrientation nodeWithOrientation = (NodeWithOrientation) node;
                 if (nodeWithOrientation.getPointedNode().equals(PointOfInterest.QR_CODE) && astrobee.isQrNotScanned()) {
                     moveTo(astrobee, nodeWithOrientation, nodeWithOrientation.getOrientation(), printRobotPosition);
-                    astrobee.attemptScanQR(6, nodeWithOrientation.getCameraMode());
+                    astrobee.attemptScanQR(10, nodeWithOrientation.getCameraMode());
                 } else moveTo(astrobee, nodeWithOrientation, orientation, printRobotPosition);
 
             } else moveTo(astrobee, node, orientation, printRobotPosition);
@@ -153,7 +153,7 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_3:
                     case POINT_4:
-                        return new Node[]{new NodeWithOrientation(10.9, -8.5518, 4.86059)};
+                        return new Node[]{new NodeWithOrientation(10.94,-8.524172,4.86059)};
                 }
                 break;
             case GOAL:
@@ -184,12 +184,12 @@ public class PathFind {
                         return new Node[]{};
                     case POINT_3:
                         if (astrobee.isQrNotScanned())
-                            return new Node[]{new NodeWithOrientation(10.9, -8.5518, 4.86059)};
+                            return new Node[]{new NodeWithOrientation(10.94, -8.524172, 4.86059)};
                         else
                             return new Node[]{};
                     case POINT_4:
                         if (astrobee.isQrNotScanned())
-                            return new Node[]{new NodeWithOrientation(11.0698,-8.5518,4.86059)};
+                            return new Node[]{new NodeWithOrientation(11.0698,-8.524172,4.86059)};
                         else
                             return new Node[]{};
                     case REALPOINT_1:
@@ -209,7 +209,7 @@ public class PathFind {
                     case POINT_3:
                     case POINT_4:
                         if (astrobee.isQrNotScanned())
-                            return new Node[]{new NodeWithOrientation(10.9,-8.5518,4.86059)};
+                            return new Node[]{new NodeWithOrientation(10.94,-8.524172,4.86059)};
                         else
                             return new Node[]{};
                 }
