@@ -5,6 +5,8 @@ import gov.nasa.arc.astrobee.types.Quaternion;
 
 public class QuaternionCalculator {
     public static double extraX;
+    public static final Quaternion UPWARD = new Quaternion(0f, 0.707f, 0f, 0.707f);
+    public static final Quaternion DOWNWARD = new Quaternion(0f, -0.707f, 0f, 0.707f);
 
     /**
      * Calculate and return Quaternion of Astrobee
