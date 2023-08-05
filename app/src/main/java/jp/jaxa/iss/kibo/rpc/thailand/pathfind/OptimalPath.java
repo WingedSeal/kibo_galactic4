@@ -29,6 +29,10 @@ public class OptimalPath {
         } while (totalPointOnPath > 0 && optimalPoints == null);
     }
 
+    public double getMinTime(){
+        return minTime;
+    }
+
     public TargetPoint[] getPath() {
         return optimalPoints;
     }
