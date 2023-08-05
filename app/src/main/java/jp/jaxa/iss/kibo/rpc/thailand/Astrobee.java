@@ -1,35 +1,32 @@
 package jp.jaxa.iss.kibo.rpc.thailand;
 
 import android.graphics.Bitmap;
-
+import gov.nasa.arc.astrobee.Result;
+import gov.nasa.arc.astrobee.types.Quaternion;
+import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
+import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
+import jp.jaxa.iss.kibo.rpc.thailand.pathfind.*;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.CameraMode;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QRReader;
+import jp.jaxa.iss.kibo.rpc.thailand.utils.QuaternionCalculator;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import gov.nasa.arc.astrobee.Result;
-import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
-import jp.jaxa.iss.kibo.rpc.thailand.pathfind.*;
-import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.thailand.utils.CameraMode;
-import jp.jaxa.iss.kibo.rpc.thailand.utils.QRReader;
-import jp.jaxa.iss.kibo.rpc.thailand.utils.QuaternionCalculator;
-
 import java.util.List;
 
 
 public class Astrobee {
-    public static int __imgCount = 0; // delete this
     public static double ASTROBEE_ACCELERATION = 0.00699;
     public static final Quaternion EMPTY_QUATERNION = new Quaternion(0, 0, 0, 1);
-//    public static final long TIME_THRESHOLD = 30000;
     private static final String GUESSED_QR_TEXT = "GO_TO_COLUMBUS";
     private static String scannedQrText = null;
     private PathFindNode previousPathFindNode = TargetPoint.START;
     private PathFindNode currentPathFindNode = TargetPoint.START;
     public final KiboRpcApi api;
-    private final double[][] NAV_CAM_INTRINSICS,DOCK_CAM_INTRINSICS;
+    private final double[][] NAV_CAM_INTRINSICS, DOCK_CAM_INTRINSICS;
+
     public Astrobee(KiboRpcApi api) {
         this.api = api;
         this.NAV_CAM_INTRINSICS = api.getNavCamIntrinsics();
@@ -75,7 +72,9 @@ public class Astrobee {
         moveTo(TargetPoint.getTargetPoint(pointNumber));
     }
 
-    public void moveToRealPoint(int pointNumber) { moveTo(TargetPoint.getRealTargetPoint(pointNumber));}
+    public void moveToRealPoint(int pointNumber) {
+        moveTo(TargetPoint.getRealTargetPoint(pointNumber));
+    }
 
 
     public void moveTo(PathFindNode node, Quaternion orientation) {
@@ -97,7 +96,7 @@ public class Astrobee {
      * Shoot laser in the direction Astrobee is facing
      *
      * @throws IllegalStateException Attempted to shoot laser while not being on a point node(TargetPoint)
-     * @throws NullPointerException Attempted to turn laser on while not in the target point area
+     * @throws NullPointerException  Attempted to turn laser on while not in the target point area
      */
     public void shootLaser() {
         if (!(currentPathFindNode instanceof TargetPoint)) {
@@ -110,7 +109,7 @@ public class Astrobee {
         }
         api.takeTargetSnapshot(pointNode.getPointNumber());
         List<Integer> activateTargets = api.getActiveTargets();
-        if (activateTargets.contains(pointNode.getPointNumber()) && activateTargets.size() == 1) { //change this to throw only when lastest activate target list count = 1
+        if (activateTargets.contains(pointNode.getPointNumber()) && activateTargets.size() == 1) { //change this to throw only when last activate target list count = 1
             throw new IllegalStateException("fail to deactivate target");
         }
     }
@@ -125,7 +124,6 @@ public class Astrobee {
     public boolean attemptScanQRNav(boolean isRotate, int attempts) {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
-//            moveTo(currentPathFindNode, new Quaternion(0,0.707f,0,0.707f));
         api.flashlightControlFront(0.05f);
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
@@ -194,7 +192,7 @@ public class Astrobee {
      *
      * @return [0] Nav camera matrix [1] distortion coefficient
      */
-    public double[][] getNavCamIntrinsics(){
+    public double[][] getNavCamIntrinsics() {
         return this.NAV_CAM_INTRINSICS;
     }
 
@@ -203,7 +201,7 @@ public class Astrobee {
      *
      * @return [0] Dock camera matrix [1] distortion coefficient
      */
-    public double[][] getDockCamIntrinsics(){
+    public double[][] getDockCamIntrinsics() {
         return this.DOCK_CAM_INTRINSICS;
     }
 
@@ -232,7 +230,7 @@ public class Astrobee {
      * @return true if everything fail to run, false if it can go on
      */
     public boolean failMoveTo() {
-        for(int i = 0 ; i < 10 ; ++i){
+        for (int i = 0; i < 10; ++i) {
             try {
                 if (previousPathFindNode.equals(PathFindNode.GOAL) || currentPathFindNode.equals(PathFindNode.GOAL)) {
                     Logger.__log("end");
@@ -256,15 +254,22 @@ public class Astrobee {
 
     }
 
-    public boolean failDeactivatedTarget() {
-        for(int i = 0;i < 10;i++){
+    /**
+     * Go to the real point to attempt to shoot the target
+     * <p>
+     * Called when astrobee fails to shoot/deactivate target
+     *
+     * @return whether to go the goal
+     */
+    public boolean shootTargetFromRealPoint() {
+        for (int i = 0; i < 10; i++) {
             try {
                 TargetPoint pointNode = (TargetPoint) currentPathFindNode;
                 if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
                     Logger.__log("end");
                     moveToPoint(pointNode.getPointNumber());
-                }
-                else{
+                    shootLaser();
+                } else {
                     Logger.__log("Move to RealPoint");
                     moveToRealPoint(pointNode.getPointNumber());
                     shootLaser();
@@ -278,9 +283,17 @@ public class Astrobee {
         return true;
 
     }
-    public Bitmap undistoredMatImage(Mat distortImg , CameraMode mode){
-        double[][] camIntrinsics ;
-        switch(mode){
+
+    /**
+     * Undistort mat image
+     *
+     * @param distortedImg mat image
+     * @param mode         camera's mode
+     * @return undistorted image
+     */
+    public Bitmap undistortMatImage(Mat distortedImg, CameraMode mode) {
+        double[][] camIntrinsics;
+        switch (mode) {
             case NAV:
                 camIntrinsics = NAV_CAM_INTRINSICS;
                 break;
@@ -294,18 +307,14 @@ public class Astrobee {
         Mat dstMatrix = new Mat(1, 5, CvType.CV_32FC1);
         cameraMatrix.put(0, 0, camIntrinsics[0]);
         dstMatrix.put(0, 0, camIntrinsics[1]);
-        Mat undistortImg = new Mat(distortImg.rows(),distortImg.cols(),CvType.CV_8UC4);
+        Mat undistortedImg = new Mat(distortedImg.rows(), distortedImg.cols(), CvType.CV_8UC4);
         Bitmap returnImg;
-        try{
-            Imgproc.undistort(distortImg,undistortImg,cameraMatrix,dstMatrix);
-            returnImg = Bitmap.createBitmap(distortImg.cols(),distortImg.rows(),Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(undistortImg,returnImg);
-            //api.saveMatImage(distortImg, mode.toString() +"_before_" + __imgCount + ".jpg");
-            //api.saveBitmapImage(returnImg, mode.toString()+"_success_"+ __imgCount + ".jpg");
-            //__imgCount++;
+        try {
+            Imgproc.undistort(distortedImg, undistortedImg, cameraMatrix, dstMatrix);
+            returnImg = Bitmap.createBitmap(distortedImg.cols(), distortedImg.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(undistortedImg, returnImg);
             return returnImg;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Logger.__log(e.getMessage());
         }
         __forceEndMission();

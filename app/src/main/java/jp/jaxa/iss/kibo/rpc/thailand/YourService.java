@@ -1,12 +1,12 @@
 package jp.jaxa.iss.kibo.rpc.thailand;
 
+import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.OptimalPath;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.TargetPoint;
-import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
 /**
- * Class meant to handle commands from the Ground Data System and execute them in Astrobee
+ * Class to handle commands from the Ground Data System and execute them in Astrobee
  */
 
 public class YourService extends KiboRpcService {
@@ -18,7 +18,6 @@ public class YourService extends KiboRpcService {
         boolean shouldConsiderGoal = false;
         boolean isGoingToGoal = false;
 
-        // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
         try {
             astrobee.startMission();
             do {
@@ -45,7 +44,7 @@ public class YourService extends KiboRpcService {
                             astrobee.shootLaser();
                         }
                     } catch (Exception e) {
-                        isGoingToGoal = astrobee.failDeactivatedTarget();
+                        isGoingToGoal = astrobee.shootTargetFromRealPoint();
                         break;
                     }
                 }
@@ -69,7 +68,6 @@ public class YourService extends KiboRpcService {
 
     @Override
     protected void runPlan3() {
-        // write your plan 3 here
     }
 
 }

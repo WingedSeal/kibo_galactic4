@@ -181,6 +181,7 @@ public class PathFind {
                     case POINT_5:
                     case POINT_6:
                     case POINT_7:
+                    case REAL_POINT_1:
                         return new Node[]{};
                     case POINT_3:
                         if (astrobee.isQrNotScanned())
@@ -192,8 +193,6 @@ public class PathFind {
                             return new Node[]{new NodeWithOrientation(11.0698,-8.524172,4.86059)};
                         else
                             return new Node[]{};
-                    case REALPOINT_1:
-                        return new Node[]{};
                 }
                 break;
             case POINT_2:
@@ -204,7 +203,7 @@ public class PathFind {
                     case POINT_5:
                     case POINT_6:
                     case POINT_7:
-                    case REALPOINT_2:
+                    case REAL_POINT_2:
                         return new Node[]{};
                     case POINT_3:
                     case POINT_4:
@@ -221,7 +220,7 @@ public class PathFind {
                     case POINT_4:
                     case POINT_5:
                     case POINT_7:
-                    case REALPOINT_3:
+                    case REAL_POINT_3:
                         return new Node[]{};
                     case POINT_1:
                     case POINT_2:
@@ -241,7 +240,7 @@ public class PathFind {
                     case GOAL:
                     case POINT_7:
                     case POINT_5:
-                    case REALPOINT_4:
+                    case REAL_POINT_4:
                         return new Node[]{};
                     case POINT_1:
                     case POINT_2:
@@ -281,13 +280,10 @@ public class PathFind {
                         return new Node[]{};
                 }
                 break;
-            case REALPOINT_1:
-                return new Node[]{};
-            case REALPOINT_2:
-                return new Node[]{};
-            case REALPOINT_3:
-                return new Node[]{};
-            case REALPOINT_4:
+            case REAL_POINT_1:
+            case REAL_POINT_2:
+            case REAL_POINT_3:
+            case REAL_POINT_4:
                 return new Node[]{};
             case POINT_6:
                 Node[] nodes = getPathNodes(astrobee, end, start);
