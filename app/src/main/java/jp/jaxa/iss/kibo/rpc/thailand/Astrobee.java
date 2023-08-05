@@ -124,7 +124,6 @@ public class Astrobee {
     public boolean attemptScanQRNav(boolean isRotate, int attempts) {
         if (isRotate)
             moveTo(currentPathFindNode, QuaternionCalculator.calculateNavCamQuaternion(currentPathFindNode, PointOfInterest.QR_CODE));
-//            moveTo(currentPathFindNode, new Quaternion(0,0.707f,0,0.707f));
         api.flashlightControlFront(0.05f);
         for (int i = 0; i < attempts; ++i) {
             if (scannedQrText != null) break;
@@ -253,13 +252,21 @@ public class Astrobee {
 
     }
 
-    public boolean failDeactivatedTarget() {
+    /**
+     * Go to the real point to attempt to shoot the target
+     * <p>
+     * Called when astrobee fails to shoot/deactivate target
+     *
+     * @return whether to go the goal
+     */
+    public boolean shootTargetFromRealPoint() {
         for (int i = 0; i < 10; i++) {
             try {
                 TargetPoint pointNode = (TargetPoint) currentPathFindNode;
                 if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
                     Logger.__log("end");
                     moveToPoint(pointNode.getPointNumber());
+                    shootLaser();
                 } else {
                     Logger.__log("Move to RealPoint");
                     moveToRealPoint(pointNode.getPointNumber());
@@ -275,7 +282,14 @@ public class Astrobee {
 
     }
 
-    public Bitmap undistortMatImage(Mat distortImg, CameraMode mode) {
+    /**
+     * Undistort mat image
+     *
+     * @param distortedImg mat image
+     * @param mode         camera's mode
+     * @return undistorted image
+     */
+    public Bitmap undistortMatImage(Mat distortedImg, CameraMode mode) {
         double[][] camIntrinsics;
         switch (mode) {
             case NAV:
@@ -291,11 +305,11 @@ public class Astrobee {
         Mat dstMatrix = new Mat(1, 5, CvType.CV_32FC1);
         cameraMatrix.put(0, 0, camIntrinsics[0]);
         dstMatrix.put(0, 0, camIntrinsics[1]);
-        Mat undistortedImg = new Mat(distortImg.rows(), distortImg.cols(), CvType.CV_8UC4);
+        Mat undistortedImg = new Mat(distortedImg.rows(), distortedImg.cols(), CvType.CV_8UC4);
         Bitmap returnImg;
         try {
-            Imgproc.undistort(distortImg, undistortedImg, cameraMatrix, dstMatrix);
-            returnImg = Bitmap.createBitmap(distortImg.cols(), distortImg.rows(), Bitmap.Config.ARGB_8888);
+            Imgproc.undistort(distortedImg, undistortedImg, cameraMatrix, dstMatrix);
+            returnImg = Bitmap.createBitmap(distortedImg.cols(), distortedImg.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(undistortedImg, returnImg);
             return returnImg;
         } catch (Exception e) {

@@ -141,7 +141,9 @@ public class OptimalPath {
     }
 
     /**
-     * copy optimal nodes to the object properties
+     * Copy optimal nodes to the object properties
+     *
+     * @param nodes optimal nodes
      */
     private void setOptimalPoints(TargetPoint[] nodes) {
         optimalPoints = new TargetPoint[nodes.length];

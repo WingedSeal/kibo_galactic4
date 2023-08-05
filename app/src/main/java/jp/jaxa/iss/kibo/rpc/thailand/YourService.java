@@ -6,7 +6,7 @@ import jp.jaxa.iss.kibo.rpc.thailand.pathfind.OptimalPath;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.TargetPoint;
 
 /**
- * Class meant to handle commands from the Ground Data System and execute them in Astrobee
+ * Class to handle commands from the Ground Data System and execute them in Astrobee
  */
 
 public class YourService extends KiboRpcService {
@@ -17,7 +17,7 @@ public class YourService extends KiboRpcService {
         Astrobee astrobee = new Astrobee(api);
         boolean shouldConsiderGoal = false;
         boolean isGoingToGoal = false;
-        
+
         try {
             astrobee.startMission();
             do {
@@ -44,7 +44,7 @@ public class YourService extends KiboRpcService {
                             astrobee.shootLaser();
                         }
                     } catch (Exception e) {
-                        isGoingToGoal = astrobee.failDeactivatedTarget();
+                        isGoingToGoal = astrobee.shootTargetFromRealPoint();
                         break;
                     }
                 }
@@ -68,7 +68,6 @@ public class YourService extends KiboRpcService {
 
     @Override
     protected void runPlan3() {
-        // write your plan 3 here
     }
 
 }
