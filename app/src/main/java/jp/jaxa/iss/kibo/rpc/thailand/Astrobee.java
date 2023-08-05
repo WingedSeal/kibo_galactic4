@@ -290,27 +290,24 @@ public class Astrobee {
                         if(timeLeft > 23712+4000){
                             throw new IllegalStateException("fail to deactivate target");
                         }
-                        else{moveTo(PathFindNode.GOAL);}
                         break;
                     case POINT_2:
                         if(timeLeft > 21856+4000){
                             throw new IllegalStateException("fail to deactivate target");
                         }
-                        else{moveTo(PathFindNode.GOAL);}
                         break;
                     case POINT_3:
                         if(timeLeft > 21952+4000){
                             throw new IllegalStateException("fail to deactivate target");
                         }
-                        else{moveTo(PathFindNode.GOAL);}
                         break;
                     case POINT_4:
                         if(timeLeft > 22832+4000){
                             throw new IllegalStateException("fail to deactivate target");
                         }
-                        else{moveTo(PathFindNode.GOAL);}
                         break;
                 }
+                endMission();
             }
         }
     }
