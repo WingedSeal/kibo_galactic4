@@ -2,7 +2,6 @@ package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
-import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.thailand.Astrobee;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.zone.Zone;
 import jp.jaxa.iss.kibo.rpc.thailand.utils.Line;
@@ -92,7 +91,6 @@ public class PathFind {
             ++loopCounter;
         }
         if (!result.hasSucceeded()) {
-            Logger.__log("fail to move");
             throw new IllegalStateException("fail to move to the target point.");
         }
         // Can be implemented to return boolean, used for checking if astrobee move successfully.

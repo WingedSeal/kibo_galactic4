@@ -1,7 +1,6 @@
 package jp.jaxa.iss.kibo.rpc.thailand;
 
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
-import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.OptimalPath;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.TargetPoint;
 
@@ -35,7 +34,6 @@ public class YourService extends KiboRpcService {
                     try {
                         astrobee.moveTo(nextTargetPoint);
                     } catch (Exception e) {
-                        Logger.__log(e.getMessage());
                         isGoingToGoal = astrobee.failMoveTo();
                         break;
                     }

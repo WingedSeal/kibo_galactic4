@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import gov.nasa.arc.astrobee.Result;
 import gov.nasa.arc.astrobee.types.Quaternion;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
-import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.*;
 import jp.jaxa.iss.kibo.rpc.thailand.utils.CameraMode;
 import jp.jaxa.iss.kibo.rpc.thailand.utils.QRReader;
@@ -35,11 +34,6 @@ public class Astrobee {
 
     public void startMission() {
         api.startMission();
-    }
-
-    public void __forceEndMission() {
-        api.notifyGoingToGoal();
-        api.reportMissionCompletion(Logger.logMessage);
     }
 
     public void endMission() {
@@ -231,21 +225,16 @@ public class Astrobee {
         for (int i = 0; i < 10; ++i) {
             try {
                 if (previousPathFindNode.equals(PathFindNode.GOAL) || currentPathFindNode.equals(PathFindNode.GOAL)) {
-                    Logger.__log("end");
                     return true;
                 } else if (currentPathFindNode.equals(TargetPoint.getTargetPoint(5)) || previousPathFindNode.equals(TargetPoint.getTargetPoint(5))) {
-                    Logger.__log("to goal");
                     moveTo(TargetPoint.GOAL);
                 } else {
-                    Logger.__log("to 5");
                     moveTo(TargetPoint.getTargetPoint(5));
 
                 }
                 return false;
 
-            } catch (Exception e) {
-                Logger.__log(e.getMessage());
-                Logger.__log("movement error!");
+            } catch (Exception ignored) {
             }
         }
         return true;
@@ -264,18 +253,15 @@ public class Astrobee {
             try {
                 TargetPoint pointNode = (TargetPoint) currentPathFindNode;
                 if (currentPathFindNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))) {
-                    Logger.__log("end");
                     moveToPoint(pointNode.getPointNumber());
                     shootLaser();
                 } else {
-                    Logger.__log("Move to RealPoint");
                     moveToRealPoint(pointNode.getPointNumber());
                     shootLaser();
                     moveToPoint(pointNode.getPointNumber());
                 }
                 return false;
-            } catch (Exception e) {
-                Logger.__log("something wrong with laser error");
+            } catch (Exception ignored) {
             }
         }
         return true;
@@ -312,10 +298,8 @@ public class Astrobee {
             returnImg = Bitmap.createBitmap(distortedImg.cols(), distortedImg.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(undistortedImg, returnImg);
             return returnImg;
-        } catch (Exception e) {
-            Logger.__log(e.getMessage());
+        } catch (Exception ignored) {
         }
-        __forceEndMission();
         return null;
     }
 }

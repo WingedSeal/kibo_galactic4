@@ -1,7 +1,6 @@
 package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
 import jp.jaxa.iss.kibo.rpc.thailand.Astrobee;
-import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -79,15 +78,6 @@ public class OptimalPath {
                 minTime = timeUsed;
                 maxScore = score;
             }
-            Logger.__log("timeUsed: " + timeUsed);
-            Logger.__log("minTime: " + minTime);
-            Logger.__log("maxScore: " + maxScore);
-            Logger.__log("score: " + score);
-            StringBuilder pointThatVisit = new StringBuilder("point: ");
-            for (TargetPoint point : pointsToVisit) {
-                pointThatVisit.append(point.getPointNumber()).append(", ");
-            }
-            Logger.__log(pointThatVisit.toString());
         }
     }
 
