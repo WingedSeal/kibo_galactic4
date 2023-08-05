@@ -12,7 +12,7 @@ public class Logger {
     public static String logMessage = dateFormat.format(new Date()) + " Logger started";
 
     public static void __log(String text) {
-        Date date = new Date();
-        logMessage += dateFormat.format(date) + " " + text + "\n";
+//        Date date = new Date();
+//        logMessage += dateFormat.format(date) + " " + text + "\n";
     }
 }
