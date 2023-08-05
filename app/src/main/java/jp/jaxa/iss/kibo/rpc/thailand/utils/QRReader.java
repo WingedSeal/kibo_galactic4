@@ -56,7 +56,7 @@ public class QRReader {
         if (distoredQRImg == null) {
             throw new RuntimeException("bMap is null");
         }
-        Bitmap bMap = api.undistoredMatImage(distoredQRImg,mode);
+        Bitmap bMap = api.undistortMatImage(distoredQRImg,mode);
         int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
         //copy pixel data from the Bitmap into the 'intArray' array
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());

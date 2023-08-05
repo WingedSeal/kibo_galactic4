@@ -1,9 +1,9 @@
 package jp.jaxa.iss.kibo.rpc.thailand;
 
+import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.OptimalPath;
 import jp.jaxa.iss.kibo.rpc.thailand.pathfind.TargetPoint;
-import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
 /**
  * Class meant to handle commands from the Ground Data System and execute them in Astrobee
@@ -17,8 +17,7 @@ public class YourService extends KiboRpcService {
         Astrobee astrobee = new Astrobee(api);
         boolean shouldConsiderGoal = false;
         boolean isGoingToGoal = false;
-
-        // PathFindNode QRNode = TargetPoint.getTargetPoint(7);
+        
         try {
             astrobee.startMission();
             do {

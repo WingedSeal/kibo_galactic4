@@ -228,11 +228,11 @@ public class QuaternionCalculator {
         double[] normalVector = new double[]{1, 0, 0}; //(v)
         double[] axisOne = getInfoQuaternion(one);
         double[] axisTwo = getInfoQuaternion(two);
-        //find half theta from normal vector to that orientation
+        // Find half theta from normal vector to that orientation
         double halfThetaOne = axisOne[3];
         double halfThetaTwo = axisTwo[3];
 
-        //v x n
+        // v x n
         double[] normalCrossAxisOne = new double[]{
                 0,
                 -axisOne[2],
@@ -244,7 +244,7 @@ public class QuaternionCalculator {
                 axisTwo[1]
         };
 
-        //n x v
+        // n x v
         double[] axisOneCrossNormal = new double[]{
                 0,
                 axisOne[2],
@@ -256,11 +256,11 @@ public class QuaternionCalculator {
                 -axisTwo[1]
         };
 
-        //v . n
+        // v . n
         double normalDotAxisOne = axisOne[0];
         double normalDotAxisTwo = axisTwo[0];
 
-        //find both vector of quaternion
+        // find both vector of quaternion
         double i1 = Math.pow(Math.cos(halfThetaOne), 2) - (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[0])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[0]) - (Math.pow(Math.sin(halfThetaOne), 2) * (normalVector[0] - 2 * normalDotAxisOne * axisOne[0]));
         double j1 = -(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[1])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[1]) - (Math.pow(Math.sin(halfThetaOne), 2) * (normalVector[1] - 2 * normalDotAxisOne * axisOne[1]));
         double k1 = -(Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * (normalCrossAxisOne[2])) + (Math.sin(halfThetaOne) * Math.cos(halfThetaOne) * axisOneCrossNormal[2]) - (Math.pow(Math.sin(halfThetaOne), 2) * (normalVector[2] - 2 * normalDotAxisOne * axisOne[2]));
@@ -268,11 +268,11 @@ public class QuaternionCalculator {
         double j2 = -(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[1])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[1]) - (Math.pow(Math.sin(halfThetaTwo), 2) * (normalVector[1] - 2 * normalDotAxisTwo * axisTwo[1]));
         double k2 = -(Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * (normalCrossAxisTwo[2])) + (Math.sin(halfThetaTwo) * Math.cos(halfThetaTwo) * axisTwoCrossNormal[2]) - (Math.pow(Math.sin(halfThetaTwo), 2) * (normalVector[2] - 2 * normalDotAxisTwo * axisTwo[2]));
 
-        //norm of vectors from Quaternion one and two
+        // norm of vectors from Quaternion one and two
         double normVec1 = Math.sqrt(Math.pow(i1, 2) + Math.pow(j1, 2) + Math.pow(k1, 2));
         double normVec2 = Math.sqrt(Math.pow(i2, 2) + Math.pow(j2, 2) + Math.pow(k2, 2));
 
-        //dot product between 2 vector
+        // dot product between 2 vector
         double dotProductVec1Vec2 = i1 * i2 + j1 * j2 + k1 * k2;
         if (two.getW() == 1) {
             return Math.acos(i1 / normVec1);
@@ -300,7 +300,7 @@ public class QuaternionCalculator {
      *
      * @param axis             axis of rotation
      * @param vector           vector to calculate
-     * @param radianOfRotation radion of rotation
+     * @param radianOfRotation radian of rotation
      * @return calculated vector
      */
     public static Point rotateVector(double[] axis, Point vector, double radianOfRotation) {

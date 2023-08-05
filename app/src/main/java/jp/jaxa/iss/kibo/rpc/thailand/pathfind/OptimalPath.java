@@ -1,7 +1,7 @@
 package jp.jaxa.iss.kibo.rpc.thailand.pathfind;
 
-import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 import jp.jaxa.iss.kibo.rpc.thailand.Astrobee;
+import jp.jaxa.iss.kibo.rpc.thailand.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -122,9 +122,9 @@ public class OptimalPath {
 
         if (shouldConsiderGoal) {
             for (double distance : PathFind.estimatePathDistances(astrobee, midNodes[midNodes.length - 1], PathFindNode.GOAL)) {
-                if(distance > 2.8d) Astrobee.ASTROBEE_ACCELERATION = 0.00804d;
-                else if(distance > 2.39d) Astrobee.ASTROBEE_ACCELERATION = 0.00798d;
-                else if(distance > 1.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00761d;
+                if (distance > 2.8d) Astrobee.ASTROBEE_ACCELERATION = 0.00804d;
+                else if (distance > 2.39d) Astrobee.ASTROBEE_ACCELERATION = 0.00798d;
+                else if (distance > 1.0d) Astrobee.ASTROBEE_ACCELERATION = 0.00761d;
                 else Astrobee.ASTROBEE_ACCELERATION = 0.00736d;
                 totalTimeSec += 2 * (Math.sqrt(distance / Astrobee.ASTROBEE_ACCELERATION));
             }
