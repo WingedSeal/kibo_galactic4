@@ -95,41 +95,33 @@ public class Astrobee {
      *
      * @param pointNode currentPathFindNode
      * @param timeLeft  TimeRemaining - time duration moving from currentPathFindNode to Goal
-     * @return whether you will go to Goal or not
+     *
      *
      */
-    private boolean checkTime(TargetPoint pointNode, double timeLeft){
+    private void checkTime(TargetPoint pointNode, double timeLeft){
         switch(pointNode.id){
             case POINT_1:
                 if(timeLeft > 23712+4000){
                     throw new NullPointerException("astrobee not on the target point");
                 }
-                else{
-                    moveTo(PathFindNode.GOAL);
-                    return true;}
+                break;
             case POINT_2:
                 if(timeLeft > 21856+4000){
                     throw new NullPointerException("astrobee not on the target point");
                 }
-                else{
-                    moveTo(PathFindNode.GOAL);
-                    return true;}
+                break;
             case POINT_3:
                 if(timeLeft > 21952+4000){
                     throw new NullPointerException("astrobee not on the target point");
                 }
-                else{
-                    moveTo(PathFindNode.GOAL);
-                    return true;}
+                break;
             case POINT_4:
                 if(timeLeft > 22832+4000){
                     throw new NullPointerException("astrobee not on the target point");
                 }
-                else{
-                    moveTo(PathFindNode.GOAL);
-                    return true;}
+                break;
         }
-        return false;
+        endMission();
     }
 
     /**
@@ -141,18 +133,19 @@ public class Astrobee {
      * @param pointNode currentPathFindNode
      * @param pathNodes currentPath from getting optimal path
      * @param optimalTime time duration moving from currentPathFindNode to Goal according to optimal path
+     * @param timeRemaining the remaining time of the mission
      * @return whether you will go the other node or not
      */
 
 
-    private boolean shouldGoToOtherNode(TargetPoint pointNode, TargetPoint[] pathNodes, double optimalTime){
+    private boolean shouldGoToOtherNode(TargetPoint pointNode, TargetPoint[] pathNodes, double optimalTime, long timeRemaining){
         if(pathNodes[1].getScore() >= pointNode.getScore()){
             if(api.getTimeRemaining().get(1) > optimalTime){
                 return true;
             }
         }
         else{
-            double timeLeft = api.getTimeRemaining().get(1) - getPathTimeToGoal(pointNode);
+            double timeLeft = timeRemaining - getPathTimeToGoal(pointNode);
             switch(pointNode.id){
                 case POINT_1:
                     if(timeLeft > 23712+4000){
@@ -189,11 +182,11 @@ public class Astrobee {
      * @param pointNode currentPathFindNode
      * @param pathNodes currentPath from getting optimal path
      * @param optimalTime time duration moving from currentPathFindNode to Goal according to optimal path
-     * @return whether you will go to Goal or not
+     * @param timeRemaining the remaining time of the mission
      *
      */
-    private boolean checkTime(TargetPoint pointNode, TargetPoint[] pathNodes, double optimalTime){
-        double timeLeft = api.getTimeRemaining().get(1) - getPathTimeToGoal(pointNode);
+    private void checkTime(TargetPoint pointNode, TargetPoint[] pathNodes, double optimalTime, long timeRemaining){
+        double timeLeft = timeRemaining - getPathTimeToGoal(pointNode);
         switch(pointNode.id){
             case POINT_1:
                 if(timeLeft > 23712+4000){
@@ -216,7 +209,7 @@ public class Astrobee {
                 }
                 break;
         }
-        if(shouldGoToOtherNode(pointNode, pathNodes, optimalTime)){
+        if(shouldGoToOtherNode(pointNode, pathNodes, optimalTime, timeRemaining)){
                 moveTo(pathNodes[1]);
                 shootLaser();
             }
@@ -224,7 +217,6 @@ public class Astrobee {
             shootTargetFromRealPoint();
         }
         endMission();
-        return true;
 
     }
 
@@ -253,7 +245,6 @@ public class Astrobee {
      * @throws NullPointerException  Attempted to turn laser on while not in the target point area
      */
     public void shootLaser() {
-        boolean movingToGoal = false;
         if (!(currentPathFindNode instanceof TargetPoint)) {
             throw new IllegalStateException("Attempted to shoot laser while not being on a point node");
         }
@@ -263,52 +254,48 @@ public class Astrobee {
             if(pointNode.equals(TargetPoint.getRealTargetPoint(pointNode.getPointNumber()))){
                 throw new NullPointerException("astrobee not on the target point");
             }
-            List<Integer> activateTargets = api.getActiveTargets();
-            switch(activateTargets.size()){
+            TargetPoint[] activePoints = getActivePoints();
+            long timeRemaining = api.getTimeRemaining().get(1);
+            switch(activePoints.length){
                 case 1:
-                    double timeLeft = api.getTimeRemaining().get(1) - getPathTimeToGoal(pointNode);
-                    movingToGoal = checkTime(pointNode,timeLeft);
+                    double timeLeft = timeRemaining - getPathTimeToGoal(pointNode);
+                    checkTime(pointNode,timeLeft);
                     break;
                 case 2:
-                    OptimalPath optimalPath = new OptimalPath(this, api.getTimeRemaining().get(1), currentPathFindNode, getActivePoints(), true);
+                    OptimalPath optimalPath = new OptimalPath(this, timeRemaining, currentPathFindNode, activePoints, true);
                     double optimalTime = optimalPath.getMinTime();
                     TargetPoint[] pathNodes = optimalPath.getPath();
-                    if(pathNodes.length < 2){
-                        break;
-                    }
-                    movingToGoal = checkTime(pointNode, pathNodes, optimalTime);
+                    checkTime(pointNode, pathNodes, optimalTime, timeRemaining);
                     break;
             }
         }
         api.takeTargetSnapshot(pointNode.getPointNumber());
-        if(!movingToGoal){
-            List<Integer> activateTargets = api.getActiveTargets();
-            if (activateTargets.contains(pointNode.getPointNumber()) && activateTargets.size() == 1) { //change this to throw only when last activate target list count = 1
-                double timeLeft = api.getTimeRemaining().get(1) - getPathTimeToGoal(pointNode);
-                switch(pointNode.id){
-                    case POINT_1:
-                        if(timeLeft > 23712+4000){
-                            throw new IllegalStateException("fail to deactivate target");
-                        }
-                        break;
-                    case POINT_2:
-                        if(timeLeft > 21856+4000){
-                            throw new IllegalStateException("fail to deactivate target");
-                        }
-                        break;
-                    case POINT_3:
-                        if(timeLeft > 21952+4000){
-                            throw new IllegalStateException("fail to deactivate target");
-                        }
-                        break;
-                    case POINT_4:
-                        if(timeLeft > 22832+4000){
-                            throw new IllegalStateException("fail to deactivate target");
-                        }
-                        break;
-                }
-                endMission();
+        List<Integer> activateTargets = api.getActiveTargets();
+        if (activateTargets.contains(pointNode.getPointNumber()) && activateTargets.size() == 1) { //change this to throw only when last activate target list count = 1
+            double timeLeft = api.getTimeRemaining().get(1) - getPathTimeToGoal(pointNode);
+            switch(pointNode.id){
+                case POINT_1:
+                    if(timeLeft > 23712+4000){
+                        throw new IllegalStateException("fail to deactivate target");
+                    }
+                    break;
+                case POINT_2:
+                    if(timeLeft > 21856+4000){
+                        throw new IllegalStateException("fail to deactivate target");
+                    }
+                    break;
+                case POINT_3:
+                    if(timeLeft > 21952+4000){
+                        throw new IllegalStateException("fail to deactivate target");
+                    }
+                    break;
+                case POINT_4:
+                    if(timeLeft > 22832+4000){
+                        throw new IllegalStateException("fail to deactivate target");
+                    }
+                    break;
             }
+            endMission();
         }
     }
 
